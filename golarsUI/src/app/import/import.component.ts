@@ -21,6 +21,8 @@ export class ImportComponent implements OnInit {
   scopeOfWork = ImportFieldValues.scopeOfWorkMapping;
   showSuccessMessage=false;
   successMessage=null;
+  showFileSelectErrorMessage=false;
+  fileSelectErrorMessage=null
 
   model: any = {};
   constructor(private http: HttpClient,private importService: ImportService) { }
@@ -37,8 +39,13 @@ export class ImportComponent implements OnInit {
   }
   importDocuments(){
 console.log(this.fileInput.files.length)
-
+if(this.fileInput.files.length == 0){
+  this.showFileSelectErrorMessage=true;
+  this.fileSelectErrorMessage="Please select at least one file to upload"
+  return;
+}
 const frmData = new FormData();
+
     
     for (var i = 0; i < this.fileInput.files.length; i++) { 
       frmData.append("fileUpload", this.fileInput.files[i]);
@@ -57,32 +64,19 @@ const frmData = new FormData();
           
             console.log(error);
         });
-
-    // this.http.post('http://localhost:8080/golars/rest/import/upload', frmData).subscribe(
-    //   data => {
-    //     // SHOW A MESSAGE RECEIVED FROM THE WEB API.
-    //     console.log( data as string);
-    //     // console.log (this.sMsg);
-    //   },
-    //   (err: HttpErrorResponse) => {
-    //     console.log (err.message);    // SHOW ERRORS IF ANY.
-    //   }
-    // );
-
   }
-  myUploader($event){
-    console.log($event)
+  onBasicUpload($event){
+    this.showFileSelectErrorMessage=false;
+  this.fileSelectErrorMessage=null
   }
   setModalValue(activeCheckbox){
     if(activeCheckbox.checked)
     this.model.active.value='active';
     else
     this.model.active.value=''
-    console.log();
   }
   getDocumentProperties(){
     console.log(this.model)
     return  JSON.stringify(this.model)
-// return "[{'key':'name','value':'value'}]"
   }
 }

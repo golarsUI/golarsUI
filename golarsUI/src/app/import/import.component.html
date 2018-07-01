@@ -1,0 +1,57 @@
+<div class="alert alert-success" [hidden]='!showSuccessMessage'>
+  <strong>Success!</strong> {{successMessage}}
+</div>
+<form name="importForm" class="form-group" #importForm>
+  <p-fileUpload name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true" (onBeforeSend)="onUpload($event)"
+    [showUploadButton]="false" accept=".pdf,.doc,.docx" [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20"
+    invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
+
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-6">
+      <label>Date Document Updated</label>
+      <p-calendar [(ngModel)]="docUpdateDate" name="docUpdateDate"></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+
+      <label>Facility Name </label>
+      <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="fecilityName" name="fecilityName"
+      />
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <label>Document Date</label>
+      <p-calendar [(ngModel)]="docDate" name="docDate"></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <label>FID</label>
+      <input id="fid" type="text" class="form-control form-control-height" pInputText [(ngModel)]="fid" name="fid" />
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <div>
+        <label>State Program</label>
+      </div>
+      <p-dropdown [options]="stateProgram" [(ngModel)]="stateProgramValue" name="stateProgram"  [style]="{'width':'200px'}"></p-dropdown>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <div>
+        <label>&nbsp;</label>
+      </div>
+      <p-checkbox name="group1" styleClass="checkbox-label-left" value="Is Active" label="Is Active" [(ngModel)]="isActive"></p-checkbox>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <div>
+        <label>Document Type</label>
+      </div>
+      <p-dropdown [options]="docTypes" [(ngModel)]="docTypesValue" name="docTypes"   [style]="{'width':'275px'}"></p-dropdown>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <div>
+        <label>Scope of Work</label>
+      </div>
+      <p-dropdown [options]="scopeOfWork" [(ngModel)]="scopeOfWorkValue" name="scopeOfWork" [style]="{'width':'325px'}"></p-dropdown>
+    </div>
+  </div>
+  <div class="pull-right" style="margin-top:20px">
+    <button type="button" class="btn btn-primary" (click)="importDocuments()">Import</button>
+  </div>
+  
+</form>

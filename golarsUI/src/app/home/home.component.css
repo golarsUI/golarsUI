@@ -1,0 +1,3 @@
+.split-pane-class{
+    height: calc(100% - 60px) !important;
+}

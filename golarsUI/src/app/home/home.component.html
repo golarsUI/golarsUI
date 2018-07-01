@@ -1,0 +1,13 @@
+<split direction="horizontal" 
+disabled="true" class="split-pane-class"
+[useTransition]="true" gutterSize="3" gutterColor="grey">
+<split-area [visible]="area.leftVisible" [size]="area.left" order="1">
+<golars-leftnav></golars-leftnav>
+</split-area>
+<split-area [visible]="area.centerVisible" [size]="area.center" order="2">
+ <golars-middlepane></golars-middlepane>
+</split-area>
+<split-area [visible]="area.rightVisible" [size]="area.right" order="3">
+ <golars-rightpanel></golars-rightpanel>
+</split-area>
+</split>

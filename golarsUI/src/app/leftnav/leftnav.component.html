@@ -1,0 +1,54 @@
+<p-tree [value]="folderData" #leftNavTree selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
+    [contextMenu]="cm" (onNodeContextMenuSelect) ="nodeRightClickSelect($event)" >
+</p-tree>
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+
+
+<div class="modal" id="create_Folder_Modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create folder in {{selectedNode?.label}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="form" (ngSubmit)="f.form.valid && createFolder()" #f="ngForm" novalidate>
+                    <div class="form-group">
+                        <label for="newfolder">Folder Name</label>
+                        <input type="text" [ngClass]="{ 'is-invalid': f.submitted && !newfolder.valid }" class="form-control" name="newfolder" [(ngModel)]="newfolder"
+                             required (keypress)="filderErrorMessage=null" autofocus/>
+                        <!-- <div *ngIf="f.submitted && !newfolder.valid" class="help-block text-danger">Folder Name is required</div> -->
+                    </div>
+                    <div class="pull-right">
+                    <button type="button" class="btn btn-primary" [disabled]='newfolder=== null || newfolder.trim()=== ""' (click)="createFolder(newfolder)">Create</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="modal" id="folder_delete_model" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Folder : {{selectedNode?.label}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete this folder?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="deleteFolderOnConfirmation()">Delete</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="cancel">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>

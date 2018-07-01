@@ -9,45 +9,45 @@
   <div class="ui-g ui-fluid">
     <div class="ui-g-12 ui-md-6">
       <label>Date Document Updated</label>
-      <p-calendar [(ngModel)]="docUpdateDate" name="docUpdateDate"></p-calendar>
+      <p-calendar [(ngModel)]="model.docUpdateDate" name="docUpdateDate"></p-calendar>
     </div>
     <div class="ui-g-12 ui-md-6">
 
       <label>Facility Name </label>
-      <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="fecilityName" name="fecilityName"
+      <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fecilityName" name="fecilityName"
       />
     </div>
     <div class="ui-g-12 ui-md-6">
       <label>Document Date</label>
-      <p-calendar [(ngModel)]="docDate" name="docDate"></p-calendar>
+      <p-calendar [(ngModel)]="model.docDate" name="docDate"></p-calendar>
     </div>
     <div class="ui-g-12 ui-md-6">
       <label>FID</label>
-      <input id="fid" type="text" class="form-control form-control-height" pInputText [(ngModel)]="fid" name="fid" />
+      <input id="fid" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fid" name="fid" />
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>State Program</label>
       </div>
-      <p-dropdown [options]="stateProgram" [(ngModel)]="stateProgramValue" name="stateProgram"  [style]="{'width':'200px'}"></p-dropdown>
+      <p-dropdown [options]="stateProgram" [(ngModel)]="model.stateProgram" name="model.stateProgram"  [style]="{'width':'200px'}"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>&nbsp;</label>
       </div>
-      <p-checkbox name="group1" styleClass="checkbox-label-left" value="Is Active" label="Is Active" [(ngModel)]="isActive"></p-checkbox>
+      <p-checkbox name="group1" binary="true" #activeCheckbox label="Is Active" [(ngModel)]="model.active"></p-checkbox>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>Document Type</label>
       </div>
-      <p-dropdown [options]="docTypes" [(ngModel)]="docTypesValue" name="docTypes"   [style]="{'width':'275px'}"></p-dropdown>
+      <p-dropdown [options]="docTypes" [(ngModel)]="model.docTypes" name="docTypes"   [style]="{'width':'275px'}"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>Scope of Work</label>
       </div>
-      <p-dropdown [options]="scopeOfWork" [(ngModel)]="scopeOfWorkValue" name="scopeOfWork" [style]="{'width':'325px'}"></p-dropdown>
+      <p-multiSelect [options]="scopeOfWork" defaultLabel="Select Scope of Work" [(ngModel)]="model.scopeOfWork" name="scopeOfWork" resetFilterOnHide="true"  [style]="{'width':'350px'}"></p-multiSelect>
     </div>
   </div>
   <div class="pull-right" style="margin-top:20px">

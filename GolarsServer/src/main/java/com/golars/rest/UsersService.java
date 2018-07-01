@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 
 import com.golars.bean.Folder;
 import com.golars.bean.User;
-import com.golars.bean.UserResponse;
 import com.google.gson.Gson;
 
 @Path("/users")
@@ -37,7 +36,6 @@ public class UsersService {
 	}
 
 	@POST
-	@Path("/user")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerUser(User user) {
 

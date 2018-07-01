@@ -1,58 +1,62 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" [hidden]="!checkLoginSuccesful()">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="home">Home </a>
-        </li>
-        <li class="nav-item" >
-            <a id="navbar_createNew" class="nav-link" routerLink="#" [ngClass]="{disabled : !isNodeSelected}">Create Folder <i class="fa fa-plus" aria-hidden="true"></i></a>
-          </li>
-        <li class="nav-item" >
-          <a id="navbar_import" class="nav-link" routerLink="#" [ngClass]="{disabled : !isNodeSelected}">Import <i class="fa fa-download" aria-hidden="true"></i></a>
-        </li>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="home">Home </a>
+      </li>
+      <li class="nav-item">
+        <a id="navbar_createNew" class="nav-link" routerLink="#" [ngClass]="{disabled : !isNodeSelected}">Create Folder
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a id="navbar_import" class="nav-link" routerLink="#" [ngClass]="{disabled : !isNodeSelected}">Import
+          <i class="fa fa-download" aria-hidden="true"></i>
+        </a>
+      </li>
 
-        
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Users
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" routerLink="users">List of Users</a>
-            <a class="dropdown-item" href="newuser">Add User</a>
-            </div>
-        </li>
-      </ul>
-      <div class="form-inline my-2 my-lg-0">
-      <form >
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Users
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="users">List of Users</a>
+          <a class="dropdown-item" routerLink="newuser">Add User</a>
+        </div>
+      </li>
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      <form>
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-                <a class="nav-link" (click)="logout()" routerLink="#">Logout</a>
-         </li>
-          </ul>
+          <a class="nav-link" (click)="logout()" routerLink="#">Logout</a>
+        </li>
+      </ul>
     </div>
-    </div>
-  </nav>
-  <router-outlet></router-outlet>
+  </div>
+</nav>
+<router-outlet></router-outlet>
 
-  <div class="modal fade bd-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Import File into {{importFolder}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-          <div class="modal-body">
-          <golars-import></golars-import>
-            </div>
-            
-          </div>
-        </div>
+<div class="modal fade bd-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Import File into {{importFolder}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <golars-import></golars-import>
       </div>
 
-
+    </div>
+  </div>
+</div>

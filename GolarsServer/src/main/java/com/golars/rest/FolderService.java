@@ -32,6 +32,7 @@ public class FolderService {
 			folder.setParentid("parentId" + i);
 			folder.setExpandedIcon("fa fa-folder-open");
 			folder.setCollapsedIcon("fa fa-folder");
+			folder.setFolder(true);
 			folderList.add(folder);
 			if (!docRequired) {
 				List<Folder> children = createDummyChildren();
@@ -89,6 +90,7 @@ public class FolderService {
 			folder.setId(i + "");
 			folder.setLabel("name" + i);
 			folder.setParentid("parentId" + i);
+			folder.setFolder(false);
 			if (i % 2 == 0)
 				folder.setIcon("fa fa-file-word-o");
 			else
@@ -108,6 +110,7 @@ public class FolderService {
 			folder.setExpandedIcon("fa fa-folder-open");
 			folder.setCollapsedIcon("fa fa-folder");
 			folderList.add(folder);
+			folder.setFolder(true);
 		}
 		return folderList;
 	}

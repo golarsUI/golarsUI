@@ -26,6 +26,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import {FileUploadModule} from 'primeng/fileupload';
 import { ImportService } from './services/import.service';
+import { UserComponent } from './user/user.component';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { ImportService } from './services/import.service';
     LeftnavComponent,
     MiddlepaneComponent,
     RightpanelComponent,
+    UserComponent,
     
   ],
   imports: [
@@ -53,8 +56,8 @@ import { ImportService } from './services/import.service';
     DropdownModule,
     CheckboxModule,
     ContextMenuModule,
-    FileUploadModule
- 
+    FileUploadModule,
+    MultiSelectModule
     
     
   ],

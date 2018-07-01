@@ -3,9 +3,30 @@ package com.golars.bean;
 public class User{
 	
 
+	private String firstName;
+	private String lastName;
+	private String emailAdress;
 	private String username;
 	private String password;
 	private boolean admin;
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getEmailAdress() {
+		return emailAdress;
+	}
+	public void setEmailAdress(String emailAdress) {
+		this.emailAdress = emailAdress;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -18,12 +39,11 @@ public class User{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
 	public boolean isAdmin() {
 		return admin;
 	}
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 	
-
 }

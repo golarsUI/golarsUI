@@ -39,7 +39,8 @@ public class ImportService {
 			    writeToFile(is, uploadedFileLocation);
 			}
 		}
-		KeyValue[] keyValues = new Gson().fromJson(documentProperties, KeyValue[].class);
+		System.out.println(documentProperties);
+//		KeyValue[] keyValues = new Gson().fromJson(documentProperties, KeyValue[].class);
 		return Response.status(200).entity(true).build();
 	}
 	

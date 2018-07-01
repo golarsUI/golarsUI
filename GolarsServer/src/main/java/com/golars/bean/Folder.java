@@ -1,5 +1,6 @@
 package com.golars.bean;
 
+import java.time.temporal.IsoFields;
 import java.util.List;
 
 public class Folder {
@@ -10,7 +11,7 @@ public class Folder {
 	private String expandedIcon;
 	private String collapsedIcon;
 	private String icon;
-	
+	private boolean folder;
 
 	public String getId() {
 		return id;
@@ -59,11 +60,20 @@ public class Folder {
 	public void setCollapsedIcon(String collapsedIcon) {
 		this.collapsedIcon = collapsedIcon;
 	}
+
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
+
 	public String getIcon() {
 		return icon;
 	}
 
+	public boolean isFolder() {
+		return folder;
+	}
+
+	public void setFolder(boolean folder) {
+		this.folder = folder;
+	}
 }

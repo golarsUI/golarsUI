@@ -40,8 +40,7 @@ export class ImportFieldValues {
   ];
 
   static scopeOfWorkMapping = [
-    {label:'Select Scope of Work', value:null},
-    {label: 'ATG Functionality',value:'ATG Functionality'},
+   {label: 'ATG Functionality',value:'ATG Functionality'},
     {label: 'Cathodic Protection (Impressed) Test',value:'Cathodic Protection (Impressed) Test'},
     {label: 'Cathodic Protection (Sacrificial) Test',value:'Cathodic Protection (Sacrificial) Test'},
     {label: 'Compliance Management',value:'Compliance Management'},

@@ -19,19 +19,10 @@ export class ImportComponent implements OnInit {
   docTypes=ImportFieldValues.docTypeMapping;
   stateProgram= ImportFieldValues.stateProgramMapping;
   scopeOfWork = ImportFieldValues.scopeOfWorkMapping;
-  docType;
   showSuccessMessage=false;
   successMessage=null;
-  docUpdateDate;
-  fecilityName
-  docDate;
-  stateProgramValue;
-  isActive;
-  docTypesValue;
-  fid;
-  scopeOfWorkValue
-  onUpload
-  
+
+  model: any = {};
   constructor(private http: HttpClient,private importService: ImportService) { }
 
   ngOnInit() {
@@ -82,7 +73,16 @@ const frmData = new FormData();
   myUploader($event){
     console.log($event)
   }
+  setModalValue(activeCheckbox){
+    if(activeCheckbox.checked)
+    this.model.active.value='active';
+    else
+    this.model.active.value=''
+    console.log();
+  }
   getDocumentProperties(){
-return "[{'key':'name','value':'value'}]"
+    console.log(this.model)
+    return  JSON.stringify(this.model)
+// return "[{'key':'name','value':'value'}]"
   }
 }

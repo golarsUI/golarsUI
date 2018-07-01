@@ -15,4 +15,15 @@ export class UserService {
               return users;
           });
   }
+  registerUser(modal){
+    return this.http.post<any>(URLConstants.USERS_URL, { firstName: modal.firstName, lastName: modal.lastName, emailAdress:modal.email,
+        admin: modal.admin,username:modal.username,password:modal.password })
+    .map(folder => {
+        // login successful if there's a token in the response
+       
+
+        return folder;
+    });
+
+  }
 }

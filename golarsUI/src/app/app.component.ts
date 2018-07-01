@@ -12,6 +12,8 @@ export class AppComponent implements OnInit{
   loginSuccesful=false;
   isNodeSelected= false;
   importFolder;
+  user;
+  fullName;
   constructor( private router: Router,private authenticationService: AuthenticationService,private commonService: CommonService){
 console.log("constructor")
   }
@@ -21,6 +23,7 @@ console.log("constructor")
       this.router.navigate(['/login']);
       else{
       this.loginSuccesful=true;
+      this.user = localStorage.getItem("currentUser");
       this.router.navigate(['/']);
       }
 
@@ -64,9 +67,18 @@ $("#navbar_delete_folder").on("click",function(e){
 });
 
   }
+  getFullName(){
+    if(this.user == null)
+      return "";
+      else
+      return this.user.fullName
+    
+  }
   checkLoginSuccesful(){
     if(localStorage.getItem("currentUser") !== null){
       this.loginSuccesful=true;
+      this.user = JSON.parse(localStorage.getItem("currentUser"))
+      this.fullName = this.user.fullName
     return this.loginSuccesful;
     }
   }

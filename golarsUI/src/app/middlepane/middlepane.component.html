@@ -2,7 +2,7 @@
  (onNodeUnselect)="nodeUnselect($event)">
  <ng-template let-node pTemplate="default">
 
-        <span *ngIf="node.folder==false"><a  href="#" style="text-decoration: none" (click)="$event.preventDefault();">{{node.label}}</a></span>
+        <span *ngIf="node.folder==false"><a  href="http://google.com" style="text-decoration: none" (click)="$event.preventDefault();">{{node.label}}</a></span>
         <span *ngIf="node.folder==true">{{node.label}}</span>
     </ng-template>
 </p-tree>

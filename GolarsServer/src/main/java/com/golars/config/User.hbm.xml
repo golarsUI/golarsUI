@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+          "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.golars.bean.User" table="user_details">
+  <id name="username">
+   <column name="username"  />
+  </id>
+  <property name="password" column="passwordValue" type="java.lang.String" />
+  <property name="firstName" column="firstName"  type="java.lang.String"/>	
+  <property name="lastName" column="lastName"  type="java.lang.String"/>
+  <property name="emailAdress" column="emailAdress"  type="java.lang.String"/>
+  <property name="admin" column="adminValue" type="java.lang.Boolean"/>
+
+ </class>
+</hibernate-mapping>

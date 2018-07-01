@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import com.golars.bean.Folder;
 import com.golars.bean.User;
+import com.golars.util.DBUtil;
 import com.google.gson.Gson;
 
 @Path("/users")
@@ -38,7 +39,7 @@ public class UsersService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerUser(User user) {
-
+		new DBUtil().register(user);
 //		List<KeyValue> docList = new ArrayList<KeyValue>();
 //		for (int i = 0; i < 10; i++) {
 //			KeyValue keyValue = new KeyValue();

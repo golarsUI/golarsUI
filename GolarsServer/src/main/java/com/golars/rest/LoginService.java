@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 
 import com.golars.bean.User;
 import com.golars.bean.UserResponse;
+import com.golars.util.DBUtil;
 import com.golars.util.TokenGenerator;
 
 @Path("/login")
@@ -28,13 +29,14 @@ public class LoginService {
 		}
 			// need to return failure object
 		//need to replace below code with db call
-		if (username.equals("admin") && password.contains("admin")) {
-			isLoginSuccess = true;
-		}
+		User userRes =  new DBUtil().login(username, password);
+//		if (username.equals("admin") && password.contains("admin")) {
+//			isLoginSuccess = true;
+//		}
 		
-		if(isLoginSuccess){
-		response.setLoginsuccess(isLoginSuccess);
-		response.setUsername(username);
+		if(userRes !=null){// login successful
+		response.setLoginsuccess(true);
+		response.setFullName(userRes.getFirstName()+" "+userRes.getLastName());
 		response.setToken(new TokenGenerator().generateToken(username));
 		}
 

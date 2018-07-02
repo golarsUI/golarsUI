@@ -30,8 +30,6 @@ public class FolderService {
 			folder.setId(i + "");
 			folder.setLabel("name" + i);
 			folder.setParentid("parentId" + i);
-			folder.setExpandedIcon("fa fa-folder-open");
-			folder.setCollapsedIcon("fa fa-folder");
 			folder.setFolder(true);
 			folderList.add(folder);
 			if (!docRequired) {
@@ -52,8 +50,6 @@ public class FolderService {
 	public Response createFolder(Folder folder) {
 		String label = folder.getLabel();
 		String parentFolderID = folder.getParentid();
-		folder.setExpandedIcon("fa fa-folder-open");
-		folder.setCollapsedIcon("fa fa-folder");
 		System.out.println("folder is created with name--"+label+" in folder-->"+parentFolderID);
 		return Response.status(201).entity(folder).build();
 
@@ -91,10 +87,10 @@ public class FolderService {
 			folder.setLabel("name" + i);
 			folder.setParentid("parentId" + i);
 			folder.setFolder(false);
-			if (i % 2 == 0)
-				folder.setIcon("fa fa-file-word-o");
-			else
-				folder.setIcon("fa fa-file-pdf-o");
+//			if (i % 2 == 0)
+//				folder.setIcon("fa fa-file-word-o");
+//			else
+//				folder.setIcon("fa fa-file-pdf-o");
 			folderList.add(folder);
 		}
 		return folderList;
@@ -107,8 +103,8 @@ public class FolderService {
 			folder.setId(i + "");
 			folder.setLabel("name" + i);
 			folder.setParentid("parentId" + i);
-			folder.setExpandedIcon("fa fa-folder-open");
-			folder.setCollapsedIcon("fa fa-folder");
+//			folder.setExpandedIcon("fa fa-folder-open");
+//			folder.setCollapsedIcon("fa fa-folder");
 			folderList.add(folder);
 			folder.setFolder(true);
 		}

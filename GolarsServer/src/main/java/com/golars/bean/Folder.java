@@ -8,8 +8,6 @@ public class Folder {
 	private String label = "";
 	private String parentid;
 	private List<Folder> children;
-	private String expandedIcon;
-	private String collapsedIcon;
 	private String icon;
 	private boolean folder;
 
@@ -45,21 +43,6 @@ public class Folder {
 		return children;
 	}
 
-	public String getExpandedIcon() {
-		return expandedIcon;
-	}
-
-	public void setExpandedIcon(String expandedIcon) {
-		this.expandedIcon = expandedIcon;
-	}
-
-	public String getCollapsedIcon() {
-		return collapsedIcon;
-	}
-
-	public void setCollapsedIcon(String collapsedIcon) {
-		this.collapsedIcon = collapsedIcon;
-	}
 
 	public void setIcon(String icon) {
 		this.icon = icon;

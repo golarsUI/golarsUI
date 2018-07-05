@@ -56,4 +56,6 @@
 .pull-right{
     float: right;
 }
-
+.ui-inputtext{
+    height:34px !important;
+}

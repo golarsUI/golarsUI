@@ -1,7 +1,36 @@
-<div style="padding:10px">
-<div style="text-align: center">{{getDocPropertiesValue()}}</div>
-<div class="ui-g" *ngFor="let data of docData">
-  <div class="ui-g-6">{{data.key}}</div>
-  <div class="ui-g-6">{{data.value}}</div>
-</div>
+<div style="padding:10px" *ngIf="docData">
+  <div style="text-align: center" *ngIf="!treeNode.node.folder">{{getDocPropertiesValue()}}</div>
+  <div class="ui-g" *ngIf="docData.docUpdateDate">
+    <div class="ui-g-6">Date Document Updated</div>
+    <div class="ui-g-6">{{docData.docUpdateDate}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.fecilityName">
+    <div class="ui-g-6">Facility Name</div>
+    <div class="ui-g-6">{{docData.fecilityName}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.docDate">
+    <div class="ui-g-6">Document Date</div>
+    <div class="ui-g-6">{{docData.docDate}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.fid">
+    <div class="ui-g-6">FID</div>
+    <div class="ui-g-6">{{docData.fid}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.stateProgram">
+    <div class="ui-g-6">State Program</div>
+    <div class="ui-g-6">{{docData.stateProgram}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.active">
+    <div class="ui-g-6">Is Active</div>
+    <div class="ui-g-6">{{docData.active}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.docTypes">
+    <div class="ui-g-6">Document Type</div>
+    <div class="ui-g-6">{{docData.docTypes}}</div>
+  </div>
+  <div class="ui-g" *ngIf="docData.scopeOfWork">
+    <div class="ui-g-6">Scope of Work</div>
+    <div class="ui-g-6">{{docData.scopeOfWork}}</div>
+  </div>
+
 </div>

@@ -11,13 +11,16 @@ export class RightpanelComponent implements OnInit {
 
   docData;
   docName;
+  treeNode;
   constructor(private folderService: FolderService,private commonService: CommonService) { }
 
   ngOnInit() {
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if(treeNode !== null && treeNode !== undefined && treeNode.type === "documentDetails"){
-        this.docName = treeNode.nodeName;
-        this.folderService.fetchDocumentDetails(this.docName)
+      if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "documentDetails"){
+        this.docName = treeNode.node.label;
+        this.docData=[];
+        this.treeNode = treeNode;
+        this.folderService.fetchDocumentDetails(treeNode.node.label)
         .subscribe(
           fetchDocumentDetails => {
               // data.fo

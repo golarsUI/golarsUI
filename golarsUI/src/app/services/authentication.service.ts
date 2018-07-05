@@ -16,6 +16,7 @@ export class AuthenticationService {
                 if (user && user.token) {
                     // store user details and token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('username', user.username);
                 }
 
                 return user;

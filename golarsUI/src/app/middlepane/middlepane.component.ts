@@ -3,6 +3,7 @@ import { CommonService } from '../services/common.service';
 import { Subscription } from 'rxjs';
 import { FolderService } from '../services/folder.service';
 import { GolarsConstants } from '../constants/golarsconstants';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'golars-middlepane',
@@ -12,12 +13,13 @@ import { GolarsConstants } from '../constants/golarsconstants';
 export class MiddlepaneComponent implements OnInit {
   folderData;
   selectedNode;
+  golarsServer = environment.server;
   constructor(private folderService: FolderService, private commonService: CommonService) { }
 
   ngOnInit() {
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if (treeNode !== null && treeNode !== undefined && treeNode.type === "fetchSubFolders") {
-        this.folderService.fetchFolders(treeNode.nodeName, treeNode.isDocumentsRequired)
+      if (treeNode !== null && treeNode.node !== undefined && treeNode.type === "fetchSubFolders") {
+        this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, treeNode.isDocumentsRequired)
           .subscribe(
             data => {
               data.forEach(element => {
@@ -35,7 +37,7 @@ export class MiddlepaneComponent implements OnInit {
   }
   nodeSelect(event) {
 
-    this.commonService.notify({ type: 'documentDetails', nodeName: event.node.label, isDocumentsRequired: true });
+    this.commonService.notify({ type: 'documentDetails', node: event.node, isDocumentsRequired: true });
     console.log("middle nodeSelect", event)
   }
   nodeUnselect(event) {

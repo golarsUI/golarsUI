@@ -23,23 +23,32 @@ export class LeftnavComponent implements OnInit {
     filderErrorMessage = null;
     isDocumentsRequired = false;
     selectedNode;
-    items = [
-        { label: 'Import', command: (event) => this.ImportFile() },
-        { label: 'New Folder', command: (event) => this.createNewFolder() },
-        { label: 'Delete Folder', command: (event) => this.deleteFolder() }
-    ];
+    items = [ ];
+    selectedItemParentNode;
     nodeSelect(event) {
         // this.selectedNodeLabel = event.node.label;
+        this.selectedItemParentNode = event.node.parent;
         event.node.expanded = !event.node.expanded;
-        this.commonService.notify({ type: 'fetchSubFolders', nodeName: this.selectedNode.label, isDocumentsRequired: true });
-        this.isDocumentsRequired
+        this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
         console.log("nodeSelect", event)
     }
 
     nodeRightClickSelect(event) {
         this.selectedNode = event.node;
+        this.selectedItemParentNode = event.node.parent;
+        if(event.node.id == GolarsConstants.ROOTID){
+            this.items = [
+                { label: 'New Folder', command: (event) => this.createNewFolder() }
+            ];  
+        }else{
+            this.items = [
+                { label: 'Import', command: (event) => this.ImportFile() },
+                { label: 'New Folder', command: (event) => this.createNewFolder() },
+                { label: 'Delete Folder', command: (event) => this.deleteFolder(event) }
+            ];
+        }
         this.selectedNode.expanded = true;
-        this.commonService.notify({ type: 'fetchSubFolders', nodeName: this.selectedNode.label, isDocumentsRequired: true });
+        this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
         this.isDocumentsRequired
         console.log("nodeSelect", event)
     }
@@ -52,7 +61,7 @@ export class LeftnavComponent implements OnInit {
 
         console.log()
     }
-    deleteFolder() {
+    deleteFolder(event) {
         $('#folder_delete_model').modal('show');
     }
     nodeUnselect(event) {
@@ -66,7 +75,7 @@ export class LeftnavComponent implements OnInit {
     }
     ngOnInit() {
 
-        this.folderService.fetchFolders("-1", this.isDocumentsRequired) // retrieve all thd parent folders
+        this.folderService.fetchFolders("-1",null, this.isDocumentsRequired) // retrieve all thd parent folders
             .subscribe(
                 data => {
                     data.forEach(element => {
@@ -92,20 +101,20 @@ export class LeftnavComponent implements OnInit {
     }
     createFolder(subFolderName) {
         this.selectedNode.expanded = true
-        this.folderService.createFolder(subFolderName, this.selectedNode.id)
+        this.folderService.createFolder(subFolderName, this.getnerateFolderID(),true,this.commonService.getUserName())
             .subscribe(
                 folder => {
                     console.log("folder create", folder)
                     if (this.selectedNode.children == null)
                         this.selectedNode.children = [];
                     this.selectedNode.children.push(folder);
-
+                    folder.parent=this.selectedNode;
                     this.treeComponent.selection = folder;
                     this.selectedNode = folder;
                     this.addFolderClass(folder)
                     $('#create_Folder_Modal').modal('hide');
                     this.newfolder = ""
-                    this.commonService.notify({ type: 'fetchSubFolders', nodeName: this.selectedNode.label, isDocumentsRequired: true });
+                    this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
                 },
                 error => {
 
@@ -114,16 +123,30 @@ export class LeftnavComponent implements OnInit {
 
     }
     deleteFolderOnConfirmation() {
-        this.folderService.deleteFolder(this.selectedNode.id)
+        this.folderService.deleteFolder(this.selectedNode.id,this.selectedNode.parentid)
             .subscribe(
                 folder => {
+                    // this.treeComponent.
+                    // this.selectedNode.parentid
+                    var index = this.selectedItemParentNode.children.indexOf(this.selectedNode);
+                   console.log(index);
+                   this.selectedItemParentNode.children.splice(index,1);
+                   this.treeComponent.selection = this.selectedItemParentNode;
+                   this.selectedNode = this.selectedItemParentNode;
+                  // header.slice(0, -1);
+
                     $('#folder_delete_model').modal('hide');
                     //   this.newfolder=""
-                    //   this.commonService.notify({ type: 'fetchSubFolders', nodeName: this.selectedNode.label, isDocumentsRequired: true });
+                      this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedItemParentNode, isDocumentsRequired: true });
                 },
                 error => {
 
                     console.log(error);
                 });
+    }
+    getnerateFolderID(){
+        if(this.selectedNode.parentid.toLowerCase() != "null")
+        return this.selectedNode.parentid+this.selectedNode.id;
+        return this.selectedNode.id;
     }
 }

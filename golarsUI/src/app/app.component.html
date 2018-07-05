@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" [hidden]="!checkLoginSuccesful()">
+<nav class="navbar navbar-expand-lg navbar-light bg-light nav-background-color" [hidden]="!checkLoginSuccesful()">
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -11,7 +11,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a id="navbar_import" class="nav-link" routerLink="#" [ngClass]="{disabled : !isNodeSelected}">Import
+        <a id="navbar_import" class="nav-link" routerLink="#" [ngClass]="{disabled : checkImportDisabled() }">Import
           <i class="fa fa-download" aria-hidden="true"></i>
         </a>
       </li>

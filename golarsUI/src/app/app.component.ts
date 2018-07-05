@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 import { CommonService } from './services/common.service';
+import { GolarsConstants } from './constants/golarsconstants';
 declare var $:any;
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent implements OnInit{
   loginSuccesful=false;
   isNodeSelected= false;
   importFolder;
+  selectedNode;
   user;
   fullName;
   constructor( private router: Router,private authenticationService: AuthenticationService,private commonService: CommonService){
@@ -58,9 +60,11 @@ $("#navbar_delete_folder").on("click",function(e){
 
   this.commonService.notifyObservable$.subscribe((treeNode) => {
     if(treeNode !== null && treeNode !== undefined && treeNode.type === "fetchSubFolders"){
-    if(treeNode.nodeName !== null){
-    this.isNodeSelected= true;
-    this.importFolder = treeNode.nodeName;
+      this.selectedNode = treeNode.node;
+      this.isNodeSelected= true;
+    if(treeNode.node.label !== null && treeNode.node.id != GolarsConstants.ROOTID){
+    
+    this.importFolder = treeNode.node.label;
     }
     
     }
@@ -86,5 +90,12 @@ $("#navbar_delete_folder").on("click",function(e){
     this.loginSuccesful=false;
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+  checkImportDisabled(){
+    if(this.selectedNode!=undefined && this.selectedNode.id !==undefined)
+      return !(this.isNodeSelected && this.selectedNode.id != GolarsConstants.ROOTID);
+    else
+      return !this.isNodeSelected
+  
   }
 }

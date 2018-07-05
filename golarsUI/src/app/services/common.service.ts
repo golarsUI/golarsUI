@@ -15,4 +15,10 @@ export class CommonService {
       this.notifySub.next(data);
     }
   }
+  getUserName(){
+    if(localStorage.getItem("username")!==null)
+      return localStorage.getItem("username");
+  else
+      return "";
+  }
 }

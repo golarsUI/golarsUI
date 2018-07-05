@@ -1,22 +1,31 @@
 package com.golars.bean;
 
-import java.time.temporal.IsoFields;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 public class Folder {
-	private String id = "";
-	private String label = "";
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String label;
 	private String parentid;
-	private List<Folder> children;
-	private String icon;
 	private boolean folder;
+	private List<Folder> children = new ArrayList<Folder>();
+	private String username;
 
-	public String getId() {
-		return id;
-	}
+//	public Folder(String id, String parentid, String label) {
+//		this.id = id;
+//		this.parentid = parentid;
+//		this.label = label;
+//	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+	public int getId() {
+		return id;
 	}
 
 	public void setLabel(String label) {
@@ -43,20 +52,17 @@ public class Folder {
 		return children;
 	}
 
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	public String getIcon() {
-		return icon;
+	public void setFolder(boolean folder) {
+		this.folder = folder;
 	}
 
 	public boolean isFolder() {
 		return folder;
 	}
-
-	public void setFolder(boolean folder) {
-		this.folder = folder;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUsername() {
+		return username;
 	}
 }

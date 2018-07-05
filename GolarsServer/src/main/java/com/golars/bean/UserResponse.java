@@ -7,6 +7,7 @@ public class UserResponse{
 	private String token;
 	private boolean loginsuccess;
 	private boolean admin;
+	private String username;
 
 	
 	public String getFullName() {
@@ -34,6 +35,11 @@ public class UserResponse{
 		return admin;
 	}
 
-	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUsername() {
+		return username;
+	}
 
 }

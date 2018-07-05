@@ -9,6 +9,7 @@ public class User{
 	private String username;
 	private String password;
 	private boolean admin;
+	private boolean newlyCreated;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -45,5 +46,10 @@ public class User{
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
-	
+	public void setNewlyCreated(boolean newlyCreated) {
+		this.newlyCreated = newlyCreated;
+	}
+	public boolean isNewlyCreated() {
+		return newlyCreated;
+	}
 }

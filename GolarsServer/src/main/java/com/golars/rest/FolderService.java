@@ -14,31 +14,29 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.golars.bean.Folder;
-import com.golars.bean.KeyValue;
+import com.golars.util.DBUtil;
+import com.golars.util.GolarsUtil;
 
 @Path("/folders")
 public class FolderService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response retrieveFolder(@QueryParam("folderId") String folderId,
+	public Response retrieveFolder(@QueryParam("folderId") String folderId,@QueryParam("parentId") String parentId,
 			@QueryParam("documentsRequired") boolean docRequired) {
-
 		List<Folder> folderList = new ArrayList<Folder>();
-		for (int i = 0; i < 10; i++) {
-			Folder folder = new Folder();
-			folder.setId(i + "");
-			folder.setLabel("name" + i);
-			folder.setParentid("parentId" + i);
-			folder.setFolder(true);
+		if(folderId.equals("-1"))
+			folderList= new DBUtil().retrieveAllFolders();
+		else
+		{
+			String parentFOlderId = parentId.equalsIgnoreCase("null")?folderId:parentId+folderId;
+			folderList= new DBUtil().retrieveSpecificFolders(parentFOlderId);
+		}
+		if(folderId.equals("-1"))
+		{
+			Folder folder = GolarsUtil.getChildren(GolarsUtil.getCurrentNode(1000, folderList), folderList);
+			folderList.clear();
 			folderList.add(folder);
-			if (!docRequired) {
-				List<Folder> children = createDummyChildren();
-				folder.setChildren(children);
-			} else {
-				List<Folder> children = createDummyFiles();
-				folderList.addAll(children);
-			}
 		}
 
 		return Response.status(201).entity(folderList).build();
@@ -50,64 +48,28 @@ public class FolderService {
 	public Response createFolder(Folder folder) {
 		String label = folder.getLabel();
 		String parentFolderID = folder.getParentid();
+		Folder returnedfolder = new DBUtil().createFolder(folder);
 		System.out.println("folder is created with name--"+label+" in folder-->"+parentFolderID);
-		return Response.status(201).entity(folder).build();
+		return Response.status(201).entity(returnedfolder).build();
 
 	}
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteeFolder(@QueryParam("documentId") String documentId) {
+	public Response deleteeFolder(@QueryParam("folderId") String folderId,@QueryParam("parentId")String parentId) {
 
-		
+		int result =  new DBUtil().deleteFolder(folderId,parentId);
 
-		return Response.status(201).entity(true).build();
+		return Response.status(201).entity(result).build();
 	}
 
 	@GET
 	@Path("/documentdetails")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response retrieveDocumentDetailsr(@QueryParam("documentId") String docId) {
+	public Response retrieveDocumentDetailsr(@QueryParam("documentName") String documentName) {
 
-		List<KeyValue> docList = new ArrayList<KeyValue>();
-		for (int i = 0; i < 10; i++) {
-			KeyValue keyValue = new KeyValue();
-			keyValue.setKey(docId+" Key" + i);
-			keyValue.setValue(docId+" Value" + i);
-			docList.add(keyValue);
-		}
+		String properties =new DBUtil().fetchDocDetails(documentName);
 
-		return Response.status(201).entity(docList).build();
+		return Response.status(201).entity(properties).build();
 	}
 
-	private List<Folder> createDummyFiles() {
-		List<Folder> folderList = new ArrayList<Folder>();
-		for (int i = 0; i < 5; i++) {
-			Folder folder = new Folder();
-			folder.setId(i + "");
-			folder.setLabel("name" + i);
-			folder.setParentid("parentId" + i);
-			folder.setFolder(false);
-//			if (i % 2 == 0)
-//				folder.setIcon("fa fa-file-word-o");
-//			else
-//				folder.setIcon("fa fa-file-pdf-o");
-			folderList.add(folder);
-		}
-		return folderList;
-	}
-
-	private List<Folder> createDummyChildren() {
-		List<Folder> folderList = new ArrayList<Folder>();
-		for (int i = 0; i < 2; i++) {
-			Folder folder = new Folder();
-			folder.setId(i + "");
-			folder.setLabel("name" + i);
-			folder.setParentid("parentId" + i);
-//			folder.setExpandedIcon("fa fa-folder-open");
-//			folder.setCollapsedIcon("fa fa-folder");
-			folderList.add(folder);
-			folder.setFolder(true);
-		}
-		return folderList;
-	}
 }

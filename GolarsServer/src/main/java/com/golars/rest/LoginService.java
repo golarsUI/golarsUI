@@ -27,15 +27,11 @@ public class LoginService {
 			response.setLoginsuccess(isLoginSuccess);
 			return Response.status(403).entity(response).build();
 		}
-			// need to return failure object
-		//need to replace below code with db call
 		User userRes =  new DBUtil().login(username, password);
-//		if (username.equals("admin") && password.contains("admin")) {
-//			isLoginSuccess = true;
-//		}
 		
 		if(userRes !=null){// login successful
 		response.setLoginsuccess(true);
+		response.setUsername(userRes.getUsername());
 		response.setFullName(userRes.getFirstName()+" "+userRes.getLastName());
 		response.setToken(new TokenGenerator().generateToken(username));
 		}

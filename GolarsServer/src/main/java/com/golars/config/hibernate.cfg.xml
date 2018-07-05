@@ -4,7 +4,8 @@
           "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
  <session-factory>
-  <property name="connection.url">jdbc:mysql://localhost/golarsdb</property>
+  <property name="connection.url">jdbc:mysql://localhost/golarsdatabase
+  </property>
   <property name="connection.username">golars</property>
   <property name="connection.password">golars</property>
   <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
@@ -12,5 +13,7 @@
   <property name="show_sql">true</property>
   <property name="hbm2ddl.auto">update</property>
   <mapping resource="com/golars/config/User.hbm.xml" />
+    <mapping resource="com/golars/config/document.hbm.xml" />
+     <mapping resource="com/golars/config/Folder.hbm.xml" />
  </session-factory>
 </hibernate-configuration> 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+          "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.golars.bean.Document" table="document">
+  <id name="filename">
+   <column name="name"  />
+  </id>
+  <property name="content" column="content" />
+	<property name="properties" column="details" />
+	<property name="folderId" column="folderId" />
+	<property name="parentId" column="parentId" />
+ </class>
+</hibernate-mapping>

@@ -17,7 +17,7 @@ export class LeftnavComponent implements OnInit {
 
     }
     folderData
-
+    treeLoading = true;
     newfolder = null;
     isNodeSelected = false;
     filderErrorMessage = null;
@@ -81,6 +81,7 @@ export class LeftnavComponent implements OnInit {
                     data.forEach(element => {
                         this.addFolderClass(element);
                     });
+                    this.treeLoading=false;
                     this.folderData = data;
                     // data.forEach(function(entry) {
                     //     console.log(entry);

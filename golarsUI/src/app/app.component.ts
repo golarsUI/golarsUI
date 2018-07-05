@@ -16,6 +16,7 @@ export class AppComponent implements OnInit{
   selectedNode;
   user;
   fullName;
+  isAdmin=false;
   constructor( private router: Router,private authenticationService: AuthenticationService,private commonService: CommonService){
 console.log("constructor")
   }
@@ -78,11 +79,23 @@ $("#navbar_delete_folder").on("click",function(e){
       return this.user.fullName
     
   }
+  checkValidUser(){
+    if(localStorage.getItem("currentUser") === null)
+     this.router.navigate(['/login']);
+     else {
+      this.user = JSON.parse(localStorage.getItem("currentUser"))
+       if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/newuser'))
+      this.router.navigate([this.router.url]);
+      else
+      this.router.navigate(['']);
+     }
+  }
   checkLoginSuccesful(){
     if(localStorage.getItem("currentUser") !== null){
       this.loginSuccesful=true;
       this.user = JSON.parse(localStorage.getItem("currentUser"))
-      this.fullName = this.user.fullName
+      this.fullName = this.user.fullName;
+      this.isAdmin = this.user.admin;
     return this.loginSuccesful;
     }
   }

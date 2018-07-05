@@ -1,5 +1,14 @@
+<div *ngIf="documentProperties==true"  class='full-height-width' style="text-align: center">
+  <div class="spinner-placeholder" >
+      <span class="spinner-has-text">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
+      <span class="spinner-text">Loading Document Details...</span>
+      </span>
+  </div>
+  </div>
+
 <div style="padding:10px" *ngIf="docData">
-  <div style="text-align: center" *ngIf="!treeNode.node.folder">{{getDocPropertiesValue()}}</div>
+  <div style="text-align: center" *ngIf="!folderSelected">{{getDocPropertiesValue()}}</div>
   <div class="ui-g" *ngIf="docData.docUpdateDate">
     <div class="ui-g-6">Date Document Updated</div>
     <div class="ui-g-6">{{docData.docUpdateDate}}</div>

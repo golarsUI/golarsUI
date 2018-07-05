@@ -13,12 +13,16 @@ import { environment } from '../../environments/environment';
 export class MiddlepaneComponent implements OnInit {
   folderData;
   selectedNode;
+  folderDetailstreeLoading = true;
+  treeLoadingProgress=false;
   golarsServer = environment.server;
   constructor(private folderService: FolderService, private commonService: CommonService) { }
 
   ngOnInit() {
     this.commonService.notifyObservable$.subscribe((treeNode) => {
       if (treeNode !== null && treeNode.node !== undefined && treeNode.type === "fetchSubFolders") {
+        this.treeLoadingProgress = true;
+        this.folderData=[];
         this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, treeNode.isDocumentsRequired)
           .subscribe(
             data => {
@@ -27,6 +31,8 @@ export class MiddlepaneComponent implements OnInit {
                   this.addFolderClass(element);
               });
               this.folderData = data;
+              this.folderDetailstreeLoading=false;
+              this.treeLoadingProgress = false;
             },
             error => {
               console.log(error);

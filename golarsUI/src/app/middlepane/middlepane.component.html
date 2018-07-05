@@ -1,8 +1,19 @@
+<div *ngIf="treeLoadingProgress==true"  class='full-height-width' style="text-align: center">
+    <div class="spinner-placeholder" >
+        <span class="spinner-has-text">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
+        <span class="spinner-text">Loading Folder Details...</span>
+        </span>
+    </div>
+    </div>
+
+<div *ngIf="folderDetailstreeLoading==false" class='full-height-width'>
 <p-tree [value]="folderData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
- (onNodeUnselect)="nodeUnselect($event)">
+ (onNodeUnselect)="nodeUnselect($event)" class='full-height-width'>
  <ng-template let-node pTemplate="default">
 
         <span *ngIf="node.folder==false"><a  href="{{golarsServer}}/golars/rest/import/{{node.label}}" style="text-decoration: none" (click)="$event.preventDefault();">{{node.label}}</a></span>
         <span *ngIf="node.folder==true">{{node.label}}</span>
     </ng-template>
 </p-tree>
+</div>

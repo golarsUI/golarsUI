@@ -9,21 +9,26 @@ import { CommonService } from '../services/common.service';
 })
 export class RightpanelComponent implements OnInit {
 
-  docData;
+  docData=[];
   docName;
   treeNode;
+  documentProperties=false;
+  folderSelected=true;
   constructor(private folderService: FolderService,private commonService: CommonService) { }
 
   ngOnInit() {
+
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "documentDetails"){
+      if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "documentDetails" && treeNode.node.folder === false){
+        this.documentProperties = true;
+        this.folderSelected=false;
         this.docName = treeNode.node.label;
         this.docData=[];
         this.treeNode = treeNode;
         this.folderService.fetchDocumentDetails(treeNode.node.label)
         .subscribe(
           fetchDocumentDetails => {
-              // data.fo
+              this.documentProperties = false;
               this.docData = fetchDocumentDetails; 
               console.log(fetchDocumentDetails)
             },
@@ -31,6 +36,9 @@ export class RightpanelComponent implements OnInit {
                 console.log(error);
             });
       
+      } else if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "documentDetails" && treeNode.node.folder === true){
+        this.docData=[];
+        this.folderSelected=true;
       }
   });
   }

@@ -1,10 +1,17 @@
+<div *ngIf="treeLoading==true" style="text-align: center">
+    <div class="spinner-placeholder" >
+        <span class="spinner-has-text">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
+        <span class="spinner-text">Loading Folders...</span>
+        </span>
+    </div>
+    </div>
+    <div *ngIf="treeLoading==false" class='full-height-width'>
 <p-tree [value]="folderData" #leftNavTree selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
-    [contextMenu]="cm" (onNodeContextMenuSelect) ="nodeRightClickSelect($event)" >
+    [contextMenu]="cm" (onNodeContextMenuSelect) ="nodeRightClickSelect($event)" [loading]="loading" emptyMessage="">
 </p-tree>
 <p-contextMenu #cm [model]="items"></p-contextMenu>
-
-
-
+</div>
 <div class="modal" id="create_Folder_Modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

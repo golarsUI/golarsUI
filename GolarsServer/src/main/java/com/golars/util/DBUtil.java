@@ -2,6 +2,7 @@ package com.golars.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -21,6 +22,7 @@ public class DBUtil {
 		Transaction tx1 = session.beginTransaction();
 		try {
 			User user = (User) session.get(User.class, username);
+			password = new String(Base64.getEncoder().encode(password.getBytes()));
 			if (password.equals(user.getPassword())) {
 				System.out.println("User: " + user.toString());
 				return user;
@@ -41,6 +43,7 @@ public class DBUtil {
 		Session session = HibernateUtil.getSession();
 		Transaction tx1 = session.beginTransaction();
 		try {
+			userObj.setPassword(new String(Base64.getEncoder().encode(userObj.getPassword().getBytes())));
 			String abc = (String) session.save(userObj);
 			return true;
 		} catch (Exception exception) {

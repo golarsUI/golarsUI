@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.golars.bean.ChangePassword;
 import com.golars.bean.User;
 import com.golars.util.DBUtil;
 import com.google.gson.Gson;
@@ -27,9 +28,17 @@ public class UsersService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerUser(User user) {
-		new DBUtil().register(user);
-		return Response.status(201).entity(true).build();
+		boolean result = new DBUtil().register(user);
+		return Response.status(201).entity(result).build();
 	}
-
+	@POST
+	@Path("/changepassword")
+	@Produces(MediaType.APPLICATION_JSON)
+	
+	public Response changePassword(ChangePassword changePasswordObj) {
+		boolean result = new DBUtil().changePassword(changePasswordObj);
+		
+		return Response.status(201).entity(result).build();
+	}
 
 }

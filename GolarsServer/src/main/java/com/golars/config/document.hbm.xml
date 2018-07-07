@@ -8,7 +8,6 @@
    <column name="name"  />
   </id>
   <property name="content" column="content" />
-	<property name="properties" column="details" />
 	<property name="folderId" column="folderId" />
 	<property name="parentId" column="parentId" />
  </class>

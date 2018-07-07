@@ -11,5 +11,7 @@
   <property name="parentid" column="parentId" type="java.lang.String" />
   <property name="label" column="name"  type="java.lang.String"/>	
   <property name="folder" column="isFolder" type="java.lang.Boolean"/>
+  <property name="properties" column="details" />
+  
  </class>
 </hibernate-mapping>

@@ -22,26 +22,41 @@ public class FolderService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response retrieveFolder(@QueryParam("folderId") String folderId,@QueryParam("parentId") String parentId,
-			@QueryParam("documentsRequired") boolean docRequired) {
+	public Response retrieveFolder(@QueryParam("folderId") String folderId, @QueryParam("parentId") String parentId,
+			@QueryParam("documentsRequired") boolean docRequired, @QueryParam("username") String username,
+			@QueryParam("isAdmin") boolean isadmin) {
 		List<Folder> folderList = new ArrayList<Folder>();
-		if(folderId.equals("-1"))
-			folderList= new DBUtil().retrieveAllFolders();
-		else
-		{
-			String parentFOlderId = parentId.equalsIgnoreCase("null")?folderId:parentId+folderId;
-			folderList= new DBUtil().retrieveSpecificFolders(parentFOlderId);
+		if (folderId.equals("-1"))
+			folderList = new DBUtil().retrieveAllFolders(username, isadmin);
+		else {
+			String parentFOlderId = parentId.equalsIgnoreCase("null") ? folderId : parentId + folderId;
+			folderList = new DBUtil().retrieveSpecificFolders(parentFOlderId, username, isadmin);
 		}
-		if(folderId.equals("-1"))
-		{
+		if (folderId.equals("-1")) {
 			Folder folder = GolarsUtil.getChildren(GolarsUtil.getCurrentNode(1000, folderList), folderList);
 			folderList.clear();
 			folderList.add(folder);
 		}
 
-		return Response.status(201).entity(folderList).build();
+		return Response.status(200).entity(folderList).build();
 	}
-	
+
+	@GET
+	@Path("/preferences")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response retrieveFolderTablePreferences(@QueryParam("isAdmin") boolean isadmin) {
+		String preferenceName = getPreferenceString(isadmin);
+		String preferences = new DBUtil().retrieveUserPreferences(preferenceName);
+		return Response.status(200).entity(preferences).build();
+	}
+
+	private String getPreferenceString(boolean isadmin) {
+		if (isadmin)
+			return "adminTableColumns";
+		else
+			return "nonAdminTableColumns";
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -49,27 +64,31 @@ public class FolderService {
 		String label = folder.getLabel();
 		String parentFolderID = folder.getParentid();
 		Folder returnedfolder = new DBUtil().createFolder(folder);
-		System.out.println("folder is created with name--"+label+" in folder-->"+parentFolderID);
-		return Response.status(201).entity(returnedfolder).build();
+		if (returnedfolder == null)
+			return Response.status(200).entity(returnedfolder).build();
+		System.out.println("folder is created with name--" + label + " in folder-->" + parentFolderID);
+		return Response.status(200).entity(returnedfolder).build();
 
 	}
+
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteeFolder(@QueryParam("folderId") String folderId,@QueryParam("parentId")String parentId) {
+	public Response deleteeFolder(@QueryParam("folderId") String folderId, @QueryParam("parentId") String parentId) {
 
-		int result =  new DBUtil().deleteFolder(folderId,parentId);
+		int result = new DBUtil().deleteFolder(folderId, parentId);
 
-		return Response.status(201).entity(result).build();
+		return Response.status(200).entity(result).build();
 	}
 
-	@GET
-	@Path("/documentdetails")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response retrieveDocumentDetailsr(@QueryParam("documentName") String documentName) {
-
-		String properties =new DBUtil().fetchDocDetails(documentName);
-
-		return Response.status(201).entity(properties).build();
-	}
+	// @GET
+	// @Path("/documentdetails")
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public Response retrieveDocumentDetailsr(@QueryParam("documentName")
+	// String documentName) {
+	//
+	// String properties =new DBUtil().fetchDocDetails(documentName);
+	//
+	// return Response.status(201).entity(properties).build();
+	// }
 
 }

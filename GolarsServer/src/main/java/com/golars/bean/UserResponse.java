@@ -8,7 +8,7 @@ public class UserResponse{
 	private boolean loginsuccess;
 	private boolean admin;
 	private String username;
-
+	private boolean newlyCreated;
 	
 	public String getFullName() {
 		return fullName;
@@ -40,6 +40,12 @@ public class UserResponse{
 	}
 	public String getUsername() {
 		return username;
+	}
+	public void setNewlyCreated(boolean newlyCreated) {
+		this.newlyCreated = newlyCreated;
+	}
+	public boolean isNewlyCreated() {
+		return newlyCreated;
 	}
 
 }

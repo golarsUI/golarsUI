@@ -4,7 +4,7 @@ public class Document {
 
 	private String filename;
 	private byte[] content;
-	private String properties;
+
 	private String parentId;
 	private String folderId;
 	public String getFilename() {
@@ -16,12 +16,7 @@ public class Document {
 	public void setContent(byte[] content) {
 		this.content = content;
 	}
-	public String getProperties() {
-		return properties;
-	}
-	public void setProperties(String properties) {
-		this.properties = properties;
-	}
+
 	public String getParentId() {
 		return parentId;
 	}

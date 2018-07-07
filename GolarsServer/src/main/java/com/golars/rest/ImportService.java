@@ -28,7 +28,7 @@ public class ImportService {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response uploadFile(@FormDataParam("fileUpload") FormDataBodyPart body,@FormDataParam("docProperties") String documentProperties,@FormDataParam("folderProperties") String folderProperties) {
-		
+		boolean result = false;
 		
 		for (BodyPart part : body.getParent().getBodyParts()) {
 
@@ -36,10 +36,10 @@ public class ImportService {
 			ContentDisposition meta = part.getContentDisposition();
 			if(meta.getFileName()!=null){
 				Folder folder = new Gson().fromJson(folderProperties, Folder.class);
-				 new DBUtil().saveDocument(is, meta.getFileName(),documentProperties,folder);
+				result  =  new DBUtil().saveDocument(is, meta.getFileName(),documentProperties,folder);
 			}
 		}
-		return Response.status(200).entity(true).build();
+		return Response.status(200).entity(result).build();
 	}
 	
 	@Path("{id}")

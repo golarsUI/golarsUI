@@ -14,6 +14,7 @@ public class Folder {
 	private boolean folder;
 	private List<Folder> children = new ArrayList<Folder>();
 	private String username;
+	private String properties;
 
 //	public Folder(String id, String parentid, String label) {
 //		this.id = id;
@@ -64,5 +65,11 @@ public class Folder {
 	}
 	public String getUsername() {
 		return username;
+	}
+	public String getProperties() {
+		return properties;
+	}
+	public void setProperties(String properties) {
+		this.properties = properties;
 	}
 }

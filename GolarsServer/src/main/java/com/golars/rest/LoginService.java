@@ -32,6 +32,7 @@ public class LoginService {
 		if(userRes !=null){// login successful
 		response.setLoginsuccess(true);
 		response.setAdmin(userRes.isAdmin());
+		response.setNewlyCreated(userRes.isNewlyCreated());
 		response.setUsername(userRes.getUsername());
 		response.setFullName(userRes.getFirstName()+" "+userRes.getLastName());
 		response.setToken(new TokenGenerator().generateToken(username));

@@ -30,7 +30,11 @@ public class FolderService {
 			folderList = new DBUtil().retrieveAllFolders(username, isadmin);
 		else {
 			String parentFOlderId = parentId.equalsIgnoreCase("null") ? folderId : parentId + folderId;
+			if(docRequired)
 			folderList = new DBUtil().retrieveSpecificFolders(parentFOlderId, username, isadmin);
+			else
+				folderList = new DBUtil().retrieveSpecificFolders(parentFOlderId, username, isadmin,docRequired);
+				
 		}
 		if (folderId.equals("-1")) {
 			Folder folder = GolarsUtil.getChildren(GolarsUtil.getCurrentNode(1000, folderList), folderList);

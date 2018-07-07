@@ -248,6 +248,24 @@ public class DBUtil {
 		session.close();
 		return lst;
 	}
+	public List<Folder> retrieveSpecificFolders(String folderId, String username, boolean isadmin, boolean docRequired) {
+		Session session = HibernateUtil.getSession();
+		;
+		Transaction t = session.beginTransaction();
+		Query query = null;
+		if (isadmin)
+			query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId and f.isFolder=true", Folder.class);
+		else {
+			query = session.createNativeQuery(
+					"SELECT * FROM folder f where f.parentId = :parentId  and userName =:userName and f.isFolder=true", Folder.class);
+			query.setString("userName", username);
+		}
+		query.setString("parentId", folderId);
+		List lst = query.list();
+		session.close();
+		return lst;
+	}
+	
 
 /*	public String fetchDocDetails(String docName) {
 		Session session = HibernateUtil.getSession();
@@ -284,6 +302,21 @@ public class DBUtil {
 		List lst = query.list();
 		session.close();
 		return (String) lst.get(0);
+	}
+
+	public List<User> deleteUser(String username) {
+		Session session = HibernateUtil.getSession();
+		
+		Transaction t = session.beginTransaction();
+		Query query = session.createNativeQuery("DELETE FROM User WHERE userName =:username",
+				Folder.class);
+		query.setString("username", username);
+		int result = query.executeUpdate();
+		session.close();
+		List<User> userList =	getAllUsers();
+		
+		return userList;
+
 	}
 
 }

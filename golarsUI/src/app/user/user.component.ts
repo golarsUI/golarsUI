@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { FormGroup, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'golars-user',
@@ -13,6 +14,8 @@ export class UserComponent implements OnInit {
   showFailureMessage = false;
   successMessage = null;
   failureMessage = null;
+  disableRegisterButton=false;
+  @ViewChild('f') formElem: NgForm;
   ngOnInit() {
   }
   register() {
@@ -22,8 +25,18 @@ export class UserComponent implements OnInit {
       .subscribe(
         result => {
           if (result == true) {
+            
+            // this.model=[];
             this.showSuccessMessage = true;
             this.successMessage = "User Created Successfully.";
+            this.disableRegisterButton = true;
+          //   this.model=[];
+          //   this.formElem.form.reset();
+          //   Object.keys(this.formElem.controls).forEach(control => {
+          //     this.formElem.controls[control].setErrors(null);
+          //     this.formElem.controls[control].markAsPristine();
+             
+          // });
           } else {
             this.showFailureMessage = true;
             this.failureMessage = "User Already Exists.";
@@ -39,5 +52,6 @@ export class UserComponent implements OnInit {
     this.showFailureMessage = false;
     this.successMessage = null;
     this.failureMessage = null;
+    this.disableRegisterButton=false;
   }
 }

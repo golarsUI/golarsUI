@@ -10,7 +10,7 @@
 
 <div *ngIf="folderDetailstreeLoading==false" class='full-height-width'>
     <h4>Document List</h4>
-    <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(contextMenuSelection)]="selectedDocumet" [(selection)]="selectedDocumet" dataKey="label" (onRowSelect)="nodeSelect($event)" [contextMenu]="cm">
+    <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(selection)]="selectedDocumet" dataKey="label" (onRowSelect)="nodeSelect($event)" >
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th width="100px">
@@ -19,13 +19,16 @@
                 <th *ngFor="let col of columns" width="100px">
                     {{col.header}}
                 </th>
+                <th width="50px">
+                        Action
+                    </th>
 
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [pSelectableRow]="rowData">
                 <td>
-                    <span *ngIf="rowData['folder']==true"><i class="fa fa-folder" style="padding-right: 10px"></i>{{rowData['label']}}</span>
+                    <span *ngIf="rowData['folder']==true"><i class="fa fa-folder folder-icon-color" style="padding-right: 10px"></i>{{rowData['label']}}</span>
                     <span *ngIf="rowData['folder']==false" >{{rowData['label']}}</span>
                 </td>
                 <td *ngFor="let col of columns">
@@ -33,6 +36,9 @@
                         {{rowData.properties[col.field]}}
                     </span>
                 </td>
+                <td>
+                        <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" (click)="deleteRow($event)" title="Delete Document"></i>
+                    </td>
                 <!-- <td *ngFor="let col of columns">
                                 {{rowData.properties[col.field]}}
                             </td> -->
@@ -40,7 +46,6 @@
             </tr>
         </ng-template>
     </p-table>
-    <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
     <!-- <p-tree [value]="folderData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
      (onNodeUnselect)="nodeUnselect($event)" class='full-height-width'>
      <ng-template let-node pTemplate="default">

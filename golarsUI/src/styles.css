@@ -3,7 +3,7 @@
     width: 100%;
 }
 .nav-background-color{
-     background-color: green !important; 
+     background-color: #4870B8 !important; 
 }
 .nav-link.disabled{
     color:darkgray !important;
@@ -13,7 +13,7 @@
 }
 .ui-tree{
     height:100% !important;
-    width:100% !important;
+    width:100% !important;  
 }
 .center_div{
     background-color: #fff;
@@ -75,4 +75,13 @@
 .full-height-width-tree{
     width: 100%;
     height: calc( 100% - 60px);
+}
+.ui-tree .ui-treenode-icon{
+    color:#4870B8 !important;
+}
+.folder-icon-color{
+    color:#4870B8 !important;
+}
+.ui-table .ui-table-tbody > tr > td{
+    border: 1px solid transparent;
 }

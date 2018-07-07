@@ -26,8 +26,16 @@ export class UsersComponent implements OnInit {
         console.log("editUser ",user)
       }
       deleteUser(user){
-        console.log("deleteUser ",user)
+        this.userService.deleteUser(user).subscribe(
+          data => {
+            // data.fo
+            this.users = data; 
+          },
+          error => {
+              console.log(error);
+          });
       }
+
   }
 
 

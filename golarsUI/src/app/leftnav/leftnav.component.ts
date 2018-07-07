@@ -33,6 +33,27 @@ export class LeftnavComponent implements OnInit {
         event.node.expanded = !event.node.expanded;
         this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
         console.log("nodeSelect", event)
+        this.commonService.notifyObservable$.subscribe((treeNode) => {
+            if (treeNode !== null && treeNode.node !== undefined && treeNode.type === "refreshFolder") {
+
+                this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, false,this.commonService.getUserName(),this.commonService.isAdmin()) // retrieve all thd parent folders
+                .subscribe(
+                    data => {
+                        data.forEach(element => {
+                            this.addFolderClass(element);
+                        });
+                        // this.treeLoading=false;
+                        treeNode.node.children = data;
+                        this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
+                        // data.forEach(function(entry) {
+                        //     console.log(entry);
+                        // })
+                    },
+                    error => {
+                        console.log(error);
+                    });
+            }
+        });
     }
 
     nodeRightClickSelect(event) {

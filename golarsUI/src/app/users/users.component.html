@@ -1,3 +1,4 @@
+<h4>List of Users</h4>
 <p-table [value]="users">
   <ng-template pTemplate="header">
       <tr>
@@ -10,8 +11,9 @@
       <tr>
           <td>{{user.username}}</td>
           <td>{{user.admin}}</td>
-          <td><i class="fa fa-edit" style="font-size:24px;cursor: pointer;" title="Edit user"></i>
-            <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" title="Delete user"></i></td>
+          <td *ngIf="user.username !== 'admin'">
+          <!-- <i class="fa fa-edit" style="font-size:24px;cursor: pointer;" title="Edit user"></i> -->
+            <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" title="Delete user" (click)="deleteUser(user)"></i></td>
           <!-- <td> <a style="color:blue;cursor: pointer;"><i class="fa fa-edit" (click)="editUser(user)"></i></a>
             <a style="color:red;cursor: pointer;"><i class="fa fa-close" (click)="deleteUser(user)"></i></a></td> -->
       </tr>

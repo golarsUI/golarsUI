@@ -18,7 +18,7 @@ export class MiddlepaneComponent implements OnInit {
   golarsServer = environment.server;
   cols=[];
   selectedDocumet;
-  contextMenuItems;
+  leftMenuSelectedNode;
   tableColumnMapping={
     'docUpdateDate':'Date Document Updated',
     'fecilityName':'Facility Name',
@@ -37,24 +37,25 @@ export class MiddlepaneComponent implements OnInit {
         this.treeLoadingProgress = true;
         this.folderData=[];
         this.selectedDocumet=[];
-        this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, treeNode.isDocumentsRequired,this.commonService.getUserName(),this.commonService.isAdmin())
-          .subscribe(
-            data => {
-
-              this.getColumns();
-              this.folderData =  this.constructTableData(data)
-              this.folderDetailstreeLoading=false;
-              this.treeLoadingProgress = false;
-            },
-            error => {
-              console.log(error);
-            });
+        this.leftMenuSelectedNode= treeNode;
+      this.fetchSubFolders();
 
       }
     });
-    this.contextMenuItems = [
-      { label: 'Delete', command: (event) => this.deleteDocument() }
-  ];
+  }
+  fetchSubFolders(){
+    this.folderService.fetchFolders(this.leftMenuSelectedNode.node.id,this.leftMenuSelectedNode.node.parentid, this.leftMenuSelectedNode.isDocumentsRequired,this.commonService.getUserName(),this.commonService.isAdmin())
+    .subscribe(
+      data => {
+
+        this.getColumns();
+        this.folderData =  this.constructTableData(data)
+        this.folderDetailstreeLoading=false;
+        this.treeLoadingProgress = false;
+      },
+      error => {
+        console.log(error);
+      });
   }
   constructTableData(data){
     for(var i=0;i<data.length;i++){
@@ -64,15 +65,23 @@ export class MiddlepaneComponent implements OnInit {
 }
 return data;
   }
+  deleteRow($event){
+    setTimeout(() => {
+     this.deleteDocument();
+     
+    }, 500);
+    
+  }
   deleteDocument() {
     this.folderService.deleteFolder(this.selectedDocumet.id,this.selectedDocumet.parentid)
         .subscribe(
             folder => {
-                // this.treeComponent.
-                // this.selectedNode.parentid
-                var index = this.folderData.children.indexOf(this.selectedNode);
-               console.log(index);
-               this.folderData.children.splice(index,1);
+              this.commonService.notify({ type: 'refreshFolder', node: this.leftMenuSelectedNode.node, isDocumentsRequired: true });
+              //   // this.treeComponent.
+              //   // this.selectedNode.parentid
+              //   var index = this.folderData.children.indexOf(this.selectedNode);
+              //  console.log(index);
+              //  this.folderData.children.splice(index,1);
             },
             error => {
 

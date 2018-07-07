@@ -28,8 +28,13 @@ loginErrorMessage=null;
     this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(
             data => {
-              if(data.loginsuccess==true)
-               this.router.navigate([this.returnUrl]);
+              if(data.loginsuccess==true){
+                if(data.newlyCreated == true){
+                  this.router.navigate(['changepassword']);
+                }
+                else
+                this.router.navigate([this.returnUrl]);
+              }
                else
                this.displayErrorMessage();
             },

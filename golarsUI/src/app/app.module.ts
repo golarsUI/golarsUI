@@ -28,6 +28,9 @@ import {FileUploadModule} from 'primeng/fileupload';
 import { ImportService } from './services/import.service';
 import { UserComponent } from './user/user.component';
 import {MultiSelectModule} from 'primeng/multiselect';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { ClipboardModule } from 'ngx-clipboard';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
     MiddlepaneComponent,
     RightpanelComponent,
     UserComponent,
+    ChangepasswordComponent,
     
   ],
   imports: [
@@ -57,8 +61,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
     CheckboxModule,
     ContextMenuModule,
     FileUploadModule,
-    MultiSelectModule
-    
+    MultiSelectModule,
+    ClipboardModule
     
   ],
   

@@ -25,6 +25,8 @@ export class LeftnavComponent implements OnInit {
     selectedNode;
     items = [ ];
     selectedItemParentNode;
+    createFolderFailureMessage = null;
+    createFoldershowFailureMessage = false;
     nodeSelect(event) {
         // this.selectedNodeLabel = event.node.label;
         this.selectedItemParentNode = event.node.parent;
@@ -74,8 +76,15 @@ export class LeftnavComponent implements OnInit {
         return true;
     }
     ngOnInit() {
+        var self= this;
+        $('body').on('hide.bs.modal', '.modal', function($event){
+            if($event.target.id!="create_Folder_Modal") return;
+            self.newfolder = ""
+            self.resetAlertMessages();
+      
+        })
 
-        this.folderService.fetchFolders("-1",null, this.isDocumentsRequired) // retrieve all thd parent folders
+        this.folderService.fetchFolders("-1",null, this.isDocumentsRequired,this.commonService.getUserName(),this.commonService.isAdmin()) // retrieve all thd parent folders
             .subscribe(
                 data => {
                     data.forEach(element => {
@@ -101,21 +110,26 @@ export class LeftnavComponent implements OnInit {
 
     }
     createFolder(subFolderName) {
-        this.selectedNode.expanded = true
+        this.selectedNode.expanded = true;
         this.folderService.createFolder(subFolderName, this.getnerateFolderID(),true,this.commonService.getUserName())
             .subscribe(
-                folder => {
-                    console.log("folder create", folder)
+                result => {
+                    if(result == null){
+                        this.createFoldershowFailureMessage=true;
+                        this.createFolderFailureMessage="Folder Already Exists"
+                    }else{
+                    console.log("folder create", result)
                     if (this.selectedNode.children == null)
                         this.selectedNode.children = [];
-                    this.selectedNode.children.push(folder);
-                    folder.parent=this.selectedNode;
-                    this.treeComponent.selection = folder;
-                    this.selectedNode = folder;
-                    this.addFolderClass(folder)
+                    this.selectedNode.children.push(result);
+                    result.parent=this.selectedNode;
+                    this.treeComponent.selection = result;
+                    this.selectedNode = result;
+                    this.addFolderClass(result)
                     $('#create_Folder_Modal').modal('hide');
                     this.newfolder = ""
                     this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
+                }
                 },
                 error => {
 
@@ -149,5 +163,9 @@ export class LeftnavComponent implements OnInit {
         if(this.selectedNode.parentid.toLowerCase() != "null")
         return this.selectedNode.parentid+this.selectedNode.id;
         return this.selectedNode.id;
+    }
+    resetAlertMessages(){
+        this.createFoldershowFailureMessage=false;
+        this.createFolderFailureMessage=null
     }
 }

@@ -1,19 +1,52 @@
-<div *ngIf="treeLoadingProgress==true"  class='full-height-width' style="text-align: center">
-    <div class="spinner-placeholder" >
+<div *ngIf="treeLoadingProgress==true" class='full-height-width' style="text-align: center">
+    <div class="spinner-placeholder">
         <span class="spinner-has-text">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
-        <span class="spinner-text">Loading Folder Details...</span>
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <br/>
+            <span class="spinner-text">Loading Folder Details...</span>
         </span>
     </div>
-    </div>
+</div>
 
 <div *ngIf="folderDetailstreeLoading==false" class='full-height-width'>
-<p-tree [value]="folderData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
- (onNodeUnselect)="nodeUnselect($event)" class='full-height-width'>
- <ng-template let-node pTemplate="default">
+    <h4>Document List</h4>
+    <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(contextMenuSelection)]="selectedDocumet" [(selection)]="selectedDocumet" dataKey="label" (onRowSelect)="nodeSelect($event)" [contextMenu]="cm">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th width="100px">
+                    Name
+                </th>
+                <th *ngFor="let col of columns" width="100px">
+                    {{col.header}}
+                </th>
 
-        <span *ngIf="node.folder==false"><a  href="{{golarsServer}}/golars/rest/import/{{node.label}}" style="text-decoration: none" (click)="$event.preventDefault();">{{node.label}}</a></span>
-        <span *ngIf="node.folder==true">{{node.label}}</span>
-    </ng-template>
-</p-tree>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                <td>
+                    <span *ngIf="rowData['folder']==true"><i class="fa fa-folder" style="padding-right: 10px"></i>{{rowData['label']}}</span>
+                    <span *ngIf="rowData['folder']==false" >{{rowData['label']}}</span>
+                </td>
+                <td *ngFor="let col of columns">
+                    <span *ngIf="rowData['folder']==false">
+                        {{rowData.properties[col.field]}}
+                    </span>
+                </td>
+                <!-- <td *ngFor="let col of columns">
+                                {{rowData.properties[col.field]}}
+                            </td> -->
+
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
+    <!-- <p-tree [value]="folderData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
+     (onNodeUnselect)="nodeUnselect($event)" class='full-height-width'>
+     <ng-template let-node pTemplate="default">
+    
+            <span *ngIf="node.folder==false"><a  href="{{golarsServer}}/golars/rest/import/{{node.label}}" style="text-decoration: none" (click)="$event.preventDefault();">{{node.label}}</a></span>
+            <span *ngIf="node.folder==true">{{node.label}}</span>
+        </ng-template>
+    </p-tree> -->
 </div>

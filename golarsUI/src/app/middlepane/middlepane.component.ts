@@ -16,6 +16,19 @@ export class MiddlepaneComponent implements OnInit {
   folderDetailstreeLoading = true;
   treeLoadingProgress=false;
   golarsServer = environment.server;
+  cols=[];
+  selectedDocumet;
+  contextMenuItems;
+  tableColumnMapping={
+    'docUpdateDate':'Date Document Updated',
+    'fecilityName':'Facility Name',
+    'docDate':'Document Date',
+    'fid':'FID',
+    'stateProgram':'State Program',
+    'active':'Is Active',
+    'docTypes':'Document Type',
+    'scopeOfWork':'Scope of Work'
+  }
   constructor(private folderService: FolderService, private commonService: CommonService) { }
 
   ngOnInit() {
@@ -23,14 +36,13 @@ export class MiddlepaneComponent implements OnInit {
       if (treeNode !== null && treeNode.node !== undefined && treeNode.type === "fetchSubFolders") {
         this.treeLoadingProgress = true;
         this.folderData=[];
-        this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, treeNode.isDocumentsRequired)
+        this.selectedDocumet=[];
+        this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, treeNode.isDocumentsRequired,this.commonService.getUserName(),this.commonService.isAdmin())
           .subscribe(
             data => {
-              data.forEach(element => {
-                if (element.folder)
-                  this.addFolderClass(element);
-              });
-              this.folderData = data;
+
+              this.getColumns();
+              this.folderData =  this.constructTableData(data)
               this.folderDetailstreeLoading=false;
               this.treeLoadingProgress = false;
             },
@@ -40,10 +52,37 @@ export class MiddlepaneComponent implements OnInit {
 
       }
     });
+    this.contextMenuItems = [
+      { label: 'Delete', command: (event) => this.deleteDocument() }
+  ];
   }
-  nodeSelect(event) {
+  constructTableData(data){
+    for(var i=0;i<data.length;i++){
+      if(data[i].folder== true)
+      continue;
+      data[i].properties = JSON.parse(data[i].properties);
+}
+return data;
+  }
+  deleteDocument() {
+    this.folderService.deleteFolder(this.selectedDocumet.id,this.selectedDocumet.parentid)
+        .subscribe(
+            folder => {
+                // this.treeComponent.
+                // this.selectedNode.parentid
+                var index = this.folderData.children.indexOf(this.selectedNode);
+               console.log(index);
+               this.folderData.children.splice(index,1);
+            },
+            error => {
 
-    this.commonService.notify({ type: 'documentDetails', node: event.node, isDocumentsRequired: true });
+                console.log(error);
+            });
+}
+
+  nodeSelect(event) {
+  this.selectedNode = event.data;
+    this.commonService.notify({ type: 'documentDetails', node: event.data, isDocumentsRequired: true });
     console.log("middle nodeSelect", event)
   }
   nodeUnselect(event) {
@@ -57,5 +96,21 @@ export class MiddlepaneComponent implements OnInit {
         this.addFolderClass(element);
       });
 
+  }
+  getColumns(){
+    this.cols=[];
+    var prefString = this.commonService.getTablePreferences();
+    var pefArray =prefString.split(GolarsConstants.SPLIT_STRING)
+    for(var i=0;i<pefArray.length;i++){
+      this.cols.push({ field: pefArray[i], header: this.tableColumnMapping[pefArray[i]] });
+    }
+  //   this.cols =
+    
+  //   [
+  //     { field: 'label', header: 'Label' },
+  //     { field: 'year', header: 'Year' },
+  //     { field: 'brand', header: 'Brand' },
+  //     { field: 'color', header: 'Color' }
+  // ];
   }
 }

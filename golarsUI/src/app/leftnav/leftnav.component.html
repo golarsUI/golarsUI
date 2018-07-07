@@ -1,3 +1,4 @@
+<h4>Browser</h4>
 <div *ngIf="treeLoading==true" style="text-align: center">
     <div class="spinner-placeholder" >
         <span class="spinner-has-text">
@@ -6,7 +7,7 @@
         </span>
     </div>
     </div>
-    <div *ngIf="treeLoading==false" class='full-height-width'>
+    <div *ngIf="treeLoading==false" class='full-height-width-tree'>
 <p-tree [value]="folderData" #leftNavTree selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
     [contextMenu]="cm" (onNodeContextMenuSelect) ="nodeRightClickSelect($event)" [loading]="loading" emptyMessage="">
 </p-tree>
@@ -22,11 +23,14 @@
                 </button>
             </div>
             <div class="modal-body">
+                    <div [hidden]='!createFoldershowFailureMessage' class="alert alert-danger" role="alert">
+                            {{createFolderFailureMessage}}
+                          </div>
                 <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
                     <div class="form-group">
                         <label for="newfolder">Folder Name</label>
                         <input type="text" class="form-control" name="newfolder" [(ngModel)]="newfolder"
-                              autofocus/>
+                              autofocus (keypress)="resetAlertMessages()"/>
                         <!-- <div *ngIf="f.submitted && !newfolder.valid" class="help-block text-danger">Folder Name is required</div> -->
                     </div>
                     <div class="pull-right">

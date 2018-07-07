@@ -35,6 +35,8 @@ export class ImportComponent implements OnInit {
       if($event.target.id!="importModal") return;
       self.showSuccessMessage=false;
       self.successMessage = null;
+      self.showFileSelectErrorMessage=false;
+      self.fileSelectErrorMessage=null;
       self.fileInput.files=[];
       self.model={}
 
@@ -52,13 +54,14 @@ export class ImportComponent implements OnInit {
 console.log(this.fileInput.files.length)
 if(this.fileInput.files.length == 0){
   this.showFileSelectErrorMessage=true;
-  this.fileSelectErrorMessage="Please select at least one file to upload"
+  this.fileSelectErrorMessage="Please select at least one file to Import"
   return;
 }
 const frmData = new FormData();
 
     
     for (var i = 0; i < this.fileInput.files.length; i++) { 
+      console.log(this.fileInput);
       frmData.append("fileUpload", this.fileInput.files[i]);
     }
     frmData.append("docProperties",this.getDocumentProperties());
@@ -68,9 +71,17 @@ const frmData = new FormData();
     .subscribe(
         message => {
           // console.log(message)
+          if(message == true){
           this.showSuccessMessage=true;
-          this.successMessage = "File Upload Successfully !!";
+          this.successMessage = "File(s) Imported Successfully !!";
+          this.fileInput.files=[];
+          this.model={}
           this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedFolder, isDocumentsRequired: true });
+        }else
+        {
+          this.showFileSelectErrorMessage=true;
+          this.fileSelectErrorMessage="Document(s) already exists"
+        }
           
         },
         error => {
@@ -80,7 +91,9 @@ const frmData = new FormData();
   }
   onBasicUpload($event){
     this.showFileSelectErrorMessage=false;
-  this.fileSelectErrorMessage=null
+  this.fileSelectErrorMessage=null;
+  this.showSuccessMessage=false;
+  this.successMessage = null;
   }
   setModalValue(activeCheckbox){
     if(activeCheckbox.checked)

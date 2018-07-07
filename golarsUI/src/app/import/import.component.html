@@ -6,7 +6,7 @@
   </div>
 <form name="importForm" class="form-group" #importForm>
   <p-fileUpload name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true" (onSelect)="onBasicUpload($event)"
-    [showUploadButton]="false" accept=".pdf,.doc,.docx" [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20"
+    [showUploadButton]="false"  [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20"
     invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
 
   <div class="ui-g ui-fluid">

@@ -25,9 +25,13 @@ console.log("constructor")
     if(localStorage.getItem("currentUser") === null)
       this.router.navigate(['/login']);
       else{
-      this.loginSuccesful=true;
-      this.user = localStorage.getItem("currentUser");
-      this.router.navigate(['/']);
+        this.user = localStorage.getItem("currentUser");
+        if(this.user.newlyCreated == true)
+         this.router.navigate(['changepassword']);
+        else{
+          this.loginSuccesful=true;
+          this.router.navigate(['/']);
+        }
       }
 
       $(".navbar a").on("click", function(){
@@ -84,7 +88,9 @@ $("#navbar_delete_folder").on("click",function(e){
      this.router.navigate(['/login']);
      else {
       this.user = JSON.parse(localStorage.getItem("currentUser"))
-       if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/newuser'))
+      if(this.user!==null  && this.user.newlyCreated == true)
+      this.router.navigate(['changepassword']);
+      else if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/newuser'))
       this.router.navigate([this.router.url]);
       else
       this.router.navigate(['']);
@@ -92,8 +98,12 @@ $("#navbar_delete_folder").on("click",function(e){
   }
   checkLoginSuccesful(){
     if(localStorage.getItem("currentUser") !== null){
-      this.loginSuccesful=true;
+     
       this.user = JSON.parse(localStorage.getItem("currentUser"))
+      
+      if(this.user!==null  && this.user.newlyCreated == true)
+      return ;
+      this.loginSuccesful=true;
       this.fullName = this.user.fullName;
       this.isAdmin = this.user.admin;
     return this.loginSuccesful;

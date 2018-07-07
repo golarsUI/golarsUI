@@ -8,13 +8,20 @@ export class FolderService {
 
   constructor(private http: HttpClient) { }
 
-  fetchFolders(id: string,parentid: string, docRequired: boolean) {
-      return this.http.get<any>(URLConstants.FOLDER_URL,this.getOptions(id,parentid,docRequired))
+  fetchFolders(id: string,parentid: string, docRequired: boolean, username: string,isadmin:boolean) {
+      return this.http.get<any>(URLConstants.FOLDER_URL,this.getOptions(id,parentid,docRequired,username,isadmin))
           .map(folder => {
               
               return folder;
           });
   }
+  fetchTablePreferences(isadmin:boolean) {
+    return this.http.get<any>(URLConstants.FOLDER_TABLE_PREFERENCES,this.getPreferencesOptions(isadmin))
+        .map(folder => {
+            
+            return folder;
+        });
+}
   fetchDocumentDetails(documentName) {
     return this.http.get<any>(URLConstants.DOCUMENT_DETAILS_URL,this.getDocOptions(documentName))
         .map(docProperties => {
@@ -39,9 +46,10 @@ deleteFolder(id: string,parentId:String) {
       });
 }
 
-  private getOptions(id,parentId, docRequired) {
+  private getOptions(id,parentId, docRequired,username,isadmin) {
     return {
       params: new HttpParams().set(GolarsConstants.FOLDER_ID,id).set(GolarsConstants.PARENT_ID,parentId).set(GolarsConstants.DOCUMENTS_REQUIRED,docRequired)
+      .set(GolarsConstants.USERNAME,username).set(GolarsConstants.ISADMIN,isadmin)
     };
   }
   private getDocOptions(documentName) {
@@ -52,6 +60,11 @@ deleteFolder(id: string,parentId:String) {
   private getDeleteFolderOptions(id,parentId) {
     return {
       params: new HttpParams().set(GolarsConstants.FOLDER_ID,id).set(GolarsConstants.PARENT_ID,parentId)
+    };
+  }
+  getPreferencesOptions(isAdmin){
+    return {
+      params: new HttpParams().set(GolarsConstants.ISADMIN,isAdmin)
     };
   }
 

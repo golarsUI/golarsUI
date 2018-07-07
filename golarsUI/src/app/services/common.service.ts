@@ -1,4 +1,5 @@
 import { Subject } from "rxjs";
+import { GolarsConstants } from "../constants/golarsconstants";
 
 
 export class CommonService {
@@ -20,5 +21,18 @@ export class CommonService {
       return localStorage.getItem("username");
   else
       return "";
+  }
+  isAdmin(){
+    if(localStorage.getItem("admin")!==null)
+    if(localStorage.getItem("admin")=="true")
+      return true;
+  else
+      return false;
+  }
+  getTablePreferences(){
+    if(localStorage.getItem("tablePrefernces")!==null && localStorage.getItem("tablePrefernces")!=="")
+    return localStorage.getItem("tablePrefernces");
+
+      return GolarsConstants.DEFAULT_TABLE_PREFERENCES;
   }
 }

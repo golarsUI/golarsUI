@@ -3,11 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import { URLConstants } from '../constants/urlconstants';
+import { FolderService } from './folder.service';
 
 @Injectable()
 export class AuthenticationService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,private folderService: FolderService) { }
 
     login(username: string, password: string) {
         return this.http.post<any>(URLConstants.LOGIN_URL, { username: username, password: password })
@@ -17,6 +18,8 @@ export class AuthenticationService {
                     // store user details and token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     localStorage.setItem('username', user.username);
+                    localStorage.setItem('admin', user.admin);
+                    this.fetchUserPreferences(user.admin)
                 }
 
                 return user;
@@ -26,5 +29,17 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('username');
+        localStorage.removeItem('admin');
+    }
+    fetchUserPreferences(admin){
+        this.folderService.fetchTablePreferences(admin)
+        .subscribe(
+            data => {
+                console.log(data);
+                localStorage.setItem('tablePrefernces', data.value);            },
+            error => {
+                console.log(error);
+            });
     }
 }

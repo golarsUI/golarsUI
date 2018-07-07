@@ -3,7 +3,13 @@
     width: 100%;
 }
 .nav-background-color{
-    /* background-color: green !important; */
+     background-color: green !important; 
+}
+.nav-link.disabled{
+    color:darkgray !important;
+}
+.nav-link{
+    color:white !important;
 }
 .ui-tree{
     height:100% !important;
@@ -58,4 +64,15 @@
 }
 .ui-inputtext{
     height:34px !important;
+}
+
+.wrap-text{
+    word-wrap: break-word;
+}
+.ui-widget-content{
+    border: 1px solid transparent !important;
+}
+.full-height-width-tree{
+    width: 100%;
+    height: calc( 100% - 60px);
 }

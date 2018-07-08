@@ -14,8 +14,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.golars.bean.Folder;
+import com.golars.bean.UserSettings;
 import com.golars.util.DBUtil;
 import com.golars.util.GolarsUtil;
+import com.google.gson.Gson;
 
 @Path("/folders")
 public class FolderService {
@@ -50,7 +52,23 @@ public class FolderService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response retrieveFolderTablePreferences(@QueryParam("isAdmin") boolean isadmin) {
 		String preferenceName = getPreferenceString(isadmin);
-		String preferences = new DBUtil().retrieveUserPreferences(preferenceName);
+		List<UserSettings> preferences = new DBUtil().retrieveUserPreferences();
+		return Response.status(200).entity(preferences).build();
+	}
+	
+	@POST
+	@Path("/preferences")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response saveFolderTablePreferences(String userSettings) {
+		UserSettings[] settingArray = new Gson().fromJson(userSettings, UserSettings[].class);
+		new DBUtil().updatePreferences(settingArray);
+		
+//		String preferenceName = getPreferenceString(isadmin);
+//		List<UserSettings> preferences = new DBUtil().retrieveUserPreferences();
+//		new DBUtil().retrieveUserPreferences();
+//		List<UserSettings> preferences = new DBUtil().retrieveUserPreferences();
+		List<UserSettings> preferences = new DBUtil().retrieveUserPreferences();
 		return Response.status(200).entity(preferences).build();
 	}
 

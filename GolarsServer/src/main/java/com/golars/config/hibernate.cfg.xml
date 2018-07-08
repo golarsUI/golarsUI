@@ -15,5 +15,6 @@
   <mapping resource="com/golars/config/User.hbm.xml" />
     <mapping resource="com/golars/config/document.hbm.xml" />
      <mapping resource="com/golars/config/Folder.hbm.xml" />
+      <mapping resource="com/golars/config/userSettings.hbm.xml" />
  </session-factory>
 </hibernate-configuration> 

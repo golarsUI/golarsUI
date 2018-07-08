@@ -1,4 +1,4 @@
-<div class="alert alert-success" [hidden]='!showSuccessMessage'>
+<div class="alert alert-success" [hidden]='!showSuccessMessage || showFileSelectErrorMessage' >
   <strong>Success!</strong> {{successMessage}}
 </div>
 <div [hidden]='!showFileSelectErrorMessage' class="alert alert-danger" role="alert">

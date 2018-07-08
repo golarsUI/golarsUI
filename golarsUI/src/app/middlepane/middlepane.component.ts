@@ -73,7 +73,7 @@ return data;
     
   }
   deleteDocument() {
-    this.folderService.deleteFolder(this.selectedDocumet.id,this.selectedDocumet.parentid)
+    this.folderService.deleteFolder(this.selectedDocumet.id,this.selectedDocumet.parentid,this.commonService.getUserName(),this.commonService.isAdmin())
         .subscribe(
             folder => {
               this.commonService.notify({ type: 'refreshFolder', node: this.leftMenuSelectedNode.node, isDocumentsRequired: true });

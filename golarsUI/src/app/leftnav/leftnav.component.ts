@@ -159,7 +159,7 @@ export class LeftnavComponent implements OnInit {
 
     }
     deleteFolderOnConfirmation() {
-        this.folderService.deleteFolder(this.selectedNode.id,this.selectedNode.parentid)
+        this.folderService.deleteFolder(this.selectedNode.id,this.selectedNode.parentid,this.commonService.getUserName(),this.commonService.isAdmin())
             .subscribe(
                 folder => {
                     // this.treeComponent.

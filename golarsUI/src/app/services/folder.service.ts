@@ -38,8 +38,8 @@ createFolder(foldername: string, parentFolderId: string,isFolder:boolean,usernam
           return folder;
       });
 }
-deleteFolder(id: string,parentId:String) {
-  return this.http.delete<any>(URLConstants.FOLDER_URL,this.getDeleteFolderOptions(id,parentId))
+deleteFolder(id: string,parentId:String,username:String,isAdmin:boolean) {
+  return this.http.delete<any>(URLConstants.FOLDER_URL,this.getDeleteFolderOptions(id,parentId,username,isAdmin))
       .map(folder => {
           
           return folder;
@@ -57,9 +57,9 @@ deleteFolder(id: string,parentId:String) {
       params: new HttpParams().set(GolarsConstants.DOCUMENT_NAME,documentName)
     };
   }
-  private getDeleteFolderOptions(id,parentId) {
+  private getDeleteFolderOptions(id,parentId,username,isAdmin) {
     return {
-      params: new HttpParams().set(GolarsConstants.FOLDER_ID,id).set(GolarsConstants.PARENT_ID,parentId)
+      params: new HttpParams().set(GolarsConstants.FOLDER_ID,id).set(GolarsConstants.PARENT_ID,parentId).set(GolarsConstants.USERNAME,username).set(GolarsConstants.ISADMIN,isAdmin)
     };
   }
   getPreferencesOptions(isAdmin){

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { URLConstants } from '../constants/urlconstants';
 import { GolarsConstants } from '../constants/golarsconstants';
 
@@ -15,13 +15,7 @@ export class FolderService {
               return folder;
           });
   }
-  fetchTablePreferences(isadmin:boolean) {
-    return this.http.get<any>(URLConstants.FOLDER_TABLE_PREFERENCES,this.getPreferencesOptions(isadmin))
-        .map(folder => {
-            
-            return folder;
-        });
-}
+
   fetchDocumentDetails(documentName) {
     return this.http.get<any>(URLConstants.DOCUMENT_DETAILS_URL,this.getDocOptions(documentName))
         .map(docProperties => {
@@ -40,6 +34,20 @@ createFolder(foldername: string, parentFolderId: string,isFolder:boolean,usernam
 }
 deleteFolder(id: string,parentId:String,username:String,isAdmin:boolean) {
   return this.http.delete<any>(URLConstants.FOLDER_URL,this.getDeleteFolderOptions(id,parentId,username,isAdmin))
+      .map(folder => {
+          
+          return folder;
+      });
+}
+fetchTablePreferences(isadmin:boolean) {
+  return this.http.get<any>(URLConstants.FOLDER_TABLE_PREFERENCES,this.getPreferencesOptions(isadmin))
+      .map(folder => {
+          
+          return folder;
+      });
+}
+saveTablePreferences(data) {
+  return this.http.post<any>(URLConstants.FOLDER_TABLE_PREFERENCES,JSON.stringify(data),{ headers : this.getHeaders()})
       .map(folder => {
           
           return folder;
@@ -67,5 +75,9 @@ deleteFolder(id: string,parentId:String,username:String,isAdmin:boolean) {
       params: new HttpParams().set(GolarsConstants.ISADMIN,isAdmin)
     };
   }
-
+  getHeaders(){
+    var httpheaders = new HttpHeaders();
+    httpheaders = httpheaders.set('Content-Type', 'application/json').set('Accept','application/json');
+    return httpheaders;
+  }
 }

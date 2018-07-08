@@ -4,11 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import { URLConstants } from '../constants/urlconstants';
 import { FolderService } from './folder.service';
+import { CommonService } from './common.service';
 
 @Injectable()
 export class AuthenticationService {
 
-    constructor(private http: HttpClient,private folderService: FolderService) { }
+    constructor(private http: HttpClient,private folderService: FolderService,private commonService:CommonService) { }
 
     login(username: string, password: string) {
         return this.http.post<any>(URLConstants.LOGIN_URL, { username: username, password: password })
@@ -36,8 +37,8 @@ export class AuthenticationService {
         this.folderService.fetchTablePreferences(admin)
         .subscribe(
             data => {
-                console.log(data);
-                localStorage.setItem('tablePrefernces', data.value);            },
+                this.commonService.updatePreferences(data);
+                      },
             error => {
                 console.log(error);
             });

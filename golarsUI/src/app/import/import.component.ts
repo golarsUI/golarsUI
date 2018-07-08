@@ -18,13 +18,16 @@ export class ImportComponent implements OnInit {
   importForm;
   @ViewChild('fileInput') fileInput: FileUpload;
   @Input() selectedFolder;
-  docTypes=ImportFieldValues.docTypeMapping;
+  docTypes=[];
+  docTypesFullList = ImportFieldValues.docTypeMapping;
   stateProgram= ImportFieldValues.stateProgramMapping;
-  scopeOfWork = ImportFieldValues.scopeOfWorkMapping;
+  scopeOfWork = [];
+  scopeOfWorkFullList = ImportFieldValues.scopeOfWorkMapping;
   showSuccessMessage=false;
   successMessage=null;
   showFileSelectErrorMessage=false;
   fileSelectErrorMessage=null
+
 
   model: any = {};
   constructor(private http: HttpClient,private importService: ImportService,private commonService: CommonService) { }
@@ -119,4 +122,20 @@ const frmData = new FormData();
      console.log( this.tmpFolder)
     return  JSON.stringify( this.tmpFolder)
   }
+  getStateProgramAndScopeOfWorkDropDOwn($event){
+    var selectedValue = $event.value;
+    console.log(selectedValue)
+    this.docTypes=[];
+    this.scopeOfWork=[];
+    this.model.scopeOfWork=[];
+    for(var i=0;i<this.docTypesFullList.length;i++){
+    if(this.docTypesFullList[i].key != null && this.docTypesFullList[i].key.indexOf(selectedValue)>=0)
+    this.docTypes.push(this.docTypesFullList[i])
+  }
+  for(var i=0;i<this.scopeOfWorkFullList.length;i++){
+    if(this.scopeOfWorkFullList[i].key != null && this.scopeOfWorkFullList[i].key.indexOf(selectedValue)>=0)
+    this.scopeOfWork.push(this.scopeOfWorkFullList[i])
+  } 
+  }
+
 }

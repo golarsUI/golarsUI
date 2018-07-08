@@ -90,7 +90,7 @@ $("#navbar_delete_folder").on("click",function(e){
       this.user = JSON.parse(localStorage.getItem("currentUser"))
       if(this.user!==null  && this.user.newlyCreated == true)
       this.router.navigate(['changepassword']);
-      else if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/newuser'))
+      else if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/newuser'|| this.router.url == '/settings'))
       this.router.navigate([this.router.url]);
       else
       this.router.navigate(['']);

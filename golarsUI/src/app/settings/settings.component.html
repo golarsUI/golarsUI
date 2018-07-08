@@ -1,0 +1,74 @@
+<div class="ui-g">
+    <div class="ui-g-6">
+<div class="alert alert-success" [hidden]='!showSuccessMessage'>
+    <strong>Success!</strong> {{successMessage}}
+  </div>
+  </div>
+</div>
+<div class="ui-g">
+    <div class="ui-g-4">
+    <h4>Admin Document List Table Columns</h4>
+ 
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" [disabled]="true" value="stateProgram" label="State Program" [(ngModel)]="adminSelectedColumns"
+        inputId="admin_stateProgram"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" [disabled]="true" value="docTypes" label="Document Type" [(ngModel)]="adminSelectedColumns"
+        inputId="admin_stateProgram"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" [disabled]="true" value="scopeOfWork" label="Scope of Work" [(ngModel)]="adminSelectedColumns"
+        inputId="admin_stateProgram"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" value="docUpdateDate" label="Date Document Updated" [(ngModel)]="adminSelectedColumns"
+        inputId="admin_docUpdateDate"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" value="fecilityName" label="Facility Name	" [(ngModel)]="adminSelectedColumns" inputId="admin_selectedCities"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" value="docDate" label="Document Date" [(ngModel)]="adminSelectedColumns" inputId="admin_docDate"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="admingroup" value="active" label="Is Active" [(ngModel)]="adminSelectedColumns" inputId="admin_active"></p-checkbox>
+    </div>
+
+  </div>
+  <div class="ui-g-4">
+    <h4>Nonadmin Document List Table Columns</h4>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" [disabled]="true" value="docTypes" label="Document Type" [(ngModel)]="nonadminSelectedColumns"
+        inputId="non_admin_stateProgram"></p-checkbox>
+    </div>
+
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" [disabled]="true" value="docTypes" label="Document Type" [(ngModel)]="nonadminSelectedColumns"
+        inputId="non_admin_stateProgram"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" [disabled]="true" value="scopeOfWork" label="Scope of Work" [(ngModel)]="nonadminSelectedColumns"
+        inputId="non_admin_stateProgram"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" value="docUpdateDate" label="Date Document Updated" [(ngModel)]="nonadminSelectedColumns"
+        inputId="non_admin_docUpdateDate"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" value="fecilityName" label="Facility Name	" [(ngModel)]="nonadminSelectedColumns" inputId="non_admin_selectedCities"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" value="docDate" label="Document Date" [(ngModel)]="nonadminSelectedColumns" inputId="non_admin_docDate"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup" value="active" label="Is Active" [(ngModel)]="nonadminSelectedColumns" inputId="non_admin_active"></p-checkbox>
+    </div>
+  </div>
+</div>
+<div class="ui-g">
+    <div class="ui-g-6">
+  <div class="form-group pull-right">
+    <button class="btn btn-primary" (click)="saveUserSettings()">Update</button>
+    <a [routerLink]="['']" class="btn btn-link">Cancel</a>
+</div></div></div>

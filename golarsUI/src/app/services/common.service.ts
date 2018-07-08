@@ -29,10 +29,22 @@ export class CommonService {
   else
       return false;
   }
-  getTablePreferences(){
-    if(localStorage.getItem("tablePrefernces")!==null && localStorage.getItem("tablePrefernces")!=="")
-    return localStorage.getItem("tablePrefernces");
+  getTableAdminPreferences(){
+    if(localStorage.getItem("adminTableColumns")!==null && localStorage.getItem("adminTableColumns")!=="")
+    return localStorage.getItem("adminTableColumns");
 
       return GolarsConstants.DEFAULT_TABLE_PREFERENCES;
   }
+  getTableNonAdminPreferences(){
+    if(localStorage.getItem("nonAdminTableColumns")!==null && localStorage.getItem("nonAdminTableColumns")!=="")
+    return localStorage.getItem("nonAdminTableColumns");
+
+      return GolarsConstants.DEFAULT_TABLE_PREFERENCES;
+  }
+  updatePreferences(data){
+    for(var i=0;i<=data.length;i++){
+      localStorage.setItem(data[0].key, data[0].value);  
+    } 
+  }
+  
 }

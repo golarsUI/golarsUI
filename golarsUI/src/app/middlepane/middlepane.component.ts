@@ -108,7 +108,11 @@ return data;
   }
   getColumns(){
     this.cols=[];
-    var prefString = this.commonService.getTablePreferences();
+    var prefString ="";
+    if(this.commonService.isAdmin())
+     prefString = this.commonService.getTableAdminPreferences();
+    else
+      prefString = this.commonService.getTableNonAdminPreferences()
     var pefArray =prefString.split(GolarsConstants.SPLIT_STRING)
     for(var i=0;i<pefArray.length;i++){
       this.cols.push({ field: pefArray[i], header: this.tableColumnMapping[pefArray[i]] });

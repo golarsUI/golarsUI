@@ -8,12 +8,12 @@
         <a class="nav-link" routerLink="home">Home </a>
       </li>
       <li class="nav-item">
-        <a id="navbar_createNew" class="nav-link" routerLink="#" [ngClass]="{disabled : !isNodeSelected}">Create Folder
+        <a id="navbar_createNew" class="nav-link"  style="cursor: pointer;" [ngClass]="{disabled : !isNodeSelected}">Create Folder
           <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a id="navbar_import" class="nav-link" routerLink="#" [ngClass]="{disabled : checkImportDisabled() }">Import
+        <a id="navbar_import" class="nav-link"  style="cursor: pointer;" [ngClass]="{disabled : checkImportDisabled() }">Import
           <i class="fa fa-download" aria-hidden="true"></i>
         </a>
       </li>
@@ -27,6 +27,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" routerLink="users" (click)='isNodeSelected=false'>List of Users</a>
           <a class="dropdown-item" routerLink="newuser" (click)='isNodeSelected=false'>Add User</a>
+          <a class="dropdown-item" routerLink="settings" (click)='isNodeSelected=false'>User Settings</a>
         </div>
       </li>
     </ul>

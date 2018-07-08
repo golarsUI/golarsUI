@@ -32,7 +32,7 @@
       <div>
         <label>State Program</label>
       </div>
-      <p-dropdown [options]="stateProgram" [(ngModel)]="model.stateProgram" name="model.stateProgram"  [style]="{'width':'200px'}"></p-dropdown>
+      <p-dropdown [options]="stateProgram" [(ngModel)]="model.stateProgram" name="model.stateProgram" placeholder="Select State Program"  [style]="{'width':'200px'}" (onChange)="getStateProgramAndScopeOfWorkDropDOwn($event)"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
@@ -44,13 +44,13 @@
       <div>
         <label>Document Type</label>
       </div>
-      <p-dropdown [options]="docTypes" [(ngModel)]="model.docTypes" name="docTypes"   [style]="{'width':'275px'}"></p-dropdown>
+      <p-dropdown [options]="docTypes" [(ngModel)]="model.docTypes" name="docTypes" placeholder="Select Document Type"  [style]="{'width':'275px'}"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>Scope of Work</label>
       </div>
-      <p-multiSelect [options]="scopeOfWork" defaultLabel="Select Scope of Work" [(ngModel)]="model.scopeOfWork" name="scopeOfWork" resetFilterOnHide="true"  [style]="{'width':'350px'}"></p-multiSelect>
+      <p-multiSelect [options]="scopeOfWork" defaultLabel="Select Scope of Work" [(ngModel)]="model.scopeOfWork" name="scopeOfWork" resetFilterOnHide="true"  [style]="{'width':'350px','min-height':'30px'}"></p-multiSelect>
     </div>
   </div>
   <div class="pull-right" style="margin-top:20px">

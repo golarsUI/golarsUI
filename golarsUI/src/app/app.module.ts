@@ -30,6 +30,7 @@ import { UserComponent } from './user/user.component';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     RightpanelComponent,
     UserComponent,
     ChangepasswordComponent,
+    SettingsComponent,
     
   ],
   imports: [

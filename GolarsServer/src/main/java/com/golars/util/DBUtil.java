@@ -14,6 +14,7 @@ import com.golars.bean.ChangePassword;
 import com.golars.bean.Document;
 import com.golars.bean.Folder;
 import com.golars.bean.User;
+import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
 public class DBUtil {
 	public User login(String username, String password) {
@@ -279,12 +280,20 @@ public class DBUtil {
 
 	}*/
 
-	public int deleteFolder(String folderId, String parentId) {
+	public int deleteFolder(String folderId, String parentId, String username, boolean isadmin) {
 		Session session = HibernateUtil.getSession();
 		;
 		Transaction t = session.beginTransaction();
-		Query query = session.createNativeQuery("DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId",
+		Query query ;
+		
+		if(isadmin)
+			query = session.createNativeQuery("DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId",
 				Folder.class);
+		else{
+			query = session.createNativeQuery("DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId and username =:username",
+					Folder.class);
+			query.setString("username", username);
+		}
 		query.setInteger("id", Integer.parseInt(folderId));
 		query.setString("parentId", parentId + folderId + "%");
 		int result = query.executeUpdate();

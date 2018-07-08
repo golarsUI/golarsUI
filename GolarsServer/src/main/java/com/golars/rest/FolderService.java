@@ -77,9 +77,10 @@ public class FolderService {
 
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteeFolder(@QueryParam("folderId") String folderId, @QueryParam("parentId") String parentId) {
+	public Response deleteeFolder(@QueryParam("folderId") String folderId, @QueryParam("parentId") String parentId,@QueryParam("username") String username,
+			@QueryParam("isAdmin") boolean isadmin) {
 
-		int result = new DBUtil().deleteFolder(folderId, parentId);
+		int result = new DBUtil().deleteFolder(folderId, parentId,username,isadmin);
 
 		return Response.status(200).entity(result).build();
 	}

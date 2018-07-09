@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { FolderService } from '../services/folder.service';
 import { GolarsConstants } from '../constants/golarsconstants';
 import { environment } from '../../environments/environment';
+declare var $: any;
 
 @Component({
   selector: 'golars-middlepane',
@@ -19,6 +20,7 @@ export class MiddlepaneComponent implements OnInit {
   cols=[];
   selectedDocumet;
   leftMenuSelectedNode;
+  applyIconsColor=false;
   tableColumnMapping={
     'docUpdateDate':'Date Document Updated',
     'fecilityName':'Facility Name',
@@ -65,13 +67,13 @@ export class MiddlepaneComponent implements OnInit {
 }
 return data;
   }
-  deleteRow($event){
-    setTimeout(() => {
-     this.deleteDocument();
+  // deleteRow($event){
+  //   setTimeout(() => {
+  //    this.deleteDocument();
      
-    }, 500);
+  //   }, 500);
     
-  }
+  // }
   deleteDocument() {
     this.folderService.deleteFolder(this.selectedNode.id,this.selectedNode.parentid,this.commonService.getUserName(),this.commonService.isAdmin())
         .subscribe(
@@ -82,6 +84,7 @@ return data;
               //   var index = this.folderData.children.indexOf(this.selectedNode);
               //  console.log(index);
               //  this.folderData.children.splice(index,1);
+              $('#middle_pane_folder_delete_model').modal('hide');
             },
             error => {
 
@@ -92,7 +95,8 @@ return data;
   nodeSelect(event) {
   this.selectedNode = event.data;
     this.commonService.notify({ type: 'documentDetails', node: event.data, isDocumentsRequired: true });
-    console.log("middle nodeSelect", event)
+    console.log("middle nodeSelect", event);
+    this.applyIconsColor=true;
   }
   nodeUnselect(event) {
     console.log("nodeUnselect", event)
@@ -125,5 +129,9 @@ return data;
   //     { field: 'brand', header: 'Brand' },
   //     { field: 'color', header: 'Color' }
   // ];
+  }
+
+  deleteFolderOrDocument(){
+    $('#middle_pane_folder_delete_model').modal('show');
   }
 }

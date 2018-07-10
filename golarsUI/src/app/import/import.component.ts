@@ -42,6 +42,7 @@ defaultdate;
       self.fileSelectErrorMessage=null;
       self.fileInput.files=[];
       self.model={}
+      self.model.docUpdateDate = new Date();
 
   })
   this.commonService.notifyObservable$.subscribe((treeNode) => {

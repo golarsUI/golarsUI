@@ -28,7 +28,7 @@ export class ImportComponent implements OnInit {
   showFileSelectErrorMessage=false;
   fileSelectErrorMessage=null
 
-
+defaultdate;
   model: any = {};
   constructor(private http: HttpClient,private importService: ImportService,private commonService: CommonService) { }
 
@@ -52,6 +52,8 @@ export class ImportComponent implements OnInit {
     }
 }
 });
+// set default value for Date Document updated
+this.model.docUpdateDate = new Date();
   }
   importDocuments(){
 console.log(this.fileInput.files.length)

@@ -13,13 +13,13 @@
     <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(selection)]="selectedDocumet" dataKey="label" (onRowSelect)="nodeSelect($event)" (onRowUnselect)="nodeSelect($event)">
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th width="100px">
+                <th width="100px" >
                     Name
                 </th>
                 <th *ngFor="let col of columns" width="100px">
                     {{col.header}}
                 </th>
-                <th width="50px">
+                <th width="50px" *ngIf="commonService.isAdmin()">
                         Action
                     </th>
 
@@ -36,7 +36,7 @@
                         {{rowData.properties[col.field]}}
                     </span>
                 </td>
-                <td>
+                <td *ngIf="commonService.isAdmin()">
                         <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" (click)="deleteFolderOrDocument()" title="Delete Document"></i>
                     </td>
                 <!-- <td *ngFor="let col of columns">

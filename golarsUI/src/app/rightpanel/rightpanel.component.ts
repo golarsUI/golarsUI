@@ -56,7 +56,7 @@ export class RightpanelComponent implements OnInit {
   });
   }
   constructURL(){
-  this.docURL = location.origin+GolarsConstants.DOWNLOAD_DOC_URL+ this.docName;
+  this.docURL = location.origin+GolarsConstants.DOWNLOAD_DOC_URL+ encodeURI(this.docName);
   }
   getDocPropertiesValue(){
     if(this.docName == null) return "";

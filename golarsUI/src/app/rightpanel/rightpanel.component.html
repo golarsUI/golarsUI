@@ -27,6 +27,14 @@
     <div class="ui-g-4">FID</div>
     <div class="ui-g-8">{{docData.fid}}</div>
   </div>
+  <div class="ui-g" *ngIf="docData.city">
+      <div class="ui-g-4">City</div>
+      <div class="ui-g-8">{{docData.city}}</div>
+    </div>
+    <div class="ui-g" *ngIf="docData.state">
+        <div class="ui-g-4">State</div>
+        <div class="ui-g-8">{{docData.state}}</div>
+      </div>
   <div class="ui-g" *ngIf="docData.stateProgram">
     <div class="ui-g-4">State Program</div>
     <div class="ui-g-8">{{docData.stateProgram}}</div>

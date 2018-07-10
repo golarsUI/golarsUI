@@ -47,7 +47,17 @@ public class DBUtil {
 			if (user != null)
 				return false;
 			userObj.setPassword(new String(Base64.getEncoder().encode(userObj.getPassword().getBytes())));
-			String abc = (String) session.save(userObj);
+			 session.save(userObj);
+			if(userObj.getPermissonFolderID()!=null && !userObj.getPermissonFolderID().equalsIgnoreCase(""))
+				for (String folderId : userObj.getPermissonFolderID().split(",")) {
+					int id = Integer.parseInt(folderId);
+				
+							Folder folder = (Folder) session.get(Folder.class, id);
+							folder.setUsername(folder.getUsername()+"&&&***&&&"+userObj.getUsername()+"&&&***&&&");
+							session.update(folder);
+					
+				}
+			
 			return true;
 		} catch (Exception exception) {
 			System.out.println("Exception occred while reading user data: " + exception.getMessage());
@@ -177,9 +187,9 @@ public class DBUtil {
 			query = session.createNativeQuery("SELECT * FROM folder f where f.isFolder=:isFolder", Folder.class);
 		else {
 			query = session.createNativeQuery(
-					"SELECT * FROM folder f where f.isFolder=:isFolder and userName =:userName or f.id=1000",
+					"SELECT * FROM folder f where f.isFolder=:isFolder and userName LIKE :userName or f.id=1000",
 					Folder.class);
-			query.setString("userName", username);
+			query.setString("userName", "%"+username+ "&&&***&&&%");
 		}
 
 		query.setBoolean("isFolder", true);
@@ -241,8 +251,8 @@ public class DBUtil {
 			query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId", Folder.class);
 		else {
 			query = session.createNativeQuery(
-					"SELECT * FROM folder f where f.parentId = :parentId  and userName =:userName", Folder.class);
-			query.setString("userName", username);
+					"SELECT * FROM folder f where f.parentId = :parentId  and userName LIKE :userName", Folder.class);
+			query.setString("userName", "%"+username+ "&&&***&&&%");
 		}
 		query.setString("parentId", folderId);
 		List lst = query.list();

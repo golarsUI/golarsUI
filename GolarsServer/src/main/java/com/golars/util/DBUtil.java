@@ -155,7 +155,7 @@ public class DBUtil {
 		Folder docFolder = new Folder();
 		docFolder.setLabel(docName);
 		docFolder.setParentid(folder.getParentid() + folder.getId());
-		docFolder.setUsername(folder.getUsername());
+		docFolder.setUsername(folder.getUsername()+"&&&***&&&%");
 		docFolder.setProperties(documentProperties);
 		return docFolder;
 	}
@@ -212,7 +212,7 @@ public class DBUtil {
 			List lst = query.list();
 			if (lst.size() > 0)
 				return null;
-
+			folder.setUsername(folder.getUsername()+"&&&***&&&%");
 			int abc = (Integer) session.save(folder);
 			session.flush();
 			query = session.createNativeQuery(

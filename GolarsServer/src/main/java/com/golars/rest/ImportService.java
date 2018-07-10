@@ -1,5 +1,6 @@
 package com.golars.rest;
 
+import java.io.File;
 import java.io.InputStream;
 
 import javax.ws.rs.Consumes;
@@ -27,28 +28,49 @@ public class ImportService {
 
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response uploadFile(@FormDataParam("fileUpload") FormDataBodyPart body,@FormDataParam("docProperties") String documentProperties,@FormDataParam("folderProperties") String folderProperties) {
+	public Response uploadFile(@FormDataParam("fileUpload") FormDataBodyPart body,
+			@FormDataParam("docProperties") String documentProperties,
+			@FormDataParam("folderProperties") String folderProperties) {
 		boolean result = false;
-		
+
 		for (BodyPart part : body.getParent().getBodyParts()) {
 
 			InputStream is = part.getEntityAs(InputStream.class);
 			ContentDisposition meta = part.getContentDisposition();
-			if(meta.getFileName()!=null){
+			if (meta.getFileName() != null) {
+				String fileName = getFileExtension(meta.getFileName()).equalsIgnoreCase("")
+						? meta.getFileName() + ".pdf" : meta.getFileName();
 				Folder folder = new Gson().fromJson(folderProperties, Folder.class);
-				result  =  new DBUtil().saveDocument(is, meta.getFileName(),documentProperties,folder);
+				result = new DBUtil().saveDocument(is, fileName, documentProperties, folder);
 			}
 		}
 		return Response.status(200).entity(result).build();
 	}
-	
+
 	@Path("{id}")
 	@GET
 	public Response getPDF(@PathParam("id") String filename) throws Exception {
-		Document doc =  new DBUtil().retrieveDocument(filename);
-	    return Response.ok(doc.getContent(), MediaType.APPLICATION_OCTET_STREAM) //TODO: set content-type of your file
-	            .header("content-disposition", "attachment; filename = "+doc.getFilename())
-	            .build();
+		Document doc = new DBUtil().retrieveDocument(filename);
+
+		return Response.ok(doc.getContent(), generateContentType(doc.getFilename())) // TODO:
+																						// set
+																						// content-type
+																						// of
+																						// your
+																						// file
+				.header("Content-type:", generateContentType(doc.getFilename()))
+				.header("content-disposition", "inline; filename = " + doc.getFilename()).build();
+	}
+
+	private String generateContentType(String filename) {
+		if (filename.endsWith(".pdf"))
+			return "application/pdf";
+		return MediaType.APPLICATION_OCTET_STREAM;
+	}
+
+	public static String getFileExtension(String fullName) {
+		int dotIndex = fullName.lastIndexOf('.');
+		return (dotIndex == -1) ? "" : fullName.substring(dotIndex + 1);
 	}
 
 }

@@ -148,7 +148,7 @@ export class LeftnavComponent implements OnInit {
                     this.selectedNode = result;
                     this.addFolderClass(result)
                     $('#create_Folder_Modal').modal('hide');
-                    this.newfolder = ""
+                    this.newfolder = "";
                     this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
                 }
                 },

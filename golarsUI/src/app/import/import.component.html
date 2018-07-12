@@ -1,13 +1,12 @@
-<div class="alert alert-success" [hidden]='!showSuccessMessage || showFileSelectErrorMessage' >
+<div class="alert alert-success" [hidden]='!showSuccessMessage || showFileSelectErrorMessage'>
   <strong>Success!</strong> {{successMessage}}
 </div>
 <div [hidden]='!showFileSelectErrorMessage' class="alert alert-danger" role="alert">
-    {{fileSelectErrorMessage}}
-  </div>
+  {{fileSelectErrorMessage}}
+</div>
 <form name="importForm" class="form-group" #importForm>
   <p-fileUpload name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true" (onSelect)="onBasicUpload($event)"
-    [showUploadButton]="false"  [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20"
-    invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
+    [showUploadButton]="false" [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20" invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
 
   <div class="ui-g ui-fluid">
     <div class="ui-g-12 ui-md-6">
@@ -17,8 +16,8 @@
     <div class="ui-g-12 ui-md-6">
 
       <label>Facility Name </label>
-      <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fecilityName" name="fecilityName"
-      />
+      <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fecilityName"
+        name="fecilityName" />
     </div>
     <div class="ui-g-12 ui-md-6">
       <label>Document Date</label>
@@ -28,19 +27,22 @@
       <label>FID</label>
       <input id="fid" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fid" name="fid" />
     </div>
+
     <div class="ui-g-12 ui-md-6">
-        <label>City</label>
-        <input id="city" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.city" name="city" />
-      </div>
-      <div class="ui-g-12 ui-md-6">
-        <label>Street</label>
-        <input id="street" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.street" name="street" maxlength="30" />
-      </div>
+      <label>Street</label>
+      <input id="street" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.street" name="street"
+        maxlength="30" />
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <label>City</label>
+      <input id="city" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.city" name="city" />
+    </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>State Program</label>
       </div>
-      <p-dropdown [options]="stateProgram" [(ngModel)]="model.stateProgram" name="model.stateProgram" placeholder="Select State Program"  [style]="{'width':'200px'}" (onChange)="getStateProgramAndScopeOfWorkDropDOwn($event)"></p-dropdown>
+      <p-dropdown [options]="stateProgram" [(ngModel)]="model.stateProgram" name="model.stateProgram" placeholder="Select State Program"
+        [style]="{'width':'200px'}" (onChange)="getStateProgramAndScopeOfWorkDropDOwn($event)"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
@@ -52,18 +54,19 @@
       <div>
         <label>Document Type</label>
       </div>
-      <p-dropdown [options]="docTypes" [(ngModel)]="model.docTypes" name="docTypes" placeholder="Select Document Type"  [style]="{'width':'275px'}"></p-dropdown>
+      <p-dropdown [options]="docTypes" [(ngModel)]="model.docTypes" name="docTypes" placeholder="Select Document Type" [style]="{'width':'275px'}"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-6">
       <div>
         <label>Scope of Work</label>
       </div>
-      <p-multiSelect [options]="scopeOfWork" defaultLabel="Select Scope of Work" [(ngModel)]="model.scopeOfWork" name="scopeOfWork" resetFilterOnHide="true"  [style]="{'width':'350px','min-height':'30px'}"></p-multiSelect>
+      <p-multiSelect [options]="scopeOfWork" defaultLabel="Select Scope of Work" [(ngModel)]="model.scopeOfWork" name="scopeOfWork"
+        resetFilterOnHide="true" [style]="{'width':'350px','min-height':'30px'}"></p-multiSelect>
     </div>
   </div>
   <div class="pull-right" style="margin-top:20px">
     <button type="button" class="btn btn-primary" (click)="importDocuments()">Import</button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
   </div>
-  
+
 </form>

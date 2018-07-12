@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
 
 
 
@@ -18,6 +19,7 @@ const appRoutes: Routes = [
     { path: 'settings', component: SettingsComponent },
     { path: 'newuser', component: UserComponent },
     { path: 'changepassword', component: ChangepasswordComponent },
+    { path: 'configuration', component: ConfigurationComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -31,7 +31,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { SettingsComponent } from './settings/settings.component';
-
+import { ConfigurationComponent } from './configuration/configuration.component';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { SettingsComponent } from './settings/settings.component';
     UserComponent,
     ChangepasswordComponent,
     SettingsComponent,
+    ConfigurationComponent,
     
   ],
   imports: [
@@ -64,7 +66,8 @@ import { SettingsComponent } from './settings/settings.component';
     ContextMenuModule,
     FileUploadModule,
     MultiSelectModule,
-    ClipboardModule
+    ClipboardModule,
+    InputTextareaModule
     
   ],
   

@@ -23,6 +23,8 @@ export class ImportComponent implements OnInit {
   stateProgram= ImportFieldValues.stateProgramMapping;
   scopeOfWork = [];
   scopeOfWorkFullList = ImportFieldValues.scopeOfWorkMapping;
+  stateProgramMappingForDocumentType = ImportFieldValues.stateProgramMappingForDocumentType;
+  stateProgramMappingForScopeOfWork = ImportFieldValues.stateProgramMappingForScopeOfWork;
   showSuccessMessage=false;
   successMessage=null;
   showFileSelectErrorMessage=false;
@@ -131,14 +133,31 @@ const frmData = new FormData();
     this.docTypes=[];
     this.scopeOfWork=[];
     this.model.scopeOfWork=[];
-    for(var i=0;i<this.docTypesFullList.length;i++){
-    if(this.docTypesFullList[i].key != null && this.docTypesFullList[i].key.indexOf(selectedValue)>=0)
-    this.docTypes.push(this.docTypesFullList[i])
+    for(var i=0;i<this.stateProgramMappingForDocumentType.length;i++){
+      if(this.stateProgramMappingForDocumentType[i].label === selectedValue)
+      this.constructDocumentType (this.stateProgramMappingForDocumentType[i].properties)
+     
+    // if(this.docTypesFullList[i].key != null && this.docTypesFullList[i].key.indexOf(selectedValue)>=0)
+    // this.docTypes.push(this.docTypesFullList[i])
   }
-  for(var i=0;i<this.scopeOfWorkFullList.length;i++){
-    if(this.scopeOfWorkFullList[i].key != null && this.scopeOfWorkFullList[i].key.indexOf(selectedValue)>=0)
-    this.scopeOfWork.push(this.scopeOfWorkFullList[i])
+  for(var i=0;i<this.stateProgramMappingForScopeOfWork.length;i++){
+    if(this.stateProgramMappingForScopeOfWork[i].label === selectedValue)
+    this.constructScopeOfObject (this.stateProgramMappingForScopeOfWork[i].properties)
   } 
+  // for(var i=0;i<this.scopeOfWorkFullList.length;i++){
+  //   if(this.scopeOfWorkFullList[i].key != null && this.scopeOfWorkFullList[i].key.indexOf(selectedValue)>=0)
+  //   this.scopeOfWork.push(this.scopeOfWorkFullList[i])
+  // } 
+  }
+  constructDocumentType(docTypeObj){
+    for(var i=0;i<docTypeObj.length;i++)
+    if(docTypeObj[i].enable != null && docTypeObj[i].enable == true)
+    this.docTypes.push(docTypeObj[i])
+  }
+  constructScopeOfObject(docTypeObj){
+    for(var i=0;i<docTypeObj.length;i++)
+    if(docTypeObj[i].enable != null && docTypeObj[i].enable == true)
+    this.scopeOfWork.push(docTypeObj[i])
   }
 
 }

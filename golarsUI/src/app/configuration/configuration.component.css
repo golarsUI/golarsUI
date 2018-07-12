@@ -1,0 +1,12 @@
+.enable-text{
+    background-color: #FFFFD0;
+    color: #000000;
+    font-weight: bold;
+    cursor: pointer;
+}
+.disable-text{
+    background-color: white;
+    color: #CCCCCC;
+    font-weight: normal;
+    cursor: pointer;
+}

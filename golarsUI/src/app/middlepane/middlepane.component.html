@@ -10,14 +10,17 @@
 
 <div *ngIf="folderDetailstreeLoading==false" class='full-height-width'>
     <h4>Document List</h4>
-    <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(selection)]="selectedDocumet" dataKey="label" (onRowSelect)="nodeSelect($event)" (onRowUnselect)="nodeSelect($event)">
+    <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(selection)]="selectedDocumet" dataKey="label" (onRowSelect)="nodeSelect($event)"
+     (onRowUnselect)="nodeSelect($event)" (sortFunction)="customSort($event)"  [customSort]="true">
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th width="100px" >
+                <th width="100px" [pSortableColumn]="'label'">
                     Name
+                    <p-sortIcon [field]="'label'" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
-                <th *ngFor="let col of columns" width="100px">
+                <th *ngFor="let col of columns" width="100px" [pSortableColumn]="col.field">
                     {{col.header}}
+                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
                 <th width="50px" *ngIf="commonService.isAdmin()">
                         Action
@@ -46,14 +49,7 @@
             </tr>
         </ng-template>
     </p-table>
-    <!-- <p-tree [value]="folderData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
-     (onNodeUnselect)="nodeUnselect($event)" class='full-height-width'>
-     <ng-template let-node pTemplate="default">
     
-            <span *ngIf="node.folder==false"><a  href="{{golarsServer}}/golars/rest/import/{{node.label}}" style="text-decoration: none" (click)="$event.preventDefault();">{{node.label}}</a></span>
-            <span *ngIf="node.folder==true">{{node.label}}</span>
-        </ng-template>
-    </p-tree> -->
 </div>
 <div class="modal" id="middle_pane_folder_delete_model" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

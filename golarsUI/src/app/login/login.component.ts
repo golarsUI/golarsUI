@@ -11,6 +11,7 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   model: any = {};
+  cols;
 loginData:string=""
 returnUrl: string;
   constructor(private route: ActivatedRoute,
@@ -23,6 +24,12 @@ loginErrorMessage=null;
      localStorage.removeItem("currentUser");
       // get return url from route parameters or default to '/'
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+ 
+  }
+  tdClickced(car,$event){
+    console.log(car,$event)
+    car.enable= !car.enable;
   }
   login() {
     this.authenticationService.login(this.model.username, this.model.password)
@@ -58,4 +65,5 @@ displayErrorMessage(){
   handleResponse(res){
     console.log("test "+res);
   }
+
 }

@@ -1,9 +1,5 @@
-<div class="alert alert-success" [hidden]='!showSuccessMessage || showFileSelectErrorMessage'>
-  <strong>Success!</strong> {{successMessage}}
-</div>
-<div [hidden]='!showFileSelectErrorMessage' class="alert alert-danger" role="alert">
-  {{fileSelectErrorMessage}}
-</div>
+
+
 <form name="importForm" class="form-group" #importForm>
   <p-fileUpload name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true" (onSelect)="onBasicUpload($event)"
     [showUploadButton]="false" [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20" invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
@@ -63,6 +59,12 @@
       <p-multiSelect [options]="scopeOfWork" defaultLabel="Select Scope of Work" [(ngModel)]="model.scopeOfWork" name="scopeOfWork"
         resetFilterOnHide="true" [style]="{'width':'350px','min-height':'30px'}"></p-multiSelect>
     </div>
+  </div>
+  <div [hidden]='!showFileSelectErrorMessage' class="alert alert-danger" role="alert">
+    {{fileSelectErrorMessage}}
+  </div>
+  <div class="alert alert-success" [hidden]='!showSuccessMessage || showFileSelectErrorMessage'>
+    <strong>Success!</strong> {{successMessage}}
   </div>
   <div class="pull-right" style="margin-top:20px">
     <button type="button" class="btn btn-primary" (click)="importDocuments()">Import</button>

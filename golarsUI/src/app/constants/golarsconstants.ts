@@ -13,5 +13,6 @@ export class GolarsConstants {
     public static DEFAULT_TABLE_PREFERENCES = 'stateProgram&$&$&$docTypes&$&$&$scopeOfWork';
     public static SPLIT_STRING="&$&$&$"
     public static DOWNLOAD_DOC_URL="/golars/rest/import/";
+    public static LOGIN_CONTENT_URL ="loginContentURL";
 
 }

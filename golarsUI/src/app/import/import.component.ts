@@ -35,6 +35,9 @@ defaultdate;
   constructor(private http: HttpClient,private importService: ImportService,private commonService: CommonService) { }
 
   ngOnInit() {
+
+    
+
     var self = this;
     $('body').on('hide.bs.modal', '.modal', function($event){
       if($event.target.id!="importModal") return;
@@ -47,6 +50,21 @@ defaultdate;
       self.model.docUpdateDate = new Date();
 
   })
+  $('body').on('show.bs.modal', '.modal', function($event){
+    if($event.target.id!="importModal") return;
+    if(self.commonService.getStateProgramPreferences()!=null){
+      self.stateProgram=[];
+    var stateProgramValues = self.commonService.getStateProgramPreferences();
+    self.stateProgramMappingForDocumentType = self.commonService.getDocumentTypePreferences();
+    self.stateProgramMappingForScopeOfWork = self.commonService.getScopeOfWorkPreferences();
+    for(var i=0;i<stateProgramValues.length;i++){
+      if(stateProgramValues[i].enable)
+      self.stateProgram.push(stateProgramValues[i]);
+    }
+  }
+
+})
+
   this.commonService.notifyObservable$.subscribe((treeNode) => {
     if(treeNode !== null && treeNode !== undefined && treeNode.type === "fetchSubFolders"){
     if(treeNode.node.label !== null){

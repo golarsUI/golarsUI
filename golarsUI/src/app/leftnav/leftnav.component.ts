@@ -57,19 +57,21 @@ export class LeftnavComponent implements OnInit {
     }
 
     nodeRightClickSelect(event) {
+        this.items = [];
         this.selectedNode = event.node;
         this.selectedItemParentNode = event.node.parent;
-        if(event.node.id == GolarsConstants.ROOTID){
-            this.items = [
-                { label: 'New Folder', command: (event) => this.createNewFolder() }
-            ];  
-        }else{
-            this.items = [
-                { label: 'Import', command: (event) => this.ImportFile() },
-                { label: 'New Folder', command: (event) => this.createNewFolder() },
-                { label: 'Delete Folder', command: (event) => this.deleteFolder(event) }
-            ];
+        this.items = [
+            { label: 'New Folder', command: (event) => this.createNewFolder() }
+        ]; 
+        if(event.node.id != GolarsConstants.ROOTID){
+        if(this.commonService.isAdmin() ){
+            this.items.push({ label: 'Import', command: (event) => this.ImportFile() });
+            this.items.push({ label: 'Delete Folder', command: (event) => this.deleteFolder(event) });
+           
+        } else{
+            this.items.push({ label: 'Import', command: (event) => this.ImportFile() });
         }
+    }
         this.selectedNode.expanded = true;
         this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
         this.isDocumentsRequired

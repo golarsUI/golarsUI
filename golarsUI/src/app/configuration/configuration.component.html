@@ -1,13 +1,9 @@
 <h4>Configuration</h4>
-
 <div class="ui-g">
-
-  <div class="ui-g-2"></div>
-  <div class="ui-g-4">
-    <div>
-      <label for="firstName">Select Option to add Picklist</label>
-    </div>
-    <p-dropdown [options]="dropdownOptions" [(ngModel)]="dropDownValue" name="dropdownOptions" [style]="{'width':'300px'}" (onChange)="changeTextAreaHeading($event)"></p-dropdown>
+    <div class="ui-g-6">
+<div class="alert alert-success" [hidden]='!showSuccessMessage'>
+    <strong>Success!</strong> {{successMessage}}
+  </div>
   </div>
 </div>
 <div class="ui-g">
@@ -15,7 +11,27 @@
   <div class="ui-g-2"></div>
   <div class="ui-g-4">
     <div>
-      <label for="firstName">{{textAreaTitle}}</label>
+      <label >Select Option to add Picklist</label>
+    </div>
+    <p-dropdown [options]="dropdownOptions" [(ngModel)]="dropDownValue" name="dropdownOptions" [style]="{'width':'300px'}" (onChange)="changeTextAreaHeading($event)"></p-dropdown>
+  </div>
+  <div class="ui-g-4">
+      <div>
+        <label >Login Page Content URL:</label>
+      </div>
+      <input type="text"  name="loginContentURL" [(ngModel)]="loginContentURL" class="form-control"/>
+     <div class="ui-g-3 pull-right">
+          <button type="button" class="btn btn-primary" [ngClass]="{disabled : loginContentURL?.trim().length == 0}"  (click)="saveLoginContentURL()">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="loginContentURL=''">Reset</button>
+        </div>
+    </div>
+</div>
+<div class="ui-g">
+
+  <div class="ui-g-2"></div>
+  <div class="ui-g-4">
+    <div>
+      <label >{{textAreaTitle}}</label>
     </div>
     <textarea [rows]="10" [cols]="30" [(ngModel)]="pickListValue" style="height:120px !important;width:300px !important;resize: none"
       pInputTextarea placeholder="Enter Values to be added in separate line"></textarea>
@@ -80,7 +96,7 @@
     <div class="ui-g">
       <div class="ui-g-9"></div>
       <div class="ui-g-3 pull-right">
-        <button type="button" class="btn btn-primary" (click)="addToList()">Save</button>
+        <button type="button" class="btn btn-primary"  (click)="saveSateProgramPreferences()">Save</button>
         <button type="button" class="btn btn-secondary">Cancel</button>
       </div>
 
@@ -91,7 +107,7 @@
 
 
 <div *ngIf="dropDownValue=='Document Type'">
-  <p-table [columns]="docTypeTableCols" [value]="docTypeTableValues" [paginator]="true" [rows]="15">
+  <p-table [columns]="docTypeTableCols" [value]="docTypeTableValues" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th width="200px">StateProgram</th>
@@ -109,7 +125,7 @@
           Document Type
         </td>
         <td *ngFor="let col of columns">
-          <div [ngClass]="tableData[col.field].enable === true ? 'enable-text' : 'disable-text'" (click)="tdClickced(tableData[col.field],$event)"
+          <div [ngClass]="tableData[col.field].enable === true ? 'enable-text' : 'disable-text'" (click)="docTypeTdClickced(tableData[col.field],tableData,col.field,$event)"
             [title]="getTableTooltip(tableData[col.field].enable)">{{tableData[col.field].label}}</div>
         </td>
         <td style="text-align: center">
@@ -121,7 +137,7 @@
   <div class="ui-g">
     <div class="ui-g-11"></div>
     <div class="ui-g-1 pull-right">
-      <button type="button" class="btn btn-primary" (click)="addToList()">Save</button>
+      <button type="button" class="btn btn-primary"  (click)="saveSateProgramPreferences()">Save</button>
       <button type="button" class="btn btn-secondary">Cancel</button>
     </div>
 
@@ -130,7 +146,7 @@
 
 
 <div *ngIf="dropDownValue=='Scope of Work'">
-  <p-table [columns]="docTypeTableCols" [value]="scopeOfWorkTableValues" [paginator]="true" [rows]="15">
+  <p-table [columns]="docTypeTableCols" [value]="scopeOfWorkTableValues" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th width="200px">StateProgram</th>
@@ -148,7 +164,7 @@
           Document Type
         </td>
         <td *ngFor="let col of columns">
-          <div [ngClass]="tableData[col.field].enable === true ? 'enable-text' : 'disable-text'" (click)="tdClickced(tableData[col.field],$event)"
+          <div [ngClass]="tableData[col.field].enable === true ? 'enable-text' : 'disable-text'" (click)="docTypeTdClickced(tableData[col.field],tableData,col.field,$event)"
             [title]="getTableTooltip(tableData[col.field].enable)">{{tableData[col.field].label}}</div>
         </td>
         <td style="text-align: center">
@@ -160,7 +176,7 @@
   <div class="ui-g">
     <div class="ui-g-11"></div>
     <div class="ui-g-1 pull-right">
-      <button type="button" class="btn btn-primary" (click)="addToList()">Save</button>
+      <button type="button" class="btn btn-primary" (click)="saveSateProgramPreferences()">Save</button>
       <button type="button" class="btn btn-secondary">Cancel</button>
     </div>
 

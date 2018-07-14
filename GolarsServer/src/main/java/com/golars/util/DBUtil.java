@@ -291,7 +291,7 @@ public class DBUtil {
 		List lst = null;
 		try {
 			Query query = null;
-			if (isadmin || !folderId.equalsIgnoreCase("1000"))
+			if (isadmin && !folderId.equalsIgnoreCase("1000"))
 				query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId", Folder.class);
 			else {
 				query = session.createNativeQuery(
@@ -464,6 +464,49 @@ public class DBUtil {
 		}
 		// User user = (User) session.get(User.class, username);
 
+	}
+
+	public List<Folder> retrieveSearchResults(String searchString, String username, boolean isadmin) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		Query query = null;
+		List<Folder> lst = null;
+		try {
+			if (isadmin){
+				query = session.createNativeQuery("SELECT * FROM folder f where f.isFolder=false and (f.details LIKE :details or f.name LIKE :name)", Folder.class);
+			query.setString("details", "%" + searchString + "%");
+			query.setString("name", "%" + searchString + "%");
+			}
+			else {
+				query = session.createNativeQuery(
+						"SELECT * FROM folder f where f.isFolder=false and userName LIKE :userName and (f.details LIKE :details or f.name LIKE :name)",
+						Folder.class);
+				query.setString("userName", "%" + username + "&&&***&&&%");
+				query.setString("details", "%" + searchString + "%");
+				query.setString("name", "%" + searchString + "%");
+			}
+
+//			query.setBoolean("isFolder", true);
+			lst = query.list();
+//			if (!isadmin) {
+//				for (Folder folderObj : lst) {
+//					if (folderObj.getId() != 1000) {
+//						List<Folder> childList = retrieveSpecificFolders(folderObj.getParentid() + folderObj.getId(),
+//								username, true, false);
+//						folderObj.setChildren(childList);
+//					}
+//				}
+//			}
+			trx.commit();
+			session.close();
+		} catch (Exception e) {
+			System.out.println("Exception occred while retrieveAllFolders : " + e.getMessage());
+			if (trx != null)
+				trx.rollback();
+			if (session != null)
+				session.close();
+		}
+		return lst;
 	}
 
 }

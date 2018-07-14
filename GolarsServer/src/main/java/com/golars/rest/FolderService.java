@@ -103,15 +103,15 @@ public class FolderService {
 		return Response.status(200).entity(result).build();
 	}
 
-	// @GET
-	// @Path("/documentdetails")
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public Response retrieveDocumentDetailsr(@QueryParam("documentName")
-	// String documentName) {
-	//
-	// String properties =new DBUtil().fetchDocDetails(documentName);
-	//
-	// return Response.status(201).entity(properties).build();
-	// }
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response fetchSearchResults(@QueryParam("searchString") String searchString, @QueryParam("username") String username,
+			@QueryParam("isAdmin") boolean isadmin) {
+		List<Folder> folderList = new ArrayList<Folder>();
+			folderList = new DBUtil().retrieveSearchResults(searchString,username, isadmin);
+
+		return Response.status(200).entity(folderList).build();
+	}
 
 }

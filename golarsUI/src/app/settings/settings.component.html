@@ -29,6 +29,11 @@
       <p-checkbox name="admingroup" value="fecilityName" label="Facility Name	" [(ngModel)]="adminSelectedColumns" inputId="admin_selectedCities"></p-checkbox>
     </div>
     <div class="ui-g-12">
+      <p-checkbox name="admingroup" value="fid" label="FID" [(ngModel)]="adminSelectedColumns"
+        inputId="admin_fid"></p-checkbox>
+    </div>
+    
+    <div class="ui-g-12">
       <p-checkbox name="admingroup" value="docDate" label="Document Date" [(ngModel)]="adminSelectedColumns" inputId="admin_docDate"></p-checkbox>
     </div>
     <div class="ui-g-12">
@@ -57,6 +62,10 @@
     </div>
     <div class="ui-g-12">
       <p-checkbox name="nonadmingroup" value="fecilityName" label="Facility Name	" [(ngModel)]="nonadminSelectedColumns" inputId="non_admin_selectedCities"></p-checkbox>
+    </div>
+    <div class="ui-g-12">
+      <p-checkbox name="nonadmingroup"  value="fid" label="FID" [(ngModel)]="nonadminSelectedColumns"
+        inputId="admin_fid"></p-checkbox>
     </div>
     <div class="ui-g-12">
       <p-checkbox name="nonadmingroup" value="docDate" label="Document Date" [(ngModel)]="nonadminSelectedColumns" inputId="non_admin_docDate"></p-checkbox>

@@ -28,6 +28,7 @@ export class ConfigurationComponent implements OnInit {
   stateProgramproeprties = [];
   preferencesData = [];
   loginContentURL;
+  selectedIndex:number=1;
   ngOnInit() {
 
     this.generateConfigurationData();
@@ -126,6 +127,12 @@ export class ConfigurationComponent implements OnInit {
   }
   changeTextAreaHeading($event) {
     this.textAreaTitle = "Add Picklist for " + $event.value;
+    if($event.value == 'State Program')
+    this.selectedIndex = 1;
+    if($event.value == 'Document Type')
+    this.selectedIndex = 2;
+    if($event.value == 'Scope of Work')
+    this.selectedIndex = 3;
     this.pickListValue = "";
     console.log($event)
     this.  showSuccessMessage = false;

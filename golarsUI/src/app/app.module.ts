@@ -33,7 +33,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { SettingsComponent } from './settings/settings.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import {InputTextareaModule} from 'primeng/inputtextarea';
-
+import {TabViewModule} from 'primeng/tabview';
 @NgModule({
   declarations: [
 
@@ -66,7 +66,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     FileUploadModule,
     MultiSelectModule,
     ClipboardModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TabViewModule
     
   ],
   

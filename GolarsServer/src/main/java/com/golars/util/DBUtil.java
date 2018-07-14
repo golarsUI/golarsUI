@@ -209,7 +209,7 @@ public class DBUtil {
 				for (Folder folderObj : lst) {
 					if (folderObj.getId() != 1000) {
 						List<Folder> childList = retrieveSpecificFolders(folderObj.getParentid() + folderObj.getId(),
-								username, true, false);
+								username, isadmin, false);
 						folderObj.setChildren(childList);
 					}
 				}

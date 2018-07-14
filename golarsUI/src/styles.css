@@ -3,7 +3,7 @@
     width: 100%;
 }
 .nav-background-color{
-     background-color: #4870B8 !important; 
+     background-color: #89E093 !important; 
 }
 .nav-link.disabled{
     color:darkgray !important;
@@ -73,15 +73,39 @@
     border: 1px solid transparent !important;
 }
 .full-height-width-tree{
-    width: 100%;
+    width: 100%;    
     height: calc( 100% - 60px);
 }
 .ui-tree .ui-treenode-icon{
-    color:#4870B8 !important;
+    color:#89E093 !important;
 }
-.folder-icon-color{
-    color:#4870B8 !important;
+
+.ui-state-highlight{
+    background:#89E093 !important;
 }
 .ui-table .ui-table-tbody > tr > td{
     border: 1px solid transparent;
+}
+.nag-bar-icon-color{
+    color: #FF8C86 !important;
+}
+.search-icon-color{
+    background: #6A70AE !important;
+    border: #6A70AE !important
+}
+.fa{
+    color:#89E093;  
+} 
+.ui-table .ui-table-tbody > tr.ui-state-highlight .fa{
+    color: white !important;
+}
+.btn{
+    background: #6A70AE !important;
+    border: #6A70AE !important   
+}
+.ui-button{
+    background: #6A70AE !important;
+    border: #6A70AE !important;
+    height:30px !important;   
+
 }

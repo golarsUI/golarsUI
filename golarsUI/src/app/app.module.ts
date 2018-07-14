@@ -48,8 +48,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     UserComponent,
     ChangepasswordComponent,
     SettingsComponent,
-    ConfigurationComponent,
-    
+    ConfigurationComponent
   ],
   imports: [
     routing,

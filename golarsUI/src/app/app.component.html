@@ -9,12 +9,12 @@
       </li>
       <li class="nav-item">
         <a id="navbar_createNew" class="nav-link"  style="cursor: pointer;" [ngClass]="{disabled :  !isNodeSelected}">Create Folder
-          <i class="fa fa-plus" aria-hidden="true"></i>
+          <i class="fa fa-plus nag-bar-icon-color" aria-hidden="true"></i>
         </a>
       </li>
       <li class="nav-item">
         <a id="navbar_import" class="nav-link"  style="cursor: pointer;" [ngClass]="{disabled : checkImportDisabled() }">Import
-          <i class="fa fa-download" aria-hidden="true"></i>
+          <i class="fa fa-download nag-bar-icon-color" aria-hidden="true"></i>
         </a>
       </li>
       <li class="nav-item">
@@ -39,7 +39,7 @@
         <span style="padding:5px;color:white">Welcome, {{fullName}}</span>
       <form>
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"(click)="isNodeSelected=false">Search</button>
+        <button class="btn btn-primary search-icon-color my-2 my-sm-0" type="submit"(click)="isNodeSelected=false">Search</button>
       </form>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">

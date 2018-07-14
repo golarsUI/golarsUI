@@ -121,7 +121,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-tableData let-columns="columns" let-rowIndex="rowIndex">
       <tr>
-        <td *ngIf=" (rowIndex % 15) == 0 " [attr.rowspan]="15" style="vertical-align: top;font-weight: bold;background-color: #CCCCCC">
+        <td *ngIf=" (rowIndex % 10) == 0 " [attr.rowspan]="10" style="vertical-align: top;font-weight: bold;background-color: #CCCCCC">
           Document Type
         </td>
         <td *ngFor="let col of columns">
@@ -160,7 +160,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-tableData let-columns="columns" let-rowIndex="rowIndex">
       <tr>
-        <td *ngIf=" (rowIndex % 15) == 0 " [attr.rowspan]="15" style="vertical-align: top;font-weight: bold;background-color: #CCCCCC">
+        <td *ngIf=" (rowIndex % 10) == 0 " [attr.rowspan]="10" style="vertical-align: top;font-weight: bold;background-color: #CCCCCC">
           Document Type
         </td>
         <td *ngFor="let col of columns">

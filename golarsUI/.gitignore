@@ -17,6 +17,10 @@
 *.launch
 .settings/
 *.sublime-workspace
+.history
+.golarsUI
+.dist
+*.gitignore
 
 # IDE - VSCode
 .vscode/*

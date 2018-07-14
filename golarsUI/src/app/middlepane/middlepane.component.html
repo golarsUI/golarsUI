@@ -31,7 +31,7 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [pSelectableRow]="rowData" >
                 <td width="100px" >
-                    <span *ngIf="rowData['folder']==true"><i class="fa fa-folder folder-icon-color" style="padding-right: 10px" ></i>{{rowData['label']}}</span>
+                    <span *ngIf="rowData['folder']==true"><i class="fa fa-folder"   style="padding-right: 10px" ></i>{{rowData['label']}}</span>
                     <span *ngIf="rowData['folder']==false" >{{rowData['label']}}</span>
                 </td>
                 <td *ngFor="let col of columns" width="100px" >

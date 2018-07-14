@@ -8,13 +8,20 @@ export class FolderService {
 
   constructor(private http: HttpClient) { }
 
-  fetchFolders(id: string,parentid: string, docRequired: boolean, username: string,isadmin:boolean) {
-      return this.http.get<any>(URLConstants.FOLDER_URL,this.getOptions(id,parentid,docRequired,username,isadmin))
+  searchResults(searchString: string,username: string,isadmin:boolean) {
+      return this.http.get<any>(URLConstants.SEARCH_URL,this.getSearchOptions(searchString,username,isadmin))
           .map(folder => {
               
               return folder;
           });
   }
+  fetchFolders(id: string,parentid: string, docRequired: boolean, username: string,isadmin:boolean) {
+    return this.http.get<any>(URLConstants.FOLDER_URL,this.getOptions(id,parentid,docRequired,username,isadmin))
+        .map(folder => {
+            
+            return folder;
+        });
+}
 
   fetchDocumentDetails(documentName) {
     return this.http.get<any>(URLConstants.DOCUMENT_DETAILS_URL,this.getDocOptions(documentName))
@@ -79,5 +86,10 @@ saveTablePreferences(data) {
     var httpheaders = new HttpHeaders();
     httpheaders = httpheaders.set('Content-Type', 'application/json').set('Accept','application/json');
     return httpheaders;
+  }
+  private getSearchOptions(searchString,username,isadmin) {
+    return {
+      params: new HttpParams().set(GolarsConstants.SEARCH_STRING,searchString).set(GolarsConstants.USERNAME,username).set(GolarsConstants.ISADMIN,isadmin)
+    };
   }
 }

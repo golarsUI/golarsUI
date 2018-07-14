@@ -23,7 +23,7 @@ export class RightpanelComponent implements OnInit {
   ngOnInit() {
 
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "fetchSubFolders"){
+      if(treeNode !== null && treeNode.type === "fetchSubFolders"){
         this.docData=[];
         this.folderSelected=true;
       }

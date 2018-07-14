@@ -14,5 +14,6 @@ export class GolarsConstants {
     public static SPLIT_STRING="&$&$&$"
     public static DOWNLOAD_DOC_URL="/golars/rest/import/";
     public static LOGIN_CONTENT_URL ="loginContentURL";
+    public static SEARCH_STRING = "searchString";
 
 }

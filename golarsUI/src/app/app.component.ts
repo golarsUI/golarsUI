@@ -17,6 +17,7 @@ export class AppComponent implements OnInit{
   user;
   fullName;
   isAdmin=false;
+  searchString;
   constructor( private router: Router,private authenticationService: AuthenticationService,private commonService: CommonService){
 console.log("constructor")
   }
@@ -120,5 +121,15 @@ $("#navbar_delete_folder").on("click",function(e){
     else
       return !this.isNodeSelected
   
+  }
+
+  checkSearchEnabled(){
+    if(this.searchString!=null && this.searchString.trim().length != 0)
+    return false;
+    return true;
+  }
+  fetchSearchResults(){
+    this.commonService.notify({ type: 'fetchSubFolders', node: "", isDocumentsRequired: true });
+    this.commonService.notify({ type: 'fetchSearchResults', searchString: this.searchString});
   }
 }

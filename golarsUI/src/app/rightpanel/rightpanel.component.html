@@ -54,7 +54,7 @@
   <div class="ui-g" *ngIf="!folderSelected">
       <div class="ui-g-4">URL</div>
       <div class="ui-g-7 wrap-text">{{docURL}}</div>
-      <div class="ui-g-1" [ngStyle]="{'color':copyclicked === true ? 'green' : 'gray' }"> <i (click)="copyclicked=true;copyButtontitle='Copied'" class="fa fa-clipboard" aria-hidden="true"  ngxClipboard [cbContent]="docURL" style="cursor: pointer;" [title]="copyButtontitle"></i></div>
+      <div class="ui-g-1" > <i [ngStyle]="{'color':copyclicked === true ? '#FF8C86' : '#89E093' }" (click)="copyclicked=true;copyButtontitle='Copied'" class="fa fa-clipboard" aria-hidden="true"  ngxClipboard [cbContent]="docURL" style="cursor: pointer;" [title]="copyButtontitle"></i></div>
     </div>
   
 

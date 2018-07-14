@@ -38,8 +38,9 @@
     <div class="form-inline my-2 my-lg-0">
         <span style="padding:5px;color:white">Welcome, {{fullName}}</span>
       <form>
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-primary search-icon-color my-2 my-sm-0" type="submit"(click)="isNodeSelected=false">Search</button>
+        <input type="text"  class="form-control" name="searchString" [(ngModel)]="searchString" />
+     
+        <button class="btn btn-primary search-icon-color"  [ngClass]="{disabled : checkSearchEnabled() }" (click)="fetchSearchResults()" >Search</button>
       </form>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">

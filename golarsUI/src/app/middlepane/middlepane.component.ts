@@ -42,7 +42,21 @@ export class MiddlepaneComponent implements OnInit {
         this.leftMenuSelectedNode = treeNode;
         this.fetchSubFolders();
 
+      }else if(treeNode !== null && treeNode.searchString !== undefined && treeNode.type === "fetchSearchResults"){
+        this.folderService.searchResults(treeNode.searchString,this.commonService.getUserName(),this.commonService.isAdmin()).subscribe(
+          data => {
+  
+            this.getColumns();
+            data = this.constructFolderFirst(data);
+            this.folderData = this.constructTableData(data);
+            this.folderDetailstreeLoading = false;
+            this.treeLoadingProgress = false;
+          },
+          error => {
+            console.log(error);
+          });
       }
+
     });
   }
   fetchSubFolders() {
@@ -164,7 +178,10 @@ export class MiddlepaneComponent implements OnInit {
       }
     }
       let result = null;
-
+        if(data1.folder && !data2.folder)
+        return -1;
+        if(data2.folder && !data1.folder)
+        return 1;
       if (value1 == null && value2 != null)
         result = -1;
       else if (value1 != null && value2 == null)
@@ -172,7 +189,7 @@ export class MiddlepaneComponent implements OnInit {
       else if (value1 == null && value2 == null)
         result = 0;
       else if (typeof value1 === 'string' && typeof value2 === 'string')
-        result = value1.localeCompare(value2);
+        result = (data1.folder-data2.folder) ||value1.localeCompare(value2);
       else
         result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
 

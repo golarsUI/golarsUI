@@ -291,7 +291,7 @@ public class DBUtil {
 		List lst = null;
 		try {
 			Query query = null;
-			if (!folderId.equalsIgnoreCase("1000"))
+			if (isadmin || !folderId.equalsIgnoreCase("1000"))
 				query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId", Folder.class);
 			else {
 				query = session.createNativeQuery(

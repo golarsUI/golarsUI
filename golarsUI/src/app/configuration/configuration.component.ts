@@ -374,6 +374,12 @@ export class ConfigurationComponent implements OnInit {
         console.log(error);
       });
   }
+  checkAddPanelVisible($event){
+    this.selectedIndex =$event.index;
+    if(this.selectedIndex>0)
+    this.dropDownValue = this.dropdownOptions[this.selectedIndex-1].value
+  }
 }
+
 
 

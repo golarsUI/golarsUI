@@ -1,69 +1,14 @@
 <h3>Configuration</h3>
 <div class="ui-g">
-  <div class="ui-g-6">
-    <div class="alert alert-success" [hidden]='!showSuccessMessage'>
-      <strong>Success!</strong> {{successMessage}}
-    </div>
-  </div>
-</div>
-<div class="ui-g">
-
-
-  <div class="ui-g-3">
     <div class="ui-g-6">
-      <label>Select Option to add Picklist</label>
-    </div>
-    <div class="ui-g-6">
-      <p-dropdown [options]="dropdownOptions" [(ngModel)]="dropDownValue" name="dropdownOptions" (onChange)="changeTextAreaHeading($event)"></p-dropdown>
-    </div>
-  </div>
-
-</div>
-<div class="ui-g">
-
-  <div class="ui-g-3">
-    <div class="ui-g-6">
-      <label>{{textAreaTitle}}</label>
-    </div>
-    <div class="ui-g-6">
-      <textarea [rows]="10" [cols]="30" [(ngModel)]="pickListValue" style="height:120px !important;width:200px !important;resize: none"
-        pInputTextarea placeholder="Enter Values to be added in separate line"></textarea>
-      <div class="ui-g-6">
+      <div class="alert alert-success" [hidden]='!showSuccessMessage'>
+        <strong>Success!</strong> {{successMessage}}
       </div>
-
-    </div>
-   
-</div>
-<div class="ui-g-3"></div>
-<div class="ui-g-3">
-    <div class="ui-g-9">
-      <fieldset class="customLegend row">
-        <legend>Legend</legend>
-        <div class="enable-text" style="border: 1px solid #6A70AE;text-align: center;margin:10px">
-          Excluded value
-        </div>
-        <div class="disable-text" style="border: 1px solid #6A70AE ;text-align: center; margin:10px  ">
-          Included value
-        </div>
-      </fieldset>
-
     </div>
   </div>
-</div>
-    <div class="ui-g">
-      <div class="ui-g-3">
-        <div class="ui-g  pull-right">
-          <div class="ui-g-12 " style="padding-right:35px;">
-            <button type="button" class="btn btn-primary" [ngClass]="{disabled : pickListValue?.trim().length == 0}" (click)="addToList()">Add</button>
-            <button type="button" class="btn btn-secondary" (click)="pickListValue=''">Reset</button>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-    <p-tabView [activeIndex]="selectedIndex">
+    <p-tabView [activeIndex]="selectedIndex" (onChange)="checkAddPanelVisible($event)">
       <p-tabPanel header="Login Content">
+          <div class="ui-g">
         <div class="ui-g-7">
           <div>
             <label>Login Page Content URL:</label>
@@ -76,6 +21,7 @@
                 <button type="button" class="btn btn-secondary" (click)="loginContentURL=''">Reset</button>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </p-tabPanel>
@@ -195,3 +141,62 @@
         <!-- </div>     -->
       </p-tabPanel>
     </p-tabView>
+    {{selectedIndex}}
+<div *ngIf="selectedIndex > 0">
+
+    <div class="ui-g">
+    
+    
+      <div class="ui-g-3">
+        <div class="ui-g-6">
+          <label>Select Option to add Picklist</label>
+        </div>
+        <div class="ui-g-6">
+          <p-dropdown [options]="dropdownOptions" [(ngModel)]="dropDownValue" name="dropdownOptions" (onChange)="changeTextAreaHeading($event)"></p-dropdown>
+        </div>
+      </div>
+    
+    </div>
+    <div class="ui-g">
+    
+      <div class="ui-g-3">
+        <div class="ui-g-6">
+          <label>{{textAreaTitle}}</label>
+        </div>
+        <div class="ui-g-6">
+          <textarea [rows]="10" [cols]="30" [(ngModel)]="pickListValue" style="height:120px !important;width:200px !important;resize: none"
+            pInputTextarea placeholder="Enter Values to be added in separate line"></textarea>
+          <div class="ui-g-6">
+          </div>
+    
+        </div>
+       
+    </div>
+    <div class="ui-g-3"></div>
+    <div class="ui-g-3">
+        <div class="ui-g-9">
+          <fieldset class="customLegend row">
+            <legend>Legend</legend>
+            <div class="enable-text" style="border: 1px solid #6A70AE;text-align: center;margin:10px">
+              Excluded value
+            </div>
+            <div class="disable-text" style="border: 1px solid #6A70AE ;text-align: center; margin:10px  ">
+              Included value
+            </div>
+          </fieldset>
+    
+        </div>
+      </div>
+    </div>
+        <div class="ui-g">
+          <div class="ui-g-3">
+            <div class="ui-g  pull-right">
+              <div class="ui-g-12 " style="padding-right:35px;">
+                <button type="button" class="btn btn-primary" [ngClass]="{disabled : pickListValue?.trim().length == 0}" (click)="addToList()">Add</button>
+                <button type="button" class="btn btn-secondary" (click)="pickListValue=''">Reset</button>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+        </div>

@@ -58,6 +58,9 @@ export class RightpanelComponent implements OnInit {
   constructURL(){
   this.docURL = location.origin+GolarsConstants.DOWNLOAD_DOC_URL+ encodeURI(this.docName);
   }
+  getDocURL(){
+    return this.docURL+"#zoom=75"
+  }
   getDocPropertiesValue(){
     if(this.docName == null) return "";
     return "File properties of "+this.docName;

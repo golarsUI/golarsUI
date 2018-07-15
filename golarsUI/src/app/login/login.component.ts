@@ -3,6 +3,8 @@ import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
+import { FolderService } from '../services/folder.service';
+import { GolarsConstants } from '../constants/golarsconstants';
 
 @Component({
   selector: 'golars-login',
@@ -13,9 +15,10 @@ export class LoginComponent implements OnInit {
   model: any = {};
   cols;
 loginData:string=""
+loginContentURL=GolarsConstants.DEFAULT_LOGIN_CONTENT_URL;
 returnUrl: string;
   constructor(private route: ActivatedRoute,
-    private router: Router,
+    private router: Router, private folderService:FolderService,
     private authenticationService: AuthenticationService) { }
 loginErrorMessage=null;
   ngOnInit() {
@@ -25,12 +28,24 @@ loginErrorMessage=null;
       // get return url from route parameters or default to '/'
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
- 
+      this.fetchLoginPreferences(true);
+    }
+    fetchLoginPreferences(admin){
+      this.folderService.fetchTablePreferences(true)
+      .subscribe(
+          data => {
+              for(var i=0;i<data.length;i++){
+                  if(data[i].key == GolarsConstants.LOGIN_CONTENT_URL){
+                  this.loginContentURL= data[i].value;
+                  break;
+                }
+                } 
+                    },
+          error => {
+              console.log(error);
+          });
   }
-  tdClickced(car,$event){
-    console.log(car,$event)
-    car.enable= !car.enable;
-  }
+
   login() {
     this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(

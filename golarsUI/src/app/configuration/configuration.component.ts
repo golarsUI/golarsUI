@@ -32,6 +32,7 @@ export class ConfigurationComponent implements OnInit {
   ngOnInit() {
 
     this.generateConfigurationData();
+    this.loginContentURL = this.commonService.getLoginContentURL();
   }
   generateConfigurationData() {
     this.docTypeTableCols = [];
@@ -360,7 +361,7 @@ export class ConfigurationComponent implements OnInit {
   }
   saveLoginContentURL(){
     this.preferencesData=[];
-    this.preferencesData.push({ key: "loginContentURL", value: JSON.stringify(this.loginContentURL) });
+    this.preferencesData.push({ key: "loginContentURL", value: this.loginContentURL });
     this.folderService.saveTablePreferences(this.preferencesData)
     .subscribe(
       data => {

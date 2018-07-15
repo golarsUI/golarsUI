@@ -15,5 +15,6 @@ export class GolarsConstants {
     public static DOWNLOAD_DOC_URL="/golars/rest/import/";
     public static LOGIN_CONTENT_URL ="loginContentURL";
     public static SEARCH_STRING = "searchString";
+    public static DEFAULT_LOGIN_CONTENT_URL = "https://golars.com";
 
 }

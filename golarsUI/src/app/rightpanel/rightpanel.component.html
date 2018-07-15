@@ -53,9 +53,20 @@
   </div>
   <div class="ui-g" *ngIf="!folderSelected">
       <div class="ui-g-4">URL</div>
-      <div class="ui-g-7 wrap-text">{{docURL}}</div>
+      <div class="ui-g-7 wrap-text"><a href="#" data-toggle="modal"  data-target="#contentModal">{{docURL}}</a></div>
       <div class="ui-g-1" > <i [ngStyle]="{'color':copyclicked === true ? '#FF8C86' : '#89E093' }" (click)="copyclicked=true;copyButtontitle='Copied'" class="fa fa-clipboard" aria-hidden="true"  ngxClipboard [cbContent]="docURL" style="cursor: pointer;" [title]="copyButtontitle"></i></div>
     </div>
   
 
 </div>
+<!-- Modal -->
+<div class="modal fade" id="contentModal" role="dialog" >
+    <div class="modal-dialog modal-lg" style="height:90%">
+      <div class="modal-content" style="height:100%">
+        <div class="modal-body" style="height:100%">
+            <iframe [src]="getDocURL() | safe"  width="100%"  style="border: none;height: calc(100% - 5px)"></iframe>
+        </div>
+       
+      </div>
+    </div>
+  </div>

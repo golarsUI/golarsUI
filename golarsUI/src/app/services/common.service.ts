@@ -65,6 +65,12 @@ export class CommonService {
 
       return ImportFieldValues.stateProgramMappingForScopeOfWork;
   }
+  getLoginContentURL(){
+    if(localStorage.getItem("loginContentURL")!==null && localStorage.getItem("loginContentURL")!=="")
+    return localStorage.getItem("loginContentURL");
 
+      return GolarsConstants.DEFAULT_LOGIN_CONTENT_URL;
+
+  }
  
 }

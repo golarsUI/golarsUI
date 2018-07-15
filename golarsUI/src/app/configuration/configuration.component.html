@@ -152,7 +152,7 @@
           <label>Select Option to add Picklist</label>
         </div>
         <div class="ui-g-6">
-          <p-dropdown [options]="dropdownOptions" [(ngModel)]="dropDownValue" name="dropdownOptions" (onChange)="changeTextAreaHeading($event)"></p-dropdown>
+          <p-dropdown [options]="dropdownOptions" [(ngModel)]="dropDownValue" name="dropdownOptions" (onChange)="changeTextAreaHeading($event)" [style]="{'width':'200px'}"></p-dropdown>
         </div>
       </div>
     
@@ -177,10 +177,10 @@
         <div class="ui-g-9">
           <fieldset class="customLegend row">
             <legend>Legend</legend>
-            <div class="enable-text" style="border: 1px solid #6A70AE;text-align: center;margin:10px">
+            <div class="enable-text" style="border: 1px solid #6A70AE;text-align: center;margin:10px;width:90%">
               Excluded value
             </div>
-            <div class="disable-text" style="border: 1px solid #6A70AE ;text-align: center; margin:10px  ">
+            <div class="disable-text" style="border: 1px solid #6A70AE ;text-align: center; margin:10px;width:90%">
               Included value
             </div>
           </fieldset>

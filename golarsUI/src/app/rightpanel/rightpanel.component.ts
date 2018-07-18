@@ -31,6 +31,7 @@ export class RightpanelComponent implements OnInit {
       }
       if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "documentDetails" && treeNode.node.folder === false)){
         this.copyclicked=false;
+        this.docID = this.getDocumentId(treeNode.node);
         this.copyButtontitle="Copy URL";
         this.documentProperties = true;
         this.folderSelected=false;
@@ -67,5 +68,7 @@ export class RightpanelComponent implements OnInit {
     if(this.docName == null) return "";
     return "File properties of "+this.docName;
   }
- 
+  getDocumentId(node){
+    return node.parentid.substring(node.parentid.length-4)
+  }
   }

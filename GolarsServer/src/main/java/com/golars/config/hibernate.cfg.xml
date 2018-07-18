@@ -12,6 +12,7 @@
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="show_sql">true</property>
 		<property name="hbm2ddl.auto">update</property>
+		<property name="connection.pool_size">100</property>
 		<mapping resource="com/golars/config/User.hbm.xml" />
 		<mapping resource="com/golars/config/document.hbm.xml" />
 		<mapping resource="com/golars/config/Folder.hbm.xml" />

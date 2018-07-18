@@ -10,7 +10,7 @@
   <property name="password" column="password" type="java.lang.String" />
   <property name="firstName" column="firstName"  type="java.lang.String"/>	
   <property name="lastName" column="lastName"  type="java.lang.String"/>
-  <property name="emailAdress" column="emailAdress"  type="java.lang.String"/>
+  <property name="emailAddress" column="emailAddress"  type="java.lang.String"/>
   <property name="admin" column="isAdmin" type="java.lang.Boolean"/>
   <property name="newlyCreated" column="newlyCreated" type="java.lang.Boolean"/>
   

@@ -6,6 +6,7 @@ public class ChangePassword{
 	private String username;
 	private String password;
 	private String updatedPassword;
+	private boolean reset = false;
 	public String getUsername() {
 		return username;
 	}
@@ -24,6 +25,11 @@ public class ChangePassword{
 	public void setUpdatedPassword(String updatedPassword) {
 		this.updatedPassword = updatedPassword;
 	}
-	
+	public void setReset(boolean reset) {
+		this.reset = reset;
+	}
+	public boolean isReset() {
+		return reset;
+	}
 	
 	}

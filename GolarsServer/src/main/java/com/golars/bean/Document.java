@@ -1,12 +1,14 @@
 package com.golars.bean;
 
-public class Document {
+import java.io.Serializable;
+
+public class Document implements Serializable{
 
 	private String filename;
 	private byte[] content;
 
 	private String parentId;
-	private String folderId;
+	private int folderId;
 	public String getFilename() {
 		return filename;
 	}
@@ -23,11 +25,11 @@ public class Document {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-	public String getFolderId() {
-		return folderId;
-	}
-	public void setFolderId(String folderId) {
+	public void setFolderId(int folderId) {
 		this.folderId = folderId;
+	}
+	public int getFolderId() {
+		return folderId;
 	}
 	public void setFilename(String filename) {
 		this.filename = filename;

@@ -4,7 +4,7 @@ public class User {
 
 	private String firstName;
 	private String lastName;
-	private String emailAdress;
+	private String emailAddress;
 	private String username;
 	private String password;
 	private boolean admin;
@@ -27,12 +27,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getEmailAdress() {
-		return emailAdress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
-
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
 	public String getUsername() {

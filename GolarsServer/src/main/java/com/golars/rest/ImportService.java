@@ -47,10 +47,10 @@ public class ImportService {
 		return Response.status(200).entity(result).build();
 	}
 
-	@Path("{id}")
+	@Path("{id}/{filename}")
 	@GET
-	public Response getPDF(@PathParam("id") String filename) throws Exception {
-		Document doc = new DBUtil().retrieveDocument(filename);
+	public Response getPDF(@PathParam("id") int id,@PathParam("filename") String filename) throws Exception {
+		Document doc = new DBUtil().retrieveDocument(id,filename);
 
 		return Response.ok(doc.getContent(), generateContentType(doc.getFilename())) // TODO:
 																						// set

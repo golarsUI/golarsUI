@@ -24,11 +24,11 @@ public class DBUtil {
 			User user = (User) session.get(User.class, username);
 			password = new String(Base64.getEncoder().encode(password.getBytes()));
 			if (password.equals(user.getPassword())) {
-				System.out.println("User: " + user.toString());
+				trx.commit();
+				session.close();
 				return user;
 			}
-			trx.commit();
-			session.close();
+
 		} catch (Exception exception) {
 			System.out.println("Exception occred while login: " + exception.getMessage());
 			if (trx != null)
@@ -42,13 +42,13 @@ public class DBUtil {
 		return null;
 	}
 
-	public boolean register(User userObj) {
+	public User register(User userObj) {
 		Session session = HibernateUtil.getSession();
 		Transaction trx = session.beginTransaction();
 		try {
 			User user = (User) session.get(User.class, userObj.getUsername());
 			if (user != null)
-				return false;
+				return null;
 			userObj.setPassword(new String(Base64.getEncoder().encode(userObj.getPassword().getBytes())));
 			session.save(userObj);
 			if (userObj.getPermissonFolderID() != null && !userObj.getPermissonFolderID().equalsIgnoreCase(""))
@@ -62,14 +62,14 @@ public class DBUtil {
 				}
 			trx.commit();
 			session.close();
-			return true;
+			return userObj;
 		} catch (Exception exception) {
 			System.out.println("Exception occred while register: " + exception.getMessage());
 			if (trx != null)
 				trx.rollback();
 			if (session != null)
 				session.close();
-			return false;
+			return null;
 		}
 	}
 
@@ -101,6 +101,28 @@ public class DBUtil {
 		}
 	}
 
+	public boolean resetPassword(ChangePassword changePasswordObj) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		try {
+			User user = (User) session.get(User.class, changePasswordObj.getUsername());
+
+			user.setPassword(new String(Base64.getEncoder().encode(changePasswordObj.getUpdatedPassword().getBytes())));
+			session.update(user);
+			trx.commit();
+			session.close();
+			return true;
+
+		} catch (Exception exception) {
+			System.out.println("Exception occred while changePassword: " + exception.getMessage());
+			if (trx != null)
+				trx.rollback();
+			if (session != null)
+				session.close();
+			return false;
+		}
+	}
+
 	public List<User> getAllUsers() {
 
 		Session session = HibernateUtil.getSession();
@@ -122,11 +144,17 @@ public class DBUtil {
 			Document file = new Document();
 			file.setFilename(fileName);
 			file.setContent(theString);
+			file.setFolderId(folder.getId());
 			file.setParentId(folder.getParentid());
 			Folder docFolder = createDocFolder(folder, fileName, documentProperties);
 			trx = session.beginTransaction();
-			Object doc = session.get(Document.class, file.getFilename());
-			if (doc == null) {
+			Query query = session.createNativeQuery("SELECT * FROM document d where d.name =:name and d.id =:folderId",
+					Document.class);
+			query.setString("name", fileName);
+			query.setInteger("folderId", folder.getId());
+			List list = query.list();
+			// Object doc = session.get(Document.class, file.getFilename());
+			if (list.size() == 0) {
 				session.save(docFolder);// saving doc in folder table
 				session.save(file);// save doc content in
 									// other table
@@ -140,6 +168,7 @@ public class DBUtil {
 			}
 			return true;
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			System.out.println("Exception occred while saveDocument: " + exception.getMessage());
 			if (trx != null)
 				trx.rollback();
@@ -167,16 +196,24 @@ public class DBUtil {
 		return docFolder;
 	}
 
-	public Document retrieveDocument(String filename) {
+	public Document retrieveDocument(int id, String filename) {
 
 		Session session = HibernateUtil.getSession();
 		Transaction trx = session.beginTransaction();
 		try {
-			Document doc = (Document) session.get(Document.class, filename);
+			// trx = session.beginTransaction();
+			Query query = session.createNativeQuery("SELECT * FROM document d where d.name =:name and d.id =:folderId",
+					Document.class);
+			query.setString("name", filename);
+			query.setInteger("folderId", id);
+			List list = query.list();
+
+			Document doc = (Document) list.get(0);
 			trx.commit();
 			session.close();
 			return doc;
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			System.out.println("Exception occred while retrieveDocument: " + exception.getMessage());
 			if (trx != null)
 				trx.rollback();
@@ -240,7 +277,15 @@ public class DBUtil {
 			List lst = query.list();
 			if (lst.size() > 0)
 				return null;
-			folder.setUsername(folder.getUsername() + "&&&***&&&");
+			query = session.createNativeQuery("SELECT * FROM folder f where f.id = :id and isFolder=true",
+					Folder.class);
+			String parentID = folder.getParentid().length() > 4
+					? folder.getParentid().substring(folder.getParentid().length() - 4) : folder.getParentid();
+			query.setString("id", parentID);
+			lst = query.list();
+			Folder parentFolder = (Folder) lst.get(0);
+			folder.setUsername(parentFolder.getUsername() + folder.getUsername() + "&&&***&&&");
+
 			int abc = (Integer) session.save(folder);
 			session.flush();
 			query = session.createNativeQuery(
@@ -439,14 +484,14 @@ public class DBUtil {
 
 				trx = session.beginTransaction();// TODO Auto-generated method
 				UserSettings settings = (UserSettings) session.get(UserSettings.class, userPreObj.getKey());
-				Query	query = null;	
-				if(settings!=null){
-					query  = session.createNativeQuery("UPDATE settings s SET s.value =:value WHERE s.key =:key");
-				query.setString("value", userPreObj.getValue());
-				query.setString("key", userPreObj.getKey());
-				int result = query.executeUpdate();
-				}else{
-					query  = session.createSQLQuery("INSERT INTO  settings(`key`,`value`) values(?,?)  ");
+				Query query = null;
+				if (settings != null) {
+					query = session.createNativeQuery("UPDATE settings s SET s.value =:value WHERE s.key =:key");
+					query.setString("value", userPreObj.getValue());
+					query.setString("key", userPreObj.getKey());
+					int result = query.executeUpdate();
+				} else {
+					query = session.createSQLQuery("INSERT INTO  settings(`key`,`value`) values(?,?)  ");
 					query.setParameter(0, userPreObj.getKey());
 					query.setParameter(1, userPreObj.getValue());
 					query.executeUpdate();
@@ -472,12 +517,13 @@ public class DBUtil {
 		Query query = null;
 		List<Folder> lst = null;
 		try {
-			if (isadmin){
-				query = session.createNativeQuery("SELECT * FROM folder f where f.isFolder=false and (f.details LIKE :details or f.name LIKE :name)", Folder.class);
-			query.setString("details", "%" + searchString + "%");
-			query.setString("name", "%" + searchString + "%");
-			}
-			else {
+			if (isadmin) {
+				query = session.createNativeQuery(
+						"SELECT * FROM folder f where f.isFolder=false and (f.details LIKE :details or f.name LIKE :name)",
+						Folder.class);
+				query.setString("details", "%" + searchString + "%");
+				query.setString("name", "%" + searchString + "%");
+			} else {
 				query = session.createNativeQuery(
 						"SELECT * FROM folder f where f.isFolder=false and userName LIKE :userName and (f.details LIKE :details or f.name LIKE :name)",
 						Folder.class);
@@ -486,17 +532,19 @@ public class DBUtil {
 				query.setString("name", "%" + searchString + "%");
 			}
 
-//			query.setBoolean("isFolder", true);
+			// query.setBoolean("isFolder", true);
 			lst = query.list();
-//			if (!isadmin) {
-//				for (Folder folderObj : lst) {
-//					if (folderObj.getId() != 1000) {
-//						List<Folder> childList = retrieveSpecificFolders(folderObj.getParentid() + folderObj.getId(),
-//								username, true, false);
-//						folderObj.setChildren(childList);
-//					}
-//				}
-//			}
+			// if (!isadmin) {
+			// for (Folder folderObj : lst) {
+			// if (folderObj.getId() != 1000) {
+			// List<Folder> childList =
+			// retrieveSpecificFolders(folderObj.getParentid() +
+			// folderObj.getId(),
+			// username, true, false);
+			// folderObj.setChildren(childList);
+			// }
+			// }
+			// }
 			trx.commit();
 			session.close();
 		} catch (Exception e) {
@@ -507,6 +555,32 @@ public class DBUtil {
 				session.close();
 		}
 		return lst;
+	}
+
+	public User checkUserPresent(String emailAddress) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		try {
+			;
+//			Transaction t = session.beginTransaction();
+			Query query = session.createNativeQuery("SELECT * FROM user where emailAddress =:emailAddress", User.class);
+			query.setString("emailAddress", emailAddress);
+			List<User> lst = query.list();
+			trx.commit();
+			session.close();
+			if (lst.size() == 1)
+				return lst.get(0);
+		} catch (Exception exception) {
+			System.out.println("Exception occred while checkUserPresent for reset password: " + exception.getMessage());
+			if (trx != null)
+				trx.rollback();
+			if (session != null)
+				session.close();
+			return null;
+		} finally {
+
+		}
+		return null;
 	}
 
 }

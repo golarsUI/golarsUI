@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import com.golars.bean.ChangePassword;
 import com.golars.bean.User;
+import com.golars.mail.MailUtil;
 import com.golars.util.DBUtil;
 import com.google.gson.Gson;
 
@@ -30,7 +31,12 @@ public class UsersService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerUser(User user) {
-		boolean result = new DBUtil().register(user);
+		boolean result =false;
+		User userobj = new DBUtil().register(user);
+		if(userobj!=null){
+			result=true;
+			new MailUtil().sendEmail(userobj);
+		}
 		return Response.status(201).entity(result).build();
 	}
 	@DELETE
@@ -45,7 +51,11 @@ public class UsersService {
 	@Produces(MediaType.APPLICATION_JSON)
 	
 	public Response changePassword(ChangePassword changePasswordObj) {
-		boolean result = new DBUtil().changePassword(changePasswordObj);
+		boolean result;
+		if(changePasswordObj.isReset())
+			result = new DBUtil().resetPassword(changePasswordObj);
+		else
+		result = new DBUtil().changePassword(changePasswordObj);
 		
 		return Response.status(201).entity(result).build();
 	}

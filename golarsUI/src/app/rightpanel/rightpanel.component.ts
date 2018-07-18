@@ -18,16 +18,18 @@ export class RightpanelComponent implements OnInit {
   docURL: string = '';
   copyclicked=false;
   copyButtontitle="Copy URL";
+  docID;
   constructor(private folderService: FolderService,private commonService: CommonService) { }
 
   ngOnInit() {
 
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if(treeNode !== null && treeNode.type === "fetchSubFolders"){
+      if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "fetchSubFolders" || treeNode.type=="clearRightSidePanel")){
+        this.docID = treeNode.node.id;
         this.docData=[];
         this.folderSelected=true;
       }
-      if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "documentDetails" && treeNode.node.folder === false){
+      if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "documentDetails" && treeNode.node.folder === false)){
         this.copyclicked=false;
         this.copyButtontitle="Copy URL";
         this.documentProperties = true;
@@ -49,14 +51,14 @@ export class RightpanelComponent implements OnInit {
         //         console.log(error);
         //     });
       
-      } else if(treeNode !== null && treeNode.node !== undefined && treeNode.type === "documentDetails" && treeNode.node.folder === true){
+      } else if((treeNode !== null && treeNode !== undefined && treeNode.node !== undefined) && (treeNode.type === "documentDetails" && treeNode.node.folder === true)){
         this.docData=[];
         this.folderSelected=true;
       }
   });
   }
   constructURL(){
-  this.docURL = location.origin+GolarsConstants.DOWNLOAD_DOC_URL+ encodeURI(this.docName);
+  this.docURL = location.origin+GolarsConstants.DOWNLOAD_DOC_URL+ this.docID+"/"+encodeURI(this.docName);
   }
   getDocURL(){
     return this.docURL+"#zoom=75"

@@ -16,5 +16,6 @@ export class GolarsConstants {
     public static LOGIN_CONTENT_URL ="loginContentURL";
     public static SEARCH_STRING = "searchString";
     public static DEFAULT_LOGIN_CONTENT_URL = "https://golars.com";
+    public static RESET_PASSWORD_LINK = "/golarsUI/#/resetpassword"
 
 }

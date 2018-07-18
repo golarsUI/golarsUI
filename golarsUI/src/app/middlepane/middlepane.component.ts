@@ -35,22 +35,24 @@ export class MiddlepaneComponent implements OnInit {
 
   ngOnInit() {
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if (treeNode !== null && treeNode.node !== undefined && treeNode.type === "fetchSubFolders") {
+      if (treeNode !== null && treeNode !== undefined &&  treeNode.node !== undefined && treeNode.type === "fetchSubFolders") {
+        console.log("fetchSubFolders ");  
         this.treeLoadingProgress = true;
         this.folderData = [];
         this.selectedDocumet = [];
         this.leftMenuSelectedNode = treeNode;
         this.fetchSubFolders();
 
-      }else if(treeNode !== null && treeNode.searchString !== undefined && treeNode.type === "fetchSearchResults"){
+      }else if(treeNode !== null && treeNode !== undefined&& treeNode.searchString !== undefined && treeNode.type === "fetchSearchResults"){
         this.folderService.searchResults(treeNode.searchString,this.commonService.getUserName(),this.commonService.isAdmin()).subscribe(
           data => {
-  
+console.log("search results came ",data);  
             this.getColumns();
             data = this.constructFolderFirst(data);
             this.folderData = this.constructTableData(data);
             this.folderDetailstreeLoading = false;
             this.treeLoadingProgress = false;
+            console.log("search results came ",this.folderData);  
           },
           error => {
             console.log(error);
@@ -59,6 +61,7 @@ export class MiddlepaneComponent implements OnInit {
 
     });
   }
+
   fetchSubFolders() {
     this.folderService.fetchFolders(this.leftMenuSelectedNode.node.id, this.leftMenuSelectedNode.node.parentid, this.leftMenuSelectedNode.isDocumentsRequired, this.commonService.getUserName(), this.commonService.isAdmin())
       .subscribe(

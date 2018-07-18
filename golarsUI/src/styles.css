@@ -3,7 +3,7 @@
     width: 100%;
 }
 .nav-background-color{
-     background-color: #89E093 !important; 
+     background-color: #89DF93 !important; 
 }
 .nav-link.disabled{
     color:darkgray !important;
@@ -77,11 +77,11 @@
     height: calc( 100% - 60px);
 }
 .ui-tree .ui-treenode-icon{
-    color:#89E093 !important;
+    color:#89DF93 !important;
 }
 
 .ui-state-highlight{
-    background:#89E093 !important;
+    background:#89DF93 !important;
 }
 .ui-table .ui-table-tbody > tr > td{
     border: 1px solid transparent;
@@ -94,7 +94,7 @@
     border: #444C92 !important
 }
 .fa{
-    color:#89E093;  
+    color:#89DF93;  
 } 
 .ui-table .ui-table-tbody > tr.ui-state-highlight .fa{
     color: white !important;
@@ -113,7 +113,7 @@
     color:white !important;
 }
 .footer-text{
-    background-color: #89E093 !important;
+    background-color: #89DF93 !important;
     position: fixed;
     bottom: 0px;
     width: 100%;
@@ -121,6 +121,21 @@
     color:white;
 }
 .ui-paginator .ui-paginator-page.ui-state-active{
-    background-color:#89E093 !important;
-    border-color:#89E093 !important;
+    background-color:#89DF93 !important;
+    border-color:#89DF93 !important;
+}
+.ui-table .ui-table-thead > tr > th, .ui-table .ui-table-tfoot > tr > td{
+    background: #d7f0da;
+    border-color: #d7f0da;
+}
+.ui-tabview .ui-tabview-nav > li.ui-state-default{
+    background: #d7f0da;
+}
+.ui-tabview .ui-tabview-nav > li.ui-state-active{
+    background: #ffffff !important;
+    font-weight: normal;
+    color: #555555;
+}
+.ui-tabview .ui-tabview-nav li:not(.ui-state-active):not(.ui-state-disabled):hover{
+    background: #d7f0da;  
 }

@@ -24,7 +24,7 @@ export class UserService {
     });
   }
   registerUser(modal){
-    return this.http.post<any>(URLConstants.USERS_URL, { firstName: modal.firstName, lastName: modal.lastName, emailAdress:modal.email,
+    return this.http.post<any>(URLConstants.USERS_URL, { firstName: modal.firstName, lastName: modal.lastName, emailAddress:modal.email,
         admin: modal.admin,username:modal.username,password:modal.password,newlyCreated:modal.newlyCreated,permissonFolderID:modal.permissonFolderID })
     .map(user => {
         // Registration response 
@@ -33,7 +33,7 @@ export class UserService {
 
   }
   changePassword(modal){
-    return this.http.post<any>(URLConstants.USER_CHANGE_PASSWORD_URL, { username: modal.userName, password: modal.newPassword, updatedPassword:modal.confirmPassword })
+    return this.http.post<any>(URLConstants.USER_CHANGE_PASSWORD_URL, { username: modal.userName, password: modal.currentPassword, updatedPassword:modal.confirmPassword,reset:modal.reset })
     .map(successMessage => {
         // Change password response
         return successMessage;

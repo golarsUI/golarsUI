@@ -35,6 +35,7 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {TabViewModule} from 'primeng/tabview';
 import { SafePipe } from './services/SafePipe';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 @NgModule({
   declarations: [
 
@@ -50,7 +51,8 @@ import { SafePipe } from './services/SafePipe';
     ChangepasswordComponent,
     SettingsComponent,
     ConfigurationComponent,
-    SafePipe
+    SafePipe,
+    ResetpasswordComponent
 
   ],
   imports: [

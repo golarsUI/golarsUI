@@ -22,14 +22,25 @@ export class AppComponent implements OnInit{
 console.log("constructor")
   }
   ngOnInit(){
-    console.log( localStorage.getItem("currentUser"));
-    if(localStorage.getItem("currentUser") === null)
+     this.user = (localStorage.getItem("currentUser"));
+    console.log( this.user);
+    if(this.user === null){
+      if(location.hash.indexOf('resetpassword') >= 0){
+        this.setResetPasswordDummyUser();
+            }else
       this.router.navigate(['/login']);
+  }
       else{
-        this.user = localStorage.getItem("currentUser");
-        if(this.user.newlyCreated == true)
+        this.user = JSON.parse(localStorage.getItem("currentUser"))
+        if(this.user.resetpassword != null && this.user.resetpassword == true){
+          if(location.hash.indexOf('resetpassword') >= 0){
+            this.setResetPasswordDummyUser();
+          }
+        }
+        else if(this.user.newlyCreated == true)
          this.router.navigate(['changepassword']);
         else{
+          if(localStorage.getItem("currentUser"))
           this.loginSuccesful=true;
           this.router.navigate(['/']);
         }
@@ -65,7 +76,7 @@ $("#navbar_delete_folder").on("click",function(e){
   
 
   this.commonService.notifyObservable$.subscribe((treeNode) => {
-    if(treeNode !== null && treeNode !== undefined && treeNode.type === "fetchSubFolders"){
+    if(treeNode !== null && treeNode !== undefined && treeNode !== undefined && treeNode.type === "fetchSubFolders"){
       this.selectedNode = treeNode.node;
       this.isNodeSelected= true;
     if(treeNode.node.label !== null && treeNode.node.id != GolarsConstants.ROOTID){
@@ -84,14 +95,24 @@ $("#navbar_delete_folder").on("click",function(e){
       return this.user.fullName
     
   }
+  
+
   checkValidUser(){
-    if(localStorage.getItem("currentUser") === null)
+    if(this.router.url.indexOf( 'resetpassword') >= 0){
+    
+      this.setResetPasswordDummyUser();
+  
+    }else if(localStorage.getItem("currentUser") === null)
      this.router.navigate(['/login']);
      else {
       this.user = JSON.parse(localStorage.getItem("currentUser"))
+      if(this.user!==null  && this.user.resetpassword !=null && this.user.resetpassword == true){
+        // var queryParamArray[]:any = this.user.queryParam.split("=");
+      this.router.navigate(['/resetpassword'], { queryParams: { username: this.user.username } });
+      }
       if(this.user!==null  && this.user.newlyCreated == true)
       this.router.navigate(['changepassword']);
-      else if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/newuser'|| this.router.url == '/settings' || this.router.url == '/configuration'))
+      else if(this.user!==null && this.user.admin &&(this.router.url == '/users' || this.router.url == '/resetpassword' || this.router.url == '/newuser'|| this.router.url == '/settings' || this.router.url == '/configuration'))
       this.router.navigate([this.router.url]);
       else
       this.router.navigate(['']);
@@ -102,7 +123,7 @@ $("#navbar_delete_folder").on("click",function(e){
      
       this.user = JSON.parse(localStorage.getItem("currentUser"))
       
-      if(this.user!==null  && this.user.newlyCreated == true)
+      if(this.user!==null  && (this.user.newlyCreated == true || this.user.resetpassword))
       return ;
       this.loginSuccesful=true;
       this.fullName = this.user.fullName;
@@ -129,7 +150,15 @@ $("#navbar_delete_folder").on("click",function(e){
     return true;
   }
   fetchSearchResults(){
-    this.commonService.notify({ type: 'fetchSubFolders', node: "", isDocumentsRequired: true });
+     this.commonService.notify({ type: 'clearRightSidePanel', node: "", isDocumentsRequired: true });
     this.commonService.notify({ type: 'fetchSearchResults', searchString: this.searchString});
+  }
+  setResetPasswordDummyUser(){
+    var queryParam = location.hash.substring(location.hash.indexOf( '?')+1,location.hash.length);
+        var queryParamArray= queryParam.split("=")
+        var obj ={dummyuser:"dummyuser",resetpassword:true,username:queryParamArray[1]};
+        localStorage.setItem("currentUser",JSON.stringify(obj));
+        this.router.navigate(['/resetpassword'], { queryParams: { username: queryParamArray[1] } });
+
   }
 }

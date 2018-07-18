@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map'
 import { URLConstants } from '../constants/urlconstants';
 import { FolderService } from './folder.service';
 import { CommonService } from './common.service';
+import { GolarsConstants } from '../constants/golarsconstants';
 
 @Injectable()
 export class AuthenticationService {
@@ -44,4 +45,12 @@ export class AuthenticationService {
                 console.log(error);
             });
     }
+    forgotPassword(forgotemail,resetPasswordLink){
+        return this.http.post<any>(URLConstants.FORGOT_PASSWORD_URL, forgotemail+"&&@@#@"+ resetPasswordLink)
+        .map(message => {
+           
+            return message;
+        });  
+    }
+   
 }

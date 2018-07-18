@@ -34,7 +34,7 @@ export class LeftnavComponent implements OnInit {
         this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
         console.log("nodeSelect", event)
         this.commonService.notifyObservable$.subscribe((treeNode) => {
-            if (treeNode !== null && treeNode.node !== undefined && treeNode.type === "refreshFolder") {
+            if (treeNode !== null && treeNode !== undefined && treeNode.node !== undefined && treeNode.type === "refreshFolder") {
 
                 this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, false,this.commonService.getUserName(),this.commonService.isAdmin()) // retrieve all thd parent folders
                 .subscribe(

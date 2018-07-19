@@ -40,7 +40,7 @@ public class UsersService {
 		}
 		if(userobj!=null){
 			result=true;
-			new MailUtil().sendEmail(userobj);
+			new MailUtil().sendEmail(userobj,user.isEdit());
 		}
 		return Response.status(201).entity(result).build();
 	}

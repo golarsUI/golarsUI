@@ -56,16 +56,20 @@ public class MailUtil {
 		return message;
 	}
 
-	public void sendEmail(User userobj) {
+	public void sendEmail(User userobj, boolean isEdit) {
 
 		try {
 			Message message = fetchEmailProperties();
 
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userobj.getEmailAddress()));
-			String messageText = "<p>Your account has been created in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>" + 
-					"<p>Below are the login details: </p>" + 
-					"<p>username: "+userobj.getUsername()+"</p>"+ 
-					"<p>password: "+userobj.getPassword()+"</p>";
+			String messageText = "";
+			if (isEdit)
+				messageText = "<p>Your account has been updated in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>";
+			else
+				messageText = "<p>Your account has been created in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>";
+
+			messageText += "<p>Below are the login details: </p>" + "<p>username: " + userobj.getUsername() + "</p>"
+					+ "<p>password: " + userobj.getPassword() + "</p>";
 			message.setContent(messageText, "text/html");
 			message.setSubject("New user registration with Golars 360");
 
@@ -78,12 +82,13 @@ public class MailUtil {
 		}
 	}
 
-	public  void sendforgotPasswordEmail(String toAddress, String username, String link) {
+	public void sendforgotPasswordEmail(String toAddress, String username, String link) {
 		try {
 			Message message = fetchEmailProperties();
 
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddress));
-			String messageText = "<h4> Golars 360 </h4>Reset Password <p>Please use the <a href="+link+"?username="+username+">link</a> to reset password ";
+			String messageText = "<h4> Golars 360 </h4>Reset Password <p>Please use the <a href=" + link + "?username="
+					+ username + ">link</a> to reset password ";
 			message.setContent(messageText, "text/html; charset=utf-8");
 			message.setSubject("Golars 360 Reset Password");
 

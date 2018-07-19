@@ -32,7 +32,12 @@ public class UsersService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerUser(User user) {
 		boolean result =false;
-		User userobj = new DBUtil().register(user);
+		User userobj = null;
+		if(user.isEdit()){
+			userobj	=new DBUtil().editUser(user);
+		}else{
+			userobj = new DBUtil().register(user);
+		}
 		if(userobj!=null){
 			result=true;
 			new MailUtil().sendEmail(userobj);

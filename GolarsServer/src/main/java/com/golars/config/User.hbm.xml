@@ -12,8 +12,9 @@
   <property name="lastName" column="lastName"  type="java.lang.String"/>
   <property name="emailAddress" column="emailAddress"  type="java.lang.String"/>
   <property name="admin" column="isAdmin" type="java.lang.Boolean"/>
+   <property name="active" column="isActive" type="java.lang.Boolean"/>
   <property name="newlyCreated" column="newlyCreated" type="java.lang.Boolean"/>
-  
+    <property name="permissonFolderID" column="permissionFolder"  type="java.lang.String"/>
 
  </class>
 </hibernate-mapping>

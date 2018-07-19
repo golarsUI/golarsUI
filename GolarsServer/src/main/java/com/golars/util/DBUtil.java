@@ -22,8 +22,8 @@ public class DBUtil {
 		Transaction trx = session.beginTransaction();
 		try {
 			User user = (User) session.get(User.class, username);
-			password = new String(Base64.getEncoder().encode(password.getBytes()));
-			if (password.equals(user.getPassword())) {
+			password = new String(Base64.getEncoder().encode(password.getBytes()) );
+			if (password.equals(user.getPassword()) && user.isActive()) {
 				trx.commit();
 				session.close();
 				return user;
@@ -72,6 +72,54 @@ public class DBUtil {
 			return null;
 		}
 	}
+	public User editUser(User userObj) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		try {
+			User user = (User) session.get(User.class, userObj.getUsername());
+			if(!userObj.getPassword().equals(user.getPassword()))
+			userObj.setPassword(new String(Base64.getEncoder().encode(userObj.getPassword().getBytes())));
+//			userObj.setNewlyCreated(user.isNewlyCreated());
+//			boolean newleyCreated = user.isNewlyCreated();
+			user.setFirstName(userObj.getFirstName());
+			user.setLastName(userObj.getLastName());
+			user.setActive(userObj.isActive());
+			user.setAdmin(userObj.isAdmin());
+			user.setEmailAddress(userObj.getEmailAddress());
+			user.setPassword(userObj.getPassword());
+//			user.setNewlyCreated(newleyCreated);
+			session.update(user);
+			String foldername="";
+			if (userObj.getPermissonFolderID() != null && !userObj.getPermissonFolderID().equalsIgnoreCase(""))
+				for (String folderId : userObj.getPermissonFolderID().split(",")) {
+					int id = Integer.parseInt(folderId);
+
+					Folder folder = (Folder) session.get(Folder.class, id);
+					foldername+=folder.getLabel()+",";
+					folder.setUsername(folder.getUsername() + "&&&***&&&" + userObj.getUsername() + "&&&***&&&");
+					session.update(folder);
+
+				}
+			if(foldername.length()>0){
+				if(foldername.endsWith(",")){
+					foldername = foldername.substring(0, foldername.lastIndexOf(","));
+				}
+				user.setPermissonFolderID(foldername);
+				session.update(user);
+			}
+			trx.commit();
+			session.close();
+			return userObj;
+		} catch (Exception exception) {
+			System.out.println("Exception occred while register: " + exception.getMessage());
+			if (trx != null)
+				trx.rollback();
+			if (session != null)
+				session.close();
+			return null;
+		}
+	}
+
 
 	public boolean changePassword(ChangePassword changePasswordObj) {
 		Session session = HibernateUtil.getSession();

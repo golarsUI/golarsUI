@@ -10,6 +10,8 @@ public class User {
 	private boolean admin;
 	private boolean newlyCreated;
 	private String permissonFolderID;
+	private boolean active;
+	private boolean edit;
 
 	public String getFirstName() {
 		return firstName;
@@ -30,6 +32,7 @@ public class User {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
+
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -72,5 +75,21 @@ public class User {
 
 	public String getPermissonFolderID() {
 		return permissonFolderID;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+	}
+
+	public boolean isEdit() {
+		return edit;
 	}
 }

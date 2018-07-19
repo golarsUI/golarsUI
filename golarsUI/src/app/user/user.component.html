@@ -47,7 +47,7 @@
             <button class="btn btn-primary" data-toggle="modal" type="button" data-target="#permissionModal">Folder Permission</button>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid  && !isEdit}">
-            <label for="username">Username {{model.username?.length}}</label>
+            <label for="username">Username</label>
             <input type="text" class="form-control" name="username" [ngClass]="{ 'is-invalid': (f.submitted && !username.valid && !isEdit) }" [disabled]="isEdit" [(ngModel)]="model.username"
                 #username="ngModel" required minlength="5" maxlength="30" (keypress)="resetSuccessAndFailureMessages()" />
             <div *ngIf="f.submitted && !username.valid && !isEdit" class="help-block text-danger"> Username is required (minimum 5 characters).</div>

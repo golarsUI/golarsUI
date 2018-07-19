@@ -4,6 +4,7 @@ import { ImportFieldValues } from "../import/import.mapping";
 
 
 export class CommonService {
+
   private notifySub = new Subject<any>();
   /**
    * Observable string streams
@@ -22,6 +23,16 @@ export class CommonService {
       return localStorage.getItem("username");
   else
       return "";
+  }
+  getEditUser(){
+    if(localStorage.getItem("editUser")!==null)
+      return localStorage.getItem("editUser");
+  else
+      return null;
+    
+  }
+  removeEditUser(){
+    localStorage.removeItem("editUser");
   }
   isAdmin(){
     if(localStorage.getItem("admin")!==null)

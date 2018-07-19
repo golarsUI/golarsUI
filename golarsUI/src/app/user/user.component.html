@@ -1,5 +1,6 @@
 <div class="col-md-6 col-md-offset-3">
-    <h2>Register User</h2>
+    <div class="heading-text" *ngIf="!isEdit">Register User</div>
+    <div class="heading-text" *ngIf="isEdit">Edit User</div>
     <div class="alert alert-success" [hidden]='!showSuccessMessage'>
         <strong>Success!</strong> {{successMessage}}
     </div>
@@ -33,6 +34,10 @@
             <label>
                 <input type="checkbox" name="admin" [(ngModel)]="model.admin" #admin="ngModel" style="margin-right: 5px" />Is Admin</label>
         </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="active" [(ngModel)]="model.active" #admin="ngModel" style="margin-right: 5px" />Is Active</label>
+        </div>
         <div class="form-group">
             <div>
                 <label for="email">Folder Permission</label>
@@ -41,11 +46,11 @@
                 #filePermisson="ngModel" maxlength="300" readonly/>
             <button class="btn btn-primary" data-toggle="modal" type="button" data-target="#permissionModal">Folder Permission</button>
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" name="username" [ngClass]="{ 'is-invalid': f.submitted && !username.valid }" [(ngModel)]="model.username"
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid  && !isEdit}">
+            <label for="username">Username {{model.username?.length}}</label>
+            <input type="text" class="form-control" name="username" [ngClass]="{ 'is-invalid': (f.submitted && !username.valid && !isEdit) }" [disabled]="isEdit" [(ngModel)]="model.username"
                 #username="ngModel" required minlength="5" maxlength="30" (keypress)="resetSuccessAndFailureMessages()" />
-            <div *ngIf="f.submitted && !username.valid" class="help-block text-danger"> Username is required (minimum 5 characters).</div>
+            <div *ngIf="f.submitted && !username.valid && !isEdit" class="help-block text-danger"> Username is required (minimum 5 characters).</div>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
             <label for="password">Password</label>
@@ -54,7 +59,8 @@
             <div *ngIf="f.submitted && !password.valid" class="help-block text-danger">Password is required</div>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary" [disabled]="disableRegisterButton">Register</button>
+            <button *ngIf="!isEdit" class="btn btn-primary" [disabled]="disableRegisterButton">Register</button>
+            <button *ngIf="isEdit" class="btn btn-primary" >Update</button>
             <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
         </div>
     </form>

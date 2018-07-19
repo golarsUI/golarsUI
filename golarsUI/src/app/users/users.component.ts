@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
+import { CommonService } from '../services/common.service';
 declare var $: any;
 
 @Component({
@@ -9,7 +11,7 @@ declare var $: any;
 })
 export class UsersComponent implements OnInit {
   users;
-  constructor(private userService: UserService) { }
+  constructor( private router: Router,private commonService: CommonService,private userService: UserService) { }
   selectedUser;
   ngOnInit() {
     this.userService.getAllUsers()
@@ -24,7 +26,9 @@ export class UsersComponent implements OnInit {
 
   }
   editUser(user) {
-    console.log("editUser ", user)
+   localStorage.setItem("editUser",JSON.stringify(user));
+   this.router.navigate(['newuser']);
+
   }
   deleteUser(user) {
     this.selectedUser = user;

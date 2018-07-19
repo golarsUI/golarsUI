@@ -9,7 +9,7 @@
 </div>
 
 <div *ngIf="folderDetailstreeLoading==false" class='full-height-width'>
-    <h4>Document List</h4>
+    <div class="heading-text">Document List</div>
     <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(selection)]="selectedDocumet" dataKey="id" (onRowSelect)="nodeSelect($event)"
      (onRowUnselect)="nodeSelect($event)" (sortFunction)="customSort($event)"  [customSort]="true">
         <ng-template pTemplate="header" let-columns>

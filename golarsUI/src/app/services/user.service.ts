@@ -6,7 +6,6 @@ import { GolarsConstants } from '../constants/golarsconstants';
 
 @Injectable()
 export class UserService {
-
   constructor(private http: HttpClient) { }
 
   getAllUsers() {
@@ -24,8 +23,8 @@ export class UserService {
     });
   }
   registerUser(modal){
-    return this.http.post<any>(URLConstants.USERS_URL, { firstName: modal.firstName, lastName: modal.lastName, emailAddress:modal.email,
-        admin: modal.admin,username:modal.username,password:modal.password,newlyCreated:modal.newlyCreated,permissonFolderID:modal.permissonFolderID })
+    return this.http.post<any>(URLConstants.USERS_URL, { firstName: modal.firstName, lastName: modal.lastName, emailAddress:modal.email, active: modal.active,
+      edit: modal.edit,  admin: modal.admin,username:modal.username,password:modal.password,newlyCreated:modal.newlyCreated,permissonFolderID:modal.permissonFolderID })
     .map(user => {
         // Registration response 
         return user;

@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
 console.log("constructor")
   }
   ngOnInit(){
+    this.commonService.removeEditUser();
      this.user = (localStorage.getItem("currentUser"));
     console.log( this.user);
     if(this.user === null){
@@ -161,4 +162,5 @@ $("#navbar_delete_folder").on("click",function(e){
         this.router.navigate(['/resetpassword'], { queryParams: { username: queryParamArray[1] } });
 
   }
+
 }

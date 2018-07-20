@@ -19,6 +19,7 @@ export class RightpanelComponent implements OnInit {
   copyclicked=false;
   copyButtontitle="Copy URL";
   docID;
+  renderIframe=false;
   constructor(private folderService: FolderService,private commonService: CommonService) { }
 
   ngOnInit() {

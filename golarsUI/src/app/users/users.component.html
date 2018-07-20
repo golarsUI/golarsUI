@@ -1,9 +1,11 @@
-<h4>List of Users</h4>
+<div class="heading-text">List of Users</div>
 <p-table [value]="users">
   <ng-template pTemplate="header">
       <tr>
           <th>User Name</th>
           <th>Is Admin?</th>
+          <th>Is Active?</th>
+          <th>Permission Folder(s) </th>
           <th>Delete</th>
       </tr>
   </ng-template>
@@ -11,6 +13,8 @@
       <tr>
           <td>{{user.username}}</td>
           <td>{{user.admin}}</td>
+          <td>{{user.active}}</td>
+          <td>{{user.permissonFolderID}}</td>
           <td *ngIf="user.username !== 'admin'">
           <i class="fa fa-edit" style="font-size:24px;cursor: pointer;" title="Edit user" (click)="editUser(user)"></i>
             <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" title="Delete user" (click)="deleteUser(user)"></i></td>

@@ -27,15 +27,19 @@ export class LeftnavComponent implements OnInit {
     selectedItemParentNode;
     createFolderFailureMessage = null;
     createFoldershowFailureMessage = false;
+    refreshInProgress=false;
     nodeSelect(event) {
         // this.selectedNodeLabel = event.node.label;
         this.selectedItemParentNode = event.node.parent;
         event.node.expanded = !event.node.expanded;
         this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
         console.log("nodeSelect", event)
-        this.commonService.notifyObservable$.subscribe((treeNode) => {
-            if (treeNode !== null && treeNode !== undefined && treeNode.node !== undefined && treeNode.type === "refreshFolder") {
 
+        this.commonService.notifyObservable$.subscribe((treeNode) => {
+
+            if (treeNode !== null && treeNode !== undefined && treeNode.node !== undefined && treeNode.type === "refreshFolder") {
+                    if(!this.refreshInProgress){
+                    this.refreshInProgress = true;
                 this.folderService.fetchFolders(treeNode.node.id,treeNode.node.parentid, false,this.commonService.getUserName(),this.commonService.isAdmin()) // retrieve all thd parent folders
                 .subscribe(
                     data => {
@@ -48,11 +52,13 @@ export class LeftnavComponent implements OnInit {
                         // data.forEach(function(entry) {
                         //     console.log(entry);
                         // })
+                        this.refreshInProgress = false;
                     },
                     error => {
                         console.log(error);
                     });
             }
+        }
         });
     }
 

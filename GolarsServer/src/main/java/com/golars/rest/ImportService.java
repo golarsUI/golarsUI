@@ -1,7 +1,7 @@
 package com.golars.rest;
 
-import java.io.File;
 import java.io.InputStream;
+import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -17,7 +17,6 @@ import com.golars.bean.Document;
 import com.golars.bean.Folder;
 import com.golars.util.DBUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.multipart.BodyPart;
@@ -42,7 +41,7 @@ public class ImportService {
 			ContentDisposition meta = part.getContentDisposition();
 			if (meta.getFileName() != null) {
 				String fileName = getFileExtension(meta.getFileName()).equalsIgnoreCase("")
-						? meta.getFileName() + ".pdf" : meta.getFileName();
+						? meta.getFileName() + gen()+".pdf" : meta.getFileName();
 				Folder folder = new Gson().fromJson(folderProperties, Folder.class);
 				result = new DBUtil().saveDocument(is, fileName, documentProperties, folder);
 			}
@@ -52,7 +51,7 @@ public class ImportService {
 
 	@Path("{id}/{filename}")
 	@GET
-	public Response getPDF(@PathParam("id") int id, @PathParam("filename") String filename) throws Exception {
+	public Response getPDF(@PathParam("id") int id, @PathParam("filename") String filename) throws Exception {	
 		Document doc = new DBUtil().retrieveDocument(id, filename);
 
 		return Response.ok(doc.getContent(), generateContentType(doc.getFilename())) // TODO:
@@ -92,5 +91,10 @@ public class ImportService {
 		if (resultInt > 0)
 			result = true;
 		return Response.status(200).entity(result).build();
+	}
+	
+	public int gen() {
+	    Random r = new Random( System.currentTimeMillis() );
+	    return 10000 + r.nextInt(20000);
 	}
 }

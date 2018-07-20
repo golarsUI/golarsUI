@@ -332,7 +332,7 @@ public class DBUtil {
 			query.setString("id", parentID);
 			lst = query.list();
 			Folder parentFolder = (Folder) lst.get(0);
-			folder.setUsername(parentFolder.getUsername() + folder.getUsername() + "&&&***&&&");
+			folder.setUsername(parentFolder.getUsername()+ "&&&***&&&" + folder.getUsername() + "&&&***&&&");
 
 			int abc = (Integer) session.save(folder);
 			session.flush();

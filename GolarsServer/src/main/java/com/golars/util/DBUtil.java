@@ -23,7 +23,7 @@ public class DBUtil {
 		try {
 			User user = (User) session.get(User.class, username);
 			password = new String(Base64.getEncoder().encode(password.getBytes()) );
-			if (password.equals(user.getPassword()) && user.isActive()) {
+			if (password.equals(user.getPassword())) {
 				trx.commit();
 				session.close();
 				return user;
@@ -629,6 +629,34 @@ public class DBUtil {
 
 		}
 		return null;
+	}
+
+	public int updateDocumentProperties(String docId, String docName, String properties) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		Query query = null;
+		int result = 0;
+		try {
+				query = session.createNativeQuery(
+						"update folder f set f.details =:properties where f.parentId=:parentId and f.name =:name",
+						Folder.class);
+				query.setString("properties", properties);
+				query.setString("parentId", docId);
+				query.setString("name", docName);
+
+				result = query.executeUpdate();
+			
+			trx.commit();
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception occred while retrieveAllFolders : " + e.getMessage());
+			if (trx != null)
+				trx.rollback();
+			if (session != null)
+				session.close();
+		}
+		return result;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.golars.mail;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Base64;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -60,7 +61,7 @@ public class MailUtil {
 
 		try {
 			Message message = fetchEmailProperties();
-
+			 
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userobj.getEmailAddress()));
 			String messageText = "";
 			if (isEdit)
@@ -69,7 +70,7 @@ public class MailUtil {
 				messageText = "<p>Your account has been created in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>";
 
 			messageText += "<p>Below are the login details: </p>" + "<p>username: " + userobj.getUsername() + "</p>"
-					+ "<p>password: " + userobj.getPassword() + "</p>";
+					+ "<p>password: " + new String(Base64.getDecoder().decode(userobj.getPassword().getBytes())) + "</p>";
 			message.setContent(messageText, "text/html");
 			message.setSubject("New user registration with Golars 360");
 

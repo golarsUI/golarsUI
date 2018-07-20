@@ -29,13 +29,17 @@ public class LoginService {
 		}
 		User userRes =  new DBUtil().login(username, password);
 		
-		if(userRes !=null){// login successful
+		if(userRes !=null  && userRes.isActive()){// login successful
 		response.setLoginsuccess(true);
 		response.setAdmin(userRes.isAdmin());
 		response.setNewlyCreated(userRes.isNewlyCreated());
 		response.setUsername(userRes.getUsername());
 		response.setFullName(userRes.getFirstName()+" "+userRes.getLastName());
 		response.setToken(new TokenGenerator().generateToken(username));
+		}else{
+			if(userRes!=null && !userRes.isActive()){
+				response.setActive(false);
+			}
 		}
 
 		return Response.status(200).entity(response).build();

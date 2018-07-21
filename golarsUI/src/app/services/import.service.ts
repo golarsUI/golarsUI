@@ -14,4 +14,11 @@ export class ImportService {
             return success;
         });
   }
+  updateDocumentPropeties(docId,docName,properties){
+    return this.http.put<any>(URLConstants.IMPORT_DOC_URL, {data:{docId:docId,docName:docName,properties:properties}})
+        .map(success => {
+            
+            return success;
+        });
+      }
 }

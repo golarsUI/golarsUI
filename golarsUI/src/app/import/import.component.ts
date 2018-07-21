@@ -25,11 +25,14 @@ export class ImportComponent implements OnInit {
   scopeOfWorkFullList = ImportFieldValues.scopeOfWorkMapping;
   stateProgramMappingForDocumentType = ImportFieldValues.stateProgramMappingForDocumentType;
   stateProgramMappingForScopeOfWork = ImportFieldValues.stateProgramMappingForScopeOfWork;
+  editDocument = false;
+  importDocName;
+  docData ;
   showSuccessMessage=false;
   successMessage=null;
   showFileSelectErrorMessage=false;
   fileSelectErrorMessage=null
-
+  importFolder;
 defaultdate;
   model: any = {};
   constructor(private http: HttpClient,private importService: ImportService,private commonService: CommonService) { }
@@ -39,19 +42,31 @@ defaultdate;
     
 
     var self = this;
-    $('body').on('hide.bs.modal', '.modal', function($event){
-      if($event.target.id!="importModal") return;
-      self.showSuccessMessage=false;
-      self.successMessage = null;
-      self.showFileSelectErrorMessage=false;
-      self.fileSelectErrorMessage=null;
-      self.fileInput.files=[];
-      self.model={}
-      self.model.docUpdateDate = new Date();
+    $('body').on('hide.bs.modal', '.modal', function ($event) {
+      if ($event.target.id != "importModal") return;
 
-  })
+      self.commonService.removeEditUser();
+      self.showSuccessMessage = false;
+      self.successMessage = null;
+      self.showFileSelectErrorMessage = false;
+      self.fileSelectErrorMessage = null;
+      if(self.fileInput!=null)
+      self.fileInput.files = [];
+      self.model = {}
+      self.model.docUpdateDate = new Date();
+      self.editDocument = false;
+      
+
+    })
   $('body').on('show.bs.modal', '.modal', function($event){
     if($event.target.id!="importModal") return;
+    if (self.commonService.getDocData() != null) {
+        
+      self.editDocument = true;
+      var docData = JSON.parse(localStorage.getItem("docData"));
+      self.docData  = docData;
+      self.fillImportDialogData(docData)
+    }
     if(self.commonService.getStateProgramPreferences()!=null){
       self.stateProgram=[];
     var stateProgramValues = self.commonService.getStateProgramPreferences();
@@ -69,6 +84,7 @@ defaultdate;
     if(treeNode !== null && treeNode !== undefined && treeNode.type === "fetchSubFolders"){
     if(treeNode.node.label !== null){
     this.selectedFolder = treeNode.node;
+    this.importFolder = treeNode.node.label;
 
     }
 }
@@ -76,8 +92,46 @@ defaultdate;
 // set default value for Date Document updated
 this.model.docUpdateDate = new Date();
   }
+  fillImportDialogData(docData) {
+    this.importDocName = docData.label;
+    // this.fileInput.files[0] = new File([""], docData.label);
+    if (docData.properties.docUpdateDate != null)
+      this.model.docUpdateDate = new Date(docData.properties.docUpdateDate);
+    this.model.fecilityName = docData.properties.fecilityName;
+    if (docData.properties.docDate != null)
+      this.model.docDate = new Date(docData.properties.docDate);
+    this.model.fid = docData.properties.fid;
+    this.model.city = docData.properties.city;
+    this.model.street = docData.properties.street;
+    this.model.stateProgram = docData.properties.stateProgram;
+    this.getStateProgramAndScopeOfWorkDropDOwn(null)
+    this.model.active = docData.properties.active;
+    this.model.docTypes = docData.properties.docTypes;
+    this.model.scopeOfWork = docData.properties.scopeOfWork;
+
+  }
+  updateDocumentProperties(){
+    // console.log(this.docData)
+    var docProperties = this.getDocumentProperties();
+    this.docData.properties = JSON.parse(docProperties);
+    this.importService.updateDocumentPropeties(this.docData.parentid,this.docData.label,docProperties) .subscribe(
+      message => {
+        // console.log(message)
+        if (message == true) {
+          this.showSuccessMessage = true;
+          this.successMessage = "Document Properties Updated Successfully !!";
+          this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedFolder, isDocumentsRequired: true });
+          if (this.commonService.getDocData() != null) {
+            this.commonService.notify({ type: 'documentDetails', node: this.docData, isDocumentsRequired: true });
+            }
+        }       },
+      error => {
+
+        console.log(error);
+      });
+  }
   importDocuments(){
-console.log(this.fileInput.files.length)
+// console.log(this.fileInput.files.length)
 if(this.fileInput.files.length == 0){
   this.showFileSelectErrorMessage=true;
   this.fileSelectErrorMessage="Please select at least one file to Import"
@@ -87,7 +141,7 @@ const frmData = new FormData();
 
     
     for (var i = 0; i < this.fileInput.files.length; i++) { 
-      console.log(this.fileInput);
+      // console.log(this.fileInput);
       frmData.append("fileUpload", this.fileInput.files[i]);
     }
     frmData.append("docProperties",this.getDocumentProperties());
@@ -146,7 +200,11 @@ const frmData = new FormData();
     return  JSON.stringify( this.tmpFolder)
   }
   getStateProgramAndScopeOfWorkDropDOwn($event){
-    var selectedValue = $event.value;
+    var selectedValue =null;
+    if($event != null ) 
+    selectedValue = $event.value;
+    else 
+    selectedValue =   this.model.stateProgram;
     console.log(selectedValue)
     this.docTypes=[];
     this.scopeOfWork=[];

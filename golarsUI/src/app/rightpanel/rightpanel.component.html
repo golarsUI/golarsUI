@@ -1,6 +1,6 @@
 
 <div *ngIf="documentProperties==true"  class='full-height-width' style="text-align: center">
-  <div class="heading-text"><img src="assets/images/docproperties.jpeg"/></div>
+  <div class="heading-text"><img class="image-height" src="assets/images/docproperties.jpeg"/></div>
   <div class="spinner-placeholder" >
       <span class="spinner-has-text">
       <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
@@ -9,8 +9,8 @@
   </div>
   </div>
 
-<div style="padding:10px" *ngIf="docData">
-  <div class="heading-text" *ngIf="!folderSelected"><img src="assets/images/docproperties.jpeg"/></div>
+<div *ngIf="docData">
+  <div class="heading-text" *ngIf="!folderSelected"><img class="image-height" src="assets/images/docproperties.jpeg"/></div>
   <div class="ui-g" *ngIf="docData.docUpdateDate">
     <div class="ui-g-4">Date Document Updated</div>
     <div class="ui-g-8">{{docData.docUpdateDate}}</div>

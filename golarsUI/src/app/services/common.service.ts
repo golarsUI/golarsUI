@@ -33,7 +33,7 @@ export class CommonService {
   }
   removeEditUser(){
     localStorage.removeItem("editUser");
-  }
+    localStorage.removeItem("docData");    }
   isAdmin(){
     if(localStorage.getItem("admin")!==null)
     if(localStorage.getItem("admin")=="true")
@@ -83,5 +83,14 @@ export class CommonService {
       return GolarsConstants.DEFAULT_LOGIN_CONTENT_URL;
 
   }
+  setDocData(docData){
+    localStorage.setItem("docData", docData);  
+  }
+  getDocData(){
+    if(localStorage.getItem("docData")!==null && localStorage.getItem("docData")!=="")
+      return localStorage.getItem("docData");
+      return null;
+  }
+ 
  
 }

@@ -9,8 +9,8 @@
 </div>
 
 <div *ngIf="folderDetailstreeLoading==false" class='full-height-width'>
-    <div class="heading-text"><img src="assets/images/documents.jpeg"/></div>
-    <p-table [columns]="cols" [value]="folderData" selectionMode="single" [(selection)]="selectedDocumet" dataKey="id" (onRowSelect)="nodeSelect($event)"
+    <div class="heading-text"><img class="image-height" src="assets/images/documents.jpeg"/></div>
+    <p-table [columns]="cols"  [value]="folderData" selectionMode="multiple" [metaKeySelection]="true" [(selection)]="selectedDocumet" dataKey="id" (onRowSelect)="nodeSelect($event)"
      (onRowUnselect)="nodeSelect($event)" (sortFunction)="customSort($event)"  [customSort]="true">
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -40,6 +40,7 @@
                     </span>
                 </td>
                 <td *ngIf="commonService.isAdmin()">
+                        <i class="fa fa-edit" *ngIf="rowData['folder']==false" style="font-size:24px;cursor: pointer;" title="Edit Document" (click)="editDocument(rowData)"></i>
                         <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" (click)="deleteFolderOrDocument()" title="Delete Document"></i>
                     </td>
                 <!-- <td *ngFor="let col of columns">

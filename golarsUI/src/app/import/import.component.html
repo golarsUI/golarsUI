@@ -1,24 +1,32 @@
 
 
+<div class="modal-header">
+    <h5 [hidden]="editDocument" class="modal-title" id="exampleModalLongTitle">Import File into {{importFolder}}</h5>
+    <h5 [hidden]="!editDocument" class="modal-title" id="exampleModalLongTitle">Edit Properties of {{importDocName}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
 <form name="importForm" class="form-group" #importForm>
-  <p-fileUpload name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true" (onSelect)="onBasicUpload($event)"
+  <p-fileUpload *ngIf="!editDocument"  name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true" (onSelect)="onBasicUpload($event)"
     [showUploadButton]="false" [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20" invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
 
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-6">
-      <label>Date Document Updated</label>
-      <p-calendar [(ngModel)]="model.docUpdateDate" name="docUpdateDate"></p-calendar>
-    </div>
-    <div class="ui-g-12 ui-md-6">
-
-      <label>Facility Name </label>
-      <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fecilityName"
-        name="fecilityName" />
-    </div>
-    <div class="ui-g-12 ui-md-6">
-      <label>Document Date</label>
-      <p-calendar [(ngModel)]="model.docDate" name="docDate"></p-calendar>
-    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12 ui-md-6">
+        <label>Date Document Updated</label>
+        <p-calendar [(ngModel)]="model.docUpdateDate" name="docUpdateDate" [readonlyInput]="true"></p-calendar>
+      </div>
+      <div class="ui-g-12 ui-md-6">
+  
+        <label>Facility Name </label>
+        <input id="fecilityName" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fecilityName"
+          name="fecilityName" />
+      </div>
+      <div class="ui-g-12 ui-md-6">
+        <label>Document Date</label>
+        <p-calendar [(ngModel)]="model.docDate" name="docDate" [readonlyInput]="true"></p-calendar>
+      </div>
     <div class="ui-g-12 ui-md-6">
       <label>FID</label>
       <input id="fid" type="text" class="form-control form-control-height" pInputText [(ngModel)]="model.fid" name="fid" />
@@ -66,9 +74,13 @@
   <div class="alert alert-success" [hidden]='!showSuccessMessage || showFileSelectErrorMessage'>
     <strong>Success!</strong> {{successMessage}}
   </div>
-  <div class="pull-right" style="margin-top:20px">
-    <button type="button" class="btn btn-primary" (click)="importDocuments()">Import</button>
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-  </div>
+  <div class="pull-right" style="margin-top:20px;margin-bottom:20px">
+    <button *ngIf="editDocument" type="button" class="btn btn-primary" (click)="updateDocumentProperties()">Update</button>
+    
+  <button type="button" *ngIf="!editDocument" class="btn btn-primary" (click)="importDocuments()">Import</button>
+  <button type="button"  *ngIf="!editDocument" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+  <button type="button" *ngIf="editDocument" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
 
 </form>
+</div>

@@ -26,11 +26,13 @@ export class RightpanelComponent implements OnInit {
 
     this.commonService.notifyObservable$.subscribe((treeNode) => {
       if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "fetchSubFolders" || treeNode.type=="clearRightSidePanel")){
+        if(this.commonService.getDocData() == null){
         this.docID = treeNode.node.id;
         this.docData=[];
         this.folderSelected=true;
       }
-      if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "documentDetails" && treeNode.node.folder === false)){
+      }
+      if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "documentDetails" && treeNode.node != null &&  treeNode.node.folder === false)){
         this.copyclicked=false;
         this.docID = this.getDocumentId(treeNode.node);
         this.copyButtontitle="Copy URL";

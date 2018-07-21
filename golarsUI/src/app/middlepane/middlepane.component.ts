@@ -18,7 +18,7 @@ export class MiddlepaneComponent implements OnInit {
   treeLoadingProgress = false;
   golarsServer = environment.server;
   cols = [];
-  selectedDocumet;
+  selectedDocumet=[];
   leftMenuSelectedNode;
   applyIconsColor = false;
   tableColumnMapping = {
@@ -36,13 +36,13 @@ export class MiddlepaneComponent implements OnInit {
   ngOnInit() {
     this.commonService.notifyObservable$.subscribe((treeNode) => {
       if (treeNode !== null && treeNode !== undefined &&  treeNode.node !== undefined && treeNode.type === "fetchSubFolders") {
-        console.log("fetchSubFolders ");  
+        // console.log("fetchSubFolders ",this.selectedNode);  
         this.treeLoadingProgress = true;
         this.folderData = [];
-        this.selectedDocumet = [];
+        this.selectedDocumet[0]=this.selectedNode;
         this.leftMenuSelectedNode = treeNode;
         this.fetchSubFolders();
-
+       
       }else if(treeNode !== null && treeNode !== undefined&& treeNode.searchString !== undefined && treeNode.type === "fetchSearchResults"){
         this.folderService.searchResults(treeNode.searchString,this.commonService.getUserName(),this.commonService.isAdmin()).subscribe(
           data => {
@@ -113,6 +113,7 @@ console.log("search results came ",data);
       .subscribe(
         folder => {
           this.commonService.notify({ type: 'refreshFolder', node: this.leftMenuSelectedNode.node, isDocumentsRequired: true });
+
           //   // this.treeComponent.
           //   // this.selectedNode.parentid
           //   var index = this.folderData.children.indexOf(this.selectedNode);
@@ -159,6 +160,11 @@ console.log("search results came ",data);
 
   deleteFolderOrDocument() {
     $('#middle_pane_folder_delete_model').modal('show');
+  }
+  editDocument(rowData){
+    this.commonService.setDocData(JSON.stringify(rowData))
+    $('#importModal').modal('show');
+    console.log(rowData)
   }
   customSort(event) {
     event.data.sort((data1, data2) => {

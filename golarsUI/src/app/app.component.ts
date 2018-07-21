@@ -77,7 +77,7 @@ $("#navbar_delete_folder").on("click",function(e){
   
 
   this.commonService.notifyObservable$.subscribe((treeNode) => {
-    if(treeNode !== null && treeNode !== undefined && treeNode !== undefined && treeNode.type === "fetchSubFolders"){
+    if(treeNode !== null && treeNode !== undefined && treeNode !== undefined &&  treeNode.node !== null && treeNode.type === "fetchSubFolders"){
       this.selectedNode = treeNode.node;
       this.isNodeSelected= true;
     if(treeNode.node.label !== null && treeNode.node.id != GolarsConstants.ROOTID){

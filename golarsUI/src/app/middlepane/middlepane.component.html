@@ -22,7 +22,7 @@
                     {{col.header}}
                     <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
-                <th width="50px" *ngIf="commonService.isAdmin()">
+                <th width="50px">
                         Action
                     </th>
 
@@ -39,7 +39,11 @@
                         {{rowData.properties[col.field]}}
                     </span>
                 </td>
-                <td *ngIf="commonService.isAdmin()">
+                <td *ngIf="!commonService.isAdmin()" width="50px">
+                        <i class="fa fa-edit" *ngIf="rowData['folder']==false" style="font-size:24px;cursor: pointer;" title="Edit Document" (click)="editDocument(rowData)"></i>
+                    </td>
+
+                <td *ngIf="commonService.isAdmin()" width="50px">
                         <i class="fa fa-edit" *ngIf="rowData['folder']==false" style="font-size:24px;cursor: pointer;" title="Edit Document" (click)="editDocument(rowData)"></i>
                         <i class="fa fa-trash" style="font-size:24px;cursor: pointer;" (click)="deleteFolderOrDocument()" title="Delete Document"></i>
                     </td>

@@ -130,11 +130,11 @@ console.log("search results came ",data);
   nodeSelect(event) {
     this.selectedNode = event.data;
     this.commonService.notify({ type: 'documentDetails', node: event.data, isDocumentsRequired: true });
-    console.log("middle nodeSelect", event);
+    // console.log("middle nodeSelect", event);
     this.applyIconsColor = true;
   }
   nodeUnselect(event) {
-    console.log("nodeUnselect", event)
+    // console.log("nodeUnselect", event)
   }
   addFolderClass(element) {
     element.expandedIcon = GolarsConstants.FOLDER_OPEN_ICON;

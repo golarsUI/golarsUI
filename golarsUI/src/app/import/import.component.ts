@@ -182,7 +182,7 @@ const frmData = new FormData();
     this.model.active.value=''
   }
   getDocumentProperties(){
-    console.log(this.model)
+    // console.log(this.model)
     return  JSON.stringify(this.model)
   }
   tmpFolder:any
@@ -196,7 +196,7 @@ const frmData = new FormData();
     this.tmpFolder.expandedIcon = this.selectedFolder.expandedIcon;
     this.tmpFolder.collapsedIcon = this.selectedFolder.collapsedIcon;
     this.tmpFolder.expanded = this.selectedFolder.expanded;
-     console.log( this.tmpFolder)
+    //  console.log( this.tmpFolder)
     return  JSON.stringify( this.tmpFolder)
   }
   getStateProgramAndScopeOfWorkDropDOwn($event){
@@ -205,7 +205,7 @@ const frmData = new FormData();
     selectedValue = $event.value;
     else 
     selectedValue =   this.model.stateProgram;
-    console.log(selectedValue)
+    // console.log(selectedValue)
     this.docTypes=[];
     this.scopeOfWork=[];
     this.model.scopeOfWork=[];

@@ -41,7 +41,7 @@ public class ImportService {
 			ContentDisposition meta = part.getContentDisposition();
 			if (meta.getFileName() != null) {
 				String fileName = getFileExtension(meta.getFileName()).equalsIgnoreCase("")
-						? meta.getFileName() + gen()+".pdf" : meta.getFileName();
+						?gen()+".pdf" : meta.getFileName();
 				Folder folder = new Gson().fromJson(folderProperties, Folder.class);
 				result = new DBUtil().saveDocument(is, fileName, documentProperties, folder);
 			}
@@ -95,6 +95,6 @@ public class ImportService {
 	
 	public int gen() {
 	    Random r = new Random( System.currentTimeMillis() );
-	    return 10000 + r.nextInt(20000);
+	    return 100000 + r.nextInt(200000);
 	}
 }

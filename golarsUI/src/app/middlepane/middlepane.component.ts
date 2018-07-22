@@ -46,13 +46,13 @@ export class MiddlepaneComponent implements OnInit {
       }else if(treeNode !== null && treeNode !== undefined&& treeNode.searchString !== undefined && treeNode.type === "fetchSearchResults"){
         this.folderService.searchResults(treeNode.searchString,this.commonService.getUserName(),this.commonService.isAdmin()).subscribe(
           data => {
-console.log("search results came ",data);  
+// console.log("search results came ",data);  
             this.getColumns();
             data = this.constructFolderFirst(data);
             this.folderData = this.constructTableData(data);
             this.folderDetailstreeLoading = false;
             this.treeLoadingProgress = false;
-            console.log("search results came ",this.folderData);  
+            // console.log("search results came ",this.folderData);  
           },
           error => {
             console.log(error);
@@ -164,7 +164,7 @@ console.log("search results came ",data);
   editDocument(rowData){
     this.commonService.setDocData(JSON.stringify(rowData))
     $('#importModal').modal('show');
-    console.log(rowData)
+    // console.log(rowData)
   }
   customSort(event) {
     event.data.sort((data1, data2) => {

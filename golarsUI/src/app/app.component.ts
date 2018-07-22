@@ -19,12 +19,12 @@ export class AppComponent implements OnInit{
   isAdmin=false;
   searchString;
   constructor( private router: Router,private authenticationService: AuthenticationService,private commonService: CommonService){
-console.log("constructor")
+// console.log("constructor")
   }
   ngOnInit(){
     this.commonService.removeEditUser();
      this.user = (localStorage.getItem("currentUser"));
-    console.log( this.user);
+    // console.log( this.user);
     if(this.user === null){
       if(location.hash.indexOf('resetpassword') >= 0){
         this.setResetPasswordDummyUser();
@@ -77,7 +77,7 @@ $("#navbar_delete_folder").on("click",function(e){
   
 
   this.commonService.notifyObservable$.subscribe((treeNode) => {
-    if(treeNode !== null && treeNode !== undefined && treeNode !== undefined &&  treeNode.node !== null && treeNode.type === "fetchSubFolders"){
+    if(treeNode !== null && treeNode !== undefined && treeNode !== undefined &&  treeNode.node !== null &&  treeNode.node !== undefined && treeNode.type === "fetchSubFolders"){
       this.selectedNode = treeNode.node;
       this.isNodeSelected= true;
     if(treeNode.node.label !== null && treeNode.node.id != GolarsConstants.ROOTID){

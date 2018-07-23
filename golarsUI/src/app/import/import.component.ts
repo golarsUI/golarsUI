@@ -33,6 +33,7 @@ export class ImportComponent implements OnInit {
   showFileSelectErrorMessage=false;
   fileSelectErrorMessage=null
   importFolder;
+  disableImportButton = false;
 defaultdate;
   model: any = {};
   constructor(private http: HttpClient,private importService: ImportService,private commonService: CommonService) { }
@@ -114,6 +115,7 @@ this.model.docUpdateDate = new Date();
     // console.log(this.docData)
     var docProperties = this.getDocumentProperties();
     this.docData.properties = JSON.parse(docProperties);
+    this.disableImportButton =true;
     this.importService.updateDocumentPropeties(this.docData.parentid,this.docData.label,docProperties) .subscribe(
       message => {
         // console.log(message)
@@ -124,9 +126,11 @@ this.model.docUpdateDate = new Date();
           if (this.commonService.getDocData() != null) {
             this.commonService.notify({ type: 'documentDetails', node: this.docData, isDocumentsRequired: true });
             }
-        }       },
+        }   
+        this.disableImportButton=false;
+      },
       error => {
-
+        this.disableImportButton=false;
         console.log(error);
       });
   }
@@ -147,6 +151,7 @@ const frmData = new FormData();
     frmData.append("docProperties",this.getDocumentProperties());
     frmData.append("folderProperties",this.getFolderDetails());
     // frmData.set("documentProperties",this.getDocumentProperties())
+    this.disableImportButton = true;
     this.importService.importDocuments(frmData)
     .subscribe(
         message => {
@@ -162,10 +167,10 @@ const frmData = new FormData();
           this.showFileSelectErrorMessage=true;
           this.fileSelectErrorMessage="Document(s) already exists"
         }
-          
+        this.disableImportButton = false; 
         },
         error => {
-          
+          this.disableImportButton = false;
             console.log(error);
         });
   }

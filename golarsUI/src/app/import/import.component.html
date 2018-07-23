@@ -75,9 +75,11 @@
     <strong>Success!</strong> {{successMessage}}
   </div>
   <div class="pull-right" style="margin-top:20px;margin-bottom:20px">
-    <button *ngIf="editDocument" type="button" class="btn btn-primary" (click)="updateDocumentProperties()">Update</button>
+    <button *ngIf="editDocument" [disabled]="disableImportButton"  type="button" class="btn btn-primary" (click)="updateDocumentProperties()">Update <i *ngIf="disableImportButton" class="fa fa-spinner fa-spin" style="font-size:24px"></i></button>
     
-  <button type="button" *ngIf="!editDocument" class="btn btn-primary" (click)="importDocuments()">Import</button>
+  <button type="button" *ngIf="!editDocument" class="btn btn-primary" [disabled]="disableImportButton" (click)="importDocuments()">Import 
+    <i *ngIf="disableImportButton" class="fa fa-spinner fa-spin" style="font-size:24px"></i></button>
+  
   <button type="button"  *ngIf="!editDocument" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
   <button type="button" *ngIf="editDocument" class="btn btn-secondary" data-dismiss="modal">Close</button>
 </div>

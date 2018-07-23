@@ -15,7 +15,7 @@
     <div class="ui-g ui-fluid">
       <div class="ui-g-12 ui-md-6">
         <label>Date Document Updated</label>
-        <p-calendar [(ngModel)]="model.docUpdateDate" name="docUpdateDate" [readonlyInput]="true"></p-calendar>
+        <p-calendar [(ngModel)]="model.docUpdateDate" name="docUpdateDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1980:2030"></p-calendar>
       </div>
       <div class="ui-g-12 ui-md-6">
   
@@ -25,7 +25,7 @@
       </div>
       <div class="ui-g-12 ui-md-6">
         <label>Document Date</label>
-        <p-calendar [(ngModel)]="model.docDate" name="docDate" [readonlyInput]="true"></p-calendar>
+        <p-calendar [(ngModel)]="model.docDate" name="docDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1980:2030" ></p-calendar>
       </div>
     <div class="ui-g-12 ui-md-6">
       <label>FID</label>

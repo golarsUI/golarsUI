@@ -21,15 +21,16 @@ export class MiddlepaneComponent implements OnInit {
   selectedDocumet=[];
   leftMenuSelectedNode;
   applyIconsColor = false;
+  tableColumnArray =['fid','fecilityName','docUpdateDate','docDate','stateProgram','docTypes', 'scopeOfWork','active']
   tableColumnMapping = {
-    'docUpdateDate': 'Date Document Updated',
-    'fecilityName': 'Facility Name',
-    'docDate': 'Document Date',
     'fid': 'FID',
+    'fecilityName': 'Facility Name',
+    'docUpdateDate': 'Date Document Uploaded',
+    'docDate': 'Document Date',
     'stateProgram': 'State Program',
-    'active': 'Is Active',
     'docTypes': 'Document Type',
-    'scopeOfWork': 'Scope of Work'
+    'scopeOfWork': 'Scope of Work',
+    'active': 'Is Active'
   }
   constructor(private folderService: FolderService, private commonService: CommonService) { }
 
@@ -82,6 +83,12 @@ export class MiddlepaneComponent implements OnInit {
       if (data[i].folder == true)
         continue;
       data[i].properties = JSON.parse(data[i].properties);
+      if(data[i].properties.docUpdateDate!=null){
+        data[i].properties.docUpdateDate = this.commonService.getFormatteDate(data[i].properties.docUpdateDate);
+      }
+      if(data[i].properties.docDate!=null){
+        data[i].properties.docDate = this.commonService.getFormatteDate(data[i].properties.docDate);
+      }
     }
     return data;
   }
@@ -153,8 +160,9 @@ export class MiddlepaneComponent implements OnInit {
     else
       prefString = this.commonService.getTableNonAdminPreferences()
     var pefArray = prefString.split(GolarsConstants.SPLIT_STRING)
-    for (var i = 0; i < pefArray.length; i++) {
-      this.cols.push({ field: pefArray[i], header: this.tableColumnMapping[pefArray[i]] });
+    for (var i = 0; i < this.tableColumnArray.length; i++) {
+      if(this.tableColumnArray.indexOf(pefArray[i])>=0)
+      this.cols.push({ field: this.tableColumnArray[i], header: this.tableColumnMapping[this.tableColumnArray[i]] });
     }
   }
 

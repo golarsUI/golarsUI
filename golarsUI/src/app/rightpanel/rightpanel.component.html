@@ -13,7 +13,7 @@
   <div class="heading-text" *ngIf="!folderSelected"><img class="image-height" src="assets/images/docproperties.jpeg"/></div>
   <div class="ui-g" *ngIf="docData.docUpdateDate">
     <div class="ui-g-4">Date Document Updated</div>
-    <div class="ui-g-8">{{docData.docUpdateDate}}</div>
+    <div class="ui-g-8">{{commonService.getFormatteDate(docData.docUpdateDate)}}</div>
   </div>
   <div class="ui-g" *ngIf="docData.fecilityName">
     <div class="ui-g-4">Facility Name</div>
@@ -21,7 +21,7 @@
   </div>
   <div class="ui-g" *ngIf="docData.docDate">
     <div class="ui-g-4">Document Date</div>
-    <div class="ui-g-8">{{docData.docDate}}</div>
+    <div class="ui-g-8">{{commonService.getFormatteDate(docData.docDate)}}</div>
   </div>
   <div class="ui-g" *ngIf="docData.fid">
     <div class="ui-g-4">FID</div>
@@ -54,7 +54,8 @@
   <div class="ui-g" *ngIf="!folderSelected">
       <div class="ui-g-4">URL</div>
       <div class="ui-g-7 wrap-text"><a href="#" data-toggle="modal"  data-target="#contentModal" (click)="renderIframe=true">{{docURL}}</a></div>
-      <div class="ui-g-1" > <i [ngStyle]="{'color':copyclicked === true ? '#FF8C86' : '#89E093' }" (click)="copyclicked=true;copyButtontitle='Copied'" class="fa fa-clipboard" aria-hidden="true"  ngxClipboard [cbContent]="docURL" style="cursor: pointer;" [title]="copyButtontitle"></i></div>
+      <div class="ui-g-1" > <i [ngStyle]="{'color':copyclicked === true ? '#FF8C86' : '#89E093' }" (click)="copyclicked=true;copyButtontitle='Copied'" class="fa fa-clipboard" 
+        aria-hidden="true"  ngxClipboard [cbContent]="docURL" style="cursor: pointer;font-size:30px" [title]="copyButtontitle"></i></div>
     </div>
   
 

@@ -10,38 +10,38 @@ import { GolarsConstants } from '../constants/golarsconstants';
 })
 export class RightpanelComponent implements OnInit {
 
-  docData=[];
+  docData = [];
   docName;
   treeNode;
-  documentProperties=false;
-  folderSelected=true;
+  documentProperties = false;
+  folderSelected = true;
   docURL: string = '';
-  copyclicked=false;
-  copyButtontitle="Copy URL";
+  copyclicked = false;
+  copyButtontitle = "Copy URL";
   docID;
-  renderIframe=false;
-  constructor(private folderService: FolderService,private commonService: CommonService) { }
+  renderIframe = false;
+  constructor(private folderService: FolderService, private commonService: CommonService) { }
 
   ngOnInit() {
 
     this.commonService.notifyObservable$.subscribe((treeNode) => {
-      if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "fetchSubFolders" || treeNode.type=="clearRightSidePanel")){
-        if(this.commonService.getDocData() == null){
-        this.docID = treeNode.node.id;
-        this.docData=[];
-        this.folderSelected=true;
+      if ((treeNode !== null && treeNode !== undefined) && (treeNode.type === "fetchSubFolders" || treeNode.type == "clearRightSidePanel")) {
+        if (this.commonService.getDocData() == null) {
+          this.docID = treeNode.node.id;
+          this.docData = [];
+          this.folderSelected = true;
+        }
       }
-      }
-      if((treeNode !== null && treeNode !== undefined) && (treeNode.type === "documentDetails" && treeNode.node != null &&  treeNode.node.folder === false)){
-        this.copyclicked=false;
+      if ((treeNode !== null && treeNode !== undefined) && (treeNode.type === "documentDetails" && treeNode.node != null && treeNode.node.folder === false)) {
+        this.copyclicked = false;
         this.docID = this.getDocumentId(treeNode.node);
-        this.copyButtontitle="Copy URL";
+        this.copyButtontitle = "Copy URL";
         this.documentProperties = true;
-        this.folderSelected=false;
+        this.folderSelected = false;
         this.docName = treeNode.node.label;
-        this.docData=[];
+        this.docData = [];
         this.treeNode = treeNode;
-        this.docData = treeNode.node.properties; 
+        this.docData = treeNode.node.properties;
         this.documentProperties = false;
         this.constructURL();
         // this.folderService.fetchDocumentDetails(treeNode.node.label)
@@ -54,24 +54,25 @@ export class RightpanelComponent implements OnInit {
         //     error => {
         //         console.log(error);
         //     });
-      
-      } else if((treeNode !== null && treeNode !== undefined && treeNode.node !== undefined) && (treeNode.type === "documentDetails" && treeNode.node.folder === true)){
-        this.docData=[];
-        this.folderSelected=true;
+
+      } else if ((treeNode !== null && treeNode !== undefined && treeNode.node !== undefined) && (treeNode.type === "documentDetails" && treeNode.node.folder === true)) {
+        this.docData = [];
+        this.folderSelected = true;
       }
-  });
+    });
   }
-  constructURL(){
-  this.docURL = location.origin+GolarsConstants.DOWNLOAD_DOC_URL+ this.docID+"/"+encodeURI(this.docName);
+  constructURL() {
+    this.docURL = location.origin + GolarsConstants.DOWNLOAD_DOC_URL + this.docID + "/" + encodeURI(this.docName);
   }
-  getDocURL(){
-    return this.docURL+"#zoom=75"
+  getDocURL() {
+    return this.docURL + "#zoom=75"
   }
-  getDocPropertiesValue(){
-    if(this.docName == null) return "";
-    return "File properties of "+this.docName;
+  getDocPropertiesValue() {
+    if (this.docName == null) return "";
+    return "File properties of " + this.docName;
   }
-  getDocumentId(node){
-    return node.parentid.substring(node.parentid.length-4)
+  getDocumentId(node) {
+    return node.parentid.substring(node.parentid.length - 4)
   }
-  }
+  
+}

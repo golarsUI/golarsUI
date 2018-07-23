@@ -91,6 +91,14 @@ export class CommonService {
       return localStorage.getItem("docData");
       return null;
   }
- 
+  getFormatteDate(dateString) {
+    var date = new Date(dateString);
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1; // add 1 because months are indexed from 0
+    var year = date.getFullYear();
+
+    return month + '/' + day + '/' + year;
+  }
  
 }

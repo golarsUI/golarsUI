@@ -15,7 +15,7 @@
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th width="100px" [pSortableColumn]="'label'">
-                    Name
+                    File Name
                     <p-sortIcon [field]="'label'" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
                 <th *ngFor="let col of columns" width="100px" [pSortableColumn]="col.field">
@@ -32,10 +32,10 @@
                 <tr [pSelectableRow]="rowData" >
                 <td width="100px" >
                     <span *ngIf="rowData['folder']==true"><i class="fa fa-folder"   style="padding-right: 10px" ></i>{{rowData['label']}}</span>
-                    <span *ngIf="rowData['folder']==false" >{{rowData['label']}}</span>
+                    <span *ngIf="rowData['folder']==false" style="word-wrap: break-word" >{{rowData['label']}}</span>
                 </td>
                 <td *ngFor="let col of columns" width="100px" >
-                    <span *ngIf="rowData['folder']==false">
+                    <span *ngIf="rowData['folder']==false" style="word-wrap: break-word">
                         {{rowData.properties[col.field]}}
                     </span>
                 </td>

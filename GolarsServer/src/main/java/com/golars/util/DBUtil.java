@@ -2,6 +2,7 @@ package com.golars.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -90,8 +91,29 @@ public class DBUtil {
 //			user.setNewlyCreated(newleyCreated);
 			session.update(user);
 			String foldername="";
-			if (userObj.getPermissonFolderID() != null && !userObj.getPermissonFolderID().equalsIgnoreCase(""))
+			if (userObj.getPermissonFolderID() != null && !userObj.getPermissonFolderID().equalsIgnoreCase("")){
+				//claring all the permissions
+				Query query = null;
+				List<Folder> lst = null;
+				query = session.createNativeQuery("SELECT * FROM folder f where f.userName LIKE :username", Folder.class);
+				query.setString("username", "%&&&***&&&"+ userObj.getUsername() +"&&&***&&&%");
+				lst =query.list();
+				if(lst.size()>0)
+				{
+					for (Folder folder : lst) {
+						folder.setUsername(folder.getUsername().replaceAll("&&&\\*\\*\\*&&&"+ userObj.getUsername() +"&&&\\*\\*\\*&&&", ""));
+//						query = session.createNativeQuery("UPDATE folder f set f.userName =: where username f.userName =:username");
+//						query.setString("username", folder.getUsername());
+//						query.executeUpdate();
+						session.update(folder);
+						
+					}
+					
+					
+				}
 				for (String folderId : userObj.getPermissonFolderID().split(",")) {
+					
+				
 					int id = Integer.parseInt(folderId);
 
 					Folder folder = (Folder) session.get(Folder.class, id);
@@ -100,6 +122,7 @@ public class DBUtil {
 					session.update(folder);
 
 				}
+			}
 			if(foldername.length()>0){
 				if(foldername.endsWith(",")){
 					foldername = foldername.substring(0, foldername.lastIndexOf(","));
@@ -111,7 +134,8 @@ public class DBUtil {
 			session.close();
 			return userObj;
 		} catch (Exception exception) {
-			System.out.println("Exception occred while register: " + exception.getMessage());
+			System.out.println("Exception occred while update: " + exception.getMessage());
+			exception.printStackTrace();
 			if (trx != null)
 				trx.rollback();
 			if (session != null)
@@ -298,7 +322,15 @@ public class DBUtil {
 						folderObj.setChildren(childList);
 					}
 				}
+				List<Folder> tempList = new ArrayList<Folder>();
+				for (Folder folder : lst) {
+					getAllParents(lst,tempList,session,folder);
+					
+				}
+				lst.addAll(tempList);
+				
 			}
+			
 			trx.commit();
 			session.close();
 		} catch (Exception e) {
@@ -309,6 +341,33 @@ public class DBUtil {
 				session.close();
 		}
 		return lst;
+	}
+
+	private void getAllParents(List<Folder> lst, List<Folder> tempList, Session session, Folder folder) {
+		
+			if(folder.getId()!=1000 && checkExists(lst,folder.getParentid())==0){
+				String parentid = folder.getParentid().substring(folder.getParentid().length()-4);
+				int pId = Integer.parseInt(parentid);
+				Folder flder = (Folder) session.get(Folder.class, pId);
+				if(!lst.contains(flder) && !tempList.contains(flder))
+					tempList.add(flder);
+				if(folder.getParentid().equalsIgnoreCase("1000"))
+					return;
+				else
+					getAllParents(lst, tempList, session,flder);
+					
+		}
+	}
+
+	private int checkExists(List<Folder> lst, String parentid) {
+		parentid = parentid.substring(parentid.length()-4);
+		int pId = Integer.parseInt(parentid);
+		for (Folder folder : lst) {
+			
+			if(folder.getId()== pId)
+				return pId;
+		}
+		return 0;
 	}
 
 	public Folder createFolder(Folder folder) {
@@ -381,16 +440,23 @@ public class DBUtil {
 		Session session = HibernateUtil.getSession();
 		;
 		Transaction t = session.beginTransaction();
-		List lst = null;
+		List<Folder> lst = null;
 		try {
 			Query query = null;
-			if (isadmin || !folderId.equalsIgnoreCase("1000"))
+			if (isadmin)
 				query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId", Folder.class);
 			else {
+				int id = Integer.parseInt(folderId.substring(folderId.length()-4));
+
+				Folder folder = (Folder) session.get(Folder.class, id);
+				if(folder!=null && folder.getUsername().contains( username + "&&&***&&&")){
+					query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId", Folder.class);
+				}else{
 				query = session.createNativeQuery(
 						"SELECT * FROM folder f where f.parentId = :parentId  and userName LIKE :userName",
 						Folder.class);
 				query.setString("userName", "%" + username + "&&&***&&&%");
+				}
 			}
 			query.setString("parentId", folderId);
 			lst = query.list();

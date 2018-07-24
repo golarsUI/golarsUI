@@ -11,7 +11,7 @@
 <p-tree [value]="folderData" #leftNavTree selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
     [contextMenu]="cm" (onNodeContextMenuSelect) ="nodeRightClickSelect($event)" [loading]="loading" emptyMessage="">
 </p-tree>
-<p-contextMenu #cm [model]="items"></p-contextMenu>
+<p-contextMenu #cm [model]="items" [hidden]="hideContextMenu"></p-contextMenu>
 </div>
 <div class="modal" id="create_Folder_Modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

@@ -24,6 +24,7 @@ export class LeftnavComponent implements OnInit {
     isDocumentsRequired = false;
     selectedNode;
     items = [ ];
+    hideContextMenu=true;
     selectedItemParentNode;
     createFolderFailureMessage = null;
     createFoldershowFailureMessage = false;
@@ -64,9 +65,11 @@ export class LeftnavComponent implements OnInit {
       }
 
     nodeRightClickSelect(event) {
+        this.hideContextMenu=true;
         this.items = [];
         this.selectedNode = event.node;
         this.selectedItemParentNode = event.node.parent;
+        if(this.commonService.isAdmin() || this.selectedNode.username.indexOf(this.commonService.getUserName())>=0)
         this.items = [
             { label: 'New Folder', command: (event) => this.createNewFolder() }
         ]; 
@@ -75,14 +78,17 @@ export class LeftnavComponent implements OnInit {
             this.items.push({ label: 'Import', command: (event) => this.ImportFile() });
             this.items.push({ label: 'Delete Folder', command: (event) => this.deleteFolder(event) });
            
-        } else{
+        } else  if(this.commonService.isAdmin() || this.selectedNode.username.indexOf(this.commonService.getUserName())>=0){
             this.items.push({ label: 'Import', command: (event) => this.ImportFile() });
         }
     }
         this.selectedNode.expanded = true;
         this.commonService.notify({ type: 'fetchSubFolders', node: this.selectedNode, isDocumentsRequired: true });
-        this.isDocumentsRequired
-        console.log("nodeSelect", event)
+        // this.isDocumentsRequired
+        // console.log("nodeSelect", event)
+        if( this.items.length>0){
+            this.hideContextMenu=false;
+        }
     }
 
     ImportFile() {

@@ -25,7 +25,7 @@
   </div>
   <div class="ui-g" *ngIf="docData.fid">
     <div class="ui-g-4">FID</div>
-    <div class="ui-g-8">{{docData.fid}}</div>
+    <div class="ui-g-8">{{commonService.getFID(docData.fid)}}</div>
   </div>
   <div class="ui-g" *ngIf="docData.city">
       <div class="ui-g-4">City</div>

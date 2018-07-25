@@ -12,11 +12,26 @@
           <i class="fa fa-plus nag-bar-icon-color" aria-hidden="true"></i>
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" [hidden]="isAdmin">
         <a id="navbar_import" class="nav-link"  style="cursor: pointer;" [ngClass]="{disabled : checkImportDisabled() }">Import
           <i class="fa fa-download nag-bar-icon-color" aria-hidden="true"></i>
         </a>
       </li>
+      <li class="nav-item dropdown" [hidden]="!isAdmin" >
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Import
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" id="navbar_import_dropdown"   style="cursor: pointer;"  [ngClass]="{disabled : checkImportDisabled() }">Import
+            <i class="fa fa-download nag-bar-icon-color" aria-hidden="true"></i>
+          </a>
+          <a class="dropdown-item" id="navbar_bulk_import"  style="cursor: pointer;" >Bulk Import
+            <i class="fa fa-download nag-bar-icon-color" aria-hidden="true"></i>
+          </a>
+        </div>
+      </li>
+
       <li class="nav-item">
         <a id="navbar_configuration" routerLink="configuration"  class="nav-link" [hidden]="!isAdmin" (click)='isNodeSelected=false' style="cursor: pointer;">Configuration
         </a>
@@ -57,6 +72,15 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <golars-import></golars-import>
+ 
+    </div>
+  </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="bulkImportModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <golars-bulkimport></golars-bulkimport>
  
     </div>
   </div>

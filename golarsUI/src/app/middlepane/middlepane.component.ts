@@ -85,10 +85,12 @@ export class MiddlepaneComponent implements OnInit {
       data[i].properties = JSON.parse(data[i].properties);
       if(data[i].properties.docUpdateDate!=null){
         data[i].properties.docUpdateDate = this.commonService.getFormatteDate(data[i].properties.docUpdateDate);
+        
       }
       if(data[i].properties.docDate!=null){
         data[i].properties.docDate = this.commonService.getFormatteDate(data[i].properties.docDate);
       }
+      data[i].properties.fid = this.commonService.getFID(data[i].properties.fid);
     }
     return data;
   }
@@ -213,5 +215,5 @@ export class MiddlepaneComponent implements OnInit {
       return (event.order * result);
     });
   }
-
+  
 }

@@ -62,6 +62,21 @@ export class AppComponent implements OnInit{
       return;
       $('#importModal').modal('show');
   })
+  $("#navbar_import_dropdown").on("click",function(e){
+    var isDisabled =  this.className.indexOf("disabled") >=0;
+    e.preventDefault();
+    if(isDisabled == true)
+    return;
+    $('#importModal').modal('show');
+})
+  
+  $("#navbar_bulk_import").on("click",function(e){
+    var isDisabled =  this.className.indexOf("disabled") >=0;
+    e.preventDefault();
+    if(isDisabled == true)
+    return;
+    $('#bulkImportModal').modal('show');
+})
   $("#navbar_createNew").on("click",function(e){
     var isDisabled =  this.className.indexOf("disabled") >=0;
       e.preventDefault();

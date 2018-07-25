@@ -100,5 +100,14 @@ export class CommonService {
 
     return month + '/' + day + '/' + year;
   }
+  getFID(value) {
+    if(value == null || value == undefined)
+    return value;
+    try {
+      return Number(value)
+    } catch (error) {
+      return value;
+    }
+  }
  
 }

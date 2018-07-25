@@ -61,7 +61,7 @@ public class MailUtil {
 
 		try {
 			Message message = fetchEmailProperties();
-			 
+
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userobj.getEmailAddress()));
 			String messageText = "";
 			if (isEdit)
@@ -70,7 +70,8 @@ public class MailUtil {
 				messageText = "<p>Your account has been created in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>";
 
 			messageText += "<p>Below are the login details: </p>" + "<p>username: " + userobj.getUsername() + "</p>"
-					+ "<p>password: " + new String(Base64.getDecoder().decode(userobj.getPassword().getBytes())) + "</p>";
+					+ "<p>password: " + new String(Base64.getDecoder().decode(userobj.getPassword().getBytes()))
+					+ "</p>";
 			message.setContent(messageText, "text/html");
 			message.setSubject("New user registration with Golars 360");
 
@@ -96,6 +97,28 @@ public class MailUtil {
 			Transport.send(message);
 
 			System.out.println("Mail sent succesfully to : " + toAddress);
+
+		} catch (MessagingException e) {
+			System.out.println("Exception occured during mail send --" + e.getMessage());
+		}
+
+	}
+
+	public void bulkImportEmail(User userobj, int totalURLCount) {
+		try {
+			Message message = fetchEmailProperties();
+
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userobj.getEmailAddress()));
+			String messageText = "";
+
+			messageText = "<p>Bulk documents import completed successfully. Total documents imported are :" + totalURLCount + " </p>";
+
+			message.setContent(messageText, "text/html");
+			message.setSubject("Bulk documents import completed successfully");
+
+			Transport.send(message);
+
+			System.out.println("Mail sent succesfully to : " + userobj);
 
 		} catch (MessagingException e) {
 			System.out.println("Exception occured during mail send --" + e.getMessage());

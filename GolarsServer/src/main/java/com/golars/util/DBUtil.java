@@ -263,6 +263,7 @@ public class DBUtil {
 		Folder docFolder = new Folder();
 		docFolder.setLabel(docName);
 		docFolder.setParentid(folder.getParentid() + folder.getId());
+		if(!folder.getUsername().contains(folder.getUsername() + "&&&***&&&"))
 		docFolder.setUsername(folder.getUsername() + "&&&***&&&");
 		docFolder.setProperties(documentProperties);
 		return docFolder;
@@ -518,18 +519,38 @@ public class DBUtil {
 		try {
 			Query query;
 
-			if (isadmin)
+			if (isadmin){
+				Folder folder = (Folder) session.get(Folder.class, Integer.parseInt(folderId));
 				query = session.createNativeQuery("DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId",
 						Folder.class);
+				query.setInteger("id", Integer.parseInt(folderId));
+				query.setString("parentId", parentId + folderId + "%");
+				result = query.executeUpdate();
+				query = session.createNativeQuery("DELETE FROM document WHERE name=:name and parentId LIKE :parentId",
+						Document.class);
+				query.setString("name", folder.getLabel());
+				parentId = folder.getParentid().substring(0,folder.getParentid().length()-4);
+				query.setString("parentId", parentId+"%");
+				result = query.executeUpdate();
+				
+			}
 			else {
 				query = session.createNativeQuery(
 						"DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId and UPPER(userName) =:username",
 						Folder.class);
 				query.setString("username", username.toUpperCase());
+				query.setInteger("id", Integer.parseInt(folderId));
+				query.setString("parentId", parentId + folderId + "%");
+				result = query.executeUpdate();
+				query = session.createNativeQuery(
+						"DELETE FROM document WHERE id=:id OR parentId LIKE :parentId and UPPER(userName) =:username",
+						Document.class);
+				query.setString("username", username.toUpperCase());
+				query.setInteger("id", Integer.parseInt(folderId));
+				query.setString("parentId", parentId + folderId + "%");
+				result = query.executeUpdate();
 			}
-			query.setInteger("id", Integer.parseInt(folderId));
-			query.setString("parentId", parentId + folderId + "%");
-			result = query.executeUpdate();
+			
 			trx.commit();
 			session.close();
 		} catch (NumberFormatException e) {
@@ -738,12 +759,34 @@ public class DBUtil {
 		return result;
 	}
 	
-	public Folder getFolder(int id) {
+	public Folder getFolder(String path) {
+		path = path.replace("\\", "/");
+		String pathAarray[] = path.split("/");
+		String parentId ="NULL";
+		Folder folder = null;
+		for (String pathName : pathAarray) {
+			folder = getFolderWithPath(pathName,parentId);
+			if(parentId.equalsIgnoreCase("NULL"))
+			parentId = folder.getId()+"";
+			else
+				parentId = parentId+folder.getId();
+		}
+		return folder;
+		
+	}
+
+	private Folder getFolderWithPath(String path, String parentId) {
 		Session session = HibernateUtil.getSession();
 		Transaction trx = session.beginTransaction();
 		try{
-			
-		Folder folder = session.get(Folder.class, id);;
+			Query query = null;
+			List<Folder> lst = null;
+			query = session.createNativeQuery("SELECT * FROM folder f where f.name =:path  and f.parentId LIKE :parentId",Folder.class);
+			query.setString("path", path);
+			query.setString("parentId", parentId);
+			lst = query.list();
+
+		Folder folder = lst.get(0);
 		trx.commit();
 		session.close();
 		return folder;
@@ -757,6 +800,30 @@ public class DBUtil {
 	} finally {
 
 	}
+		
+	}
+
+	public User getUser(String username) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		try {
+			User user = (User) session.get(User.class, username);
+			
+				trx.commit();
+				session.close();
+				return user;
+
+		} catch (Exception exception) {
+			System.out.println("Exception occred while login: " + exception.getMessage());
+			if (trx != null)
+				trx.rollback();
+			if (session != null)
+				session.close();
+			return null;
+		} finally {
+
+		}
+		
 	}
 
 }

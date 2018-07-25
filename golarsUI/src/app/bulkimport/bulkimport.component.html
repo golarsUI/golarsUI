@@ -12,15 +12,15 @@
         <strong>Success!</strong> {{successMessage}}
       </div>
 <form name="importForm" class="form-group" #bulkImport>
-<p-fileUpload *ngIf="!editDocument"  name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true"  (onSelect)="onBasicUpload($event)"
+<p-fileUpload   name="myfile[]" #fileInput multiple="multiple" files="listofFiles[]" customUpload="true"  (onSelect)="onBasicUpload($event)"
     [showUploadButton]="false"  [style]="{'max-height':'300px','overflow':'auto','padding':'6px'}" previewWidth="20" invalidFileTypeMessageDetail="Invalid file format"></p-fileUpload>
 
     <div class="pull-right" style="margin-top:20px;margin-bottom:20px">
-    <button type="button" *ngIf="!editDocument" class="btn btn-primary" [disabled]="disableImportButton" (click)="importBulkDocuments()">Import 
+    <button type="button"  class="btn btn-primary" [disabled]="disableImportButton" (click)="importBulkDocuments()">Import 
       <i *ngIf="disableImportButton" class="fa fa-spinner fa-spin" style="font-size:24px"></i></button>
     
-    <button type="button"  *ngIf="!editDocument" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-    <button type="button" *ngIf="editDocument" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button"   class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
   </div>
 </form>
 </div>

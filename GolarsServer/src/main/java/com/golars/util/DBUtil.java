@@ -207,12 +207,12 @@ public class DBUtil {
 	}
 
 	public boolean saveDocument(InputStream is, String fileName, String documentProperties, Folder folder) {
-		Session session = HibernateUtil.getSession();
+		Session session = null;
 		byte[] theString;
 		Transaction trx = null;
 		try {
 			theString = IOUtils.toByteArray(is);
-
+			session = HibernateUtil.getSession();
 			Document file = new Document();
 			file.setFilename(fileName);
 			file.setContent(theString);
@@ -307,9 +307,9 @@ public class DBUtil {
 				query = session.createNativeQuery("SELECT * FROM folder f where f.isFolder=:isFolder", Folder.class);
 			else {
 				query = session.createNativeQuery(
-						"SELECT * FROM folder f where f.isFolder=:isFolder and userName LIKE :userName or f.id=1000",
+						"SELECT * FROM folder f where f.isFolder=:isFolder and UPPER(userName) LIKE :userName or f.id=1000",
 						Folder.class);
-				query.setString("userName", "%" + username + "&&&***&&&%");
+				query.setString("userName", "%" + username.toLowerCase() + "&&&***&&&%");
 			}
 
 			query.setBoolean("isFolder", true);
@@ -449,13 +449,13 @@ public class DBUtil {
 				int id = Integer.parseInt(folderId.substring(folderId.length()-4));
 
 				Folder folder = (Folder) session.get(Folder.class, id);
-				if(folder!=null && folder.getUsername().contains( username + "&&&***&&&")){
+				if(folder!=null && folder.getUsername().toUpperCase().contains( username.toUpperCase() + "&&&***&&&")){
 					query = session.createNativeQuery("SELECT * FROM folder f where f.parentId = :parentId", Folder.class);
 				}else{
 				query = session.createNativeQuery(
-						"SELECT * FROM folder f where f.parentId = :parentId  and userName LIKE :userName",
+						"SELECT * FROM folder f where f.parentId = :parentId  and  UPPER(userName) LIKE :userName",
 						Folder.class);
-				query.setString("userName", "%" + username + "&&&***&&&%");
+				query.setString("userName", "%" + username.toUpperCase() + "&&&***&&&%");
 				}
 			}
 			query.setString("parentId", folderId);
@@ -481,9 +481,9 @@ public class DBUtil {
 						"SELECT * FROM folder f where f.parentId = :parentId and f.isFolder=true", Folder.class);
 			else {
 				query = session.createNativeQuery(
-						"SELECT * FROM folder f where f.parentId = :parentId  and userName =:userName and f.isFolder=true",
+						"SELECT * FROM folder f where f.parentId = :parentId  and UPPER(userName) =:userName and f.isFolder=true",
 						Folder.class);
-				query.setString("userName", username);
+				query.setString("userName", username.toUpperCase());
 			}
 			query.setString("parentId", folderId);
 			lst = query.list();
@@ -523,9 +523,9 @@ public class DBUtil {
 						Folder.class);
 			else {
 				query = session.createNativeQuery(
-						"DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId and username =:username",
+						"DELETE FROM folder WHERE id=:id OR parentId LIKE :parentId and UPPER(userName) =:username",
 						Folder.class);
-				query.setString("username", username);
+				query.setString("username", username.toUpperCase());
 			}
 			query.setInteger("id", Integer.parseInt(folderId));
 			query.setString("parentId", parentId + folderId + "%");
@@ -638,10 +638,23 @@ public class DBUtil {
 				query.setString("details", "%" + searchString + "%");
 				query.setString("name", "%" + searchString + "%");
 			} else {
-				query = session.createNativeQuery(
-						"SELECT * FROM folder f where f.isFolder=false and userName LIKE :userName and (f.details LIKE :details or f.name LIKE :name)",
-						Folder.class);
-				query.setString("userName", "%" + username + "&&&***&&&%");
+				query = session.createNativeQuery("SELECT id FROM folder f where f.userName LIKE :username");
+				query.setString("username", "%&&&***&&&"+ username +"&&&***&&&%");
+				List<Integer> idList =query.list();
+				//constructing add condition
+				String andCondition = "";
+				for (int i = 0;i< idList.size();i++) {
+					andCondition+="parentId like '%"+idList.get(i)+"%'";
+					if(i < idList.size()-1)
+						andCondition+=" or ";
+				}
+				
+				String queryString  = 
+						"SELECT * FROM folder f where f.isFolder=false and (f.details LIKE :details or f.name LIKE :name)";
+				if(andCondition != null && andCondition.length()>0)
+					queryString+= "and ("+ andCondition+" )";
+						
+				query = session.createNativeQuery(queryString,Folder.class);
 				query.setString("details", "%" + searchString + "%");
 				query.setString("name", "%" + searchString + "%");
 			}
@@ -723,6 +736,27 @@ public class DBUtil {
 				session.close();
 		}
 		return result;
+	}
+	
+	public Folder getFolder(int id) {
+		Session session = HibernateUtil.getSession();
+		Transaction trx = session.beginTransaction();
+		try{
+			
+		Folder folder = session.get(Folder.class, id);;
+		trx.commit();
+		session.close();
+		return folder;
+	} catch (Exception exception) {
+		System.out.println("Exception occred while getFolder: " + exception.getMessage());
+		if (trx != null)
+			trx.rollback();
+		if (session != null)
+			session.close();
+		return null;
+	} finally {
+
+	}
 	}
 
 }

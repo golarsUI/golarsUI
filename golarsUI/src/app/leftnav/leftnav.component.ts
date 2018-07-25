@@ -69,7 +69,7 @@ export class LeftnavComponent implements OnInit {
         this.items = [];
         this.selectedNode = event.node;
         this.selectedItemParentNode = event.node.parent;
-        if(this.commonService.isAdmin() || this.selectedNode.username.indexOf(this.commonService.getUserName())>=0)
+        if(this.commonService.isAdmin() || this.selectedNode.username.toUpperCase().indexOf(this.commonService.getUserName().toUpperCase())>=0)
         this.items = [
             { label: 'New Folder', command: (event) => this.createNewFolder() }
         ]; 
@@ -78,7 +78,7 @@ export class LeftnavComponent implements OnInit {
             this.items.push({ label: 'Import', command: (event) => this.ImportFile() });
             this.items.push({ label: 'Delete Folder', command: (event) => this.deleteFolder(event) });
            
-        } else  if(this.commonService.isAdmin() || this.selectedNode.username.indexOf(this.commonService.getUserName())>=0){
+        } else  if(this.commonService.isAdmin() || this.selectedNode.username.toUpperCase().indexOf(this.commonService.getUserName().toUpperCase())>=0){
             this.items.push({ label: 'Import', command: (event) => this.ImportFile() });
         }
     }

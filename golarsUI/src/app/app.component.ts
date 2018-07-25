@@ -139,14 +139,14 @@ $("#navbar_delete_folder").on("click",function(e){
   }
   checkImportDisabled(){
     if(this.selectedNode!=undefined && this.selectedNode.id !==undefined)
-      return !(this.isNodeSelected && this.selectedNode.id != GolarsConstants.ROOTID && (this.isAdmin || this.selectedNode.username.indexOf(this.user.username)>=0));
+      return !(this.isNodeSelected && this.selectedNode.id != GolarsConstants.ROOTID && (this.isAdmin || this.selectedNode.username.toUpperCase().indexOf(this.user.username.toUpperCase())>=0));
     else
       return !this.isNodeSelected
   
   }
   checkCreateButtonDisabled(){
     if(this.selectedNode!=undefined && this.selectedNode.id !==undefined)
-      return !(this.isNodeSelected && (this.isAdmin || this.selectedNode.username.indexOf(this.user.username)>=0));
+      return !(this.isNodeSelected && (this.isAdmin || this.selectedNode.username.toUpperCase().indexOf(this.user.username.toUpperCase())>=0));
     else
       return !this.isNodeSelected
   }

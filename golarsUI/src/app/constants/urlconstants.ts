@@ -8,6 +8,7 @@ export class URLConstants {
     public static USERS_URL = environment.server+'/golars/rest/users';
     public static USER_CHANGE_PASSWORD_URL = environment.server+'/golars/rest/users/changepassword';
     public static IMPORT_DOC_URL = environment.server+'/golars/rest/import';
+    public static BULK_IMPORT_DOC_URL = environment.server+'/golars/rest/bulkimport';
     public static FOLDER_TABLE_PREFERENCES = environment.server+'/golars/rest/folders/preferences';
     public static FORGOT_PASSWORD_URL = environment.server+'/golars/rest/forgotpassword';
 

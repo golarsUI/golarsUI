@@ -104,7 +104,11 @@ export class CommonService {
     if(value == null || value == undefined)
     return value;
     try {
-      return Number(value)
+      var num = Number(value)
+      if(isNaN(num))
+      return value;
+      else 
+      return num;
     } catch (error) {
       return value;
     }

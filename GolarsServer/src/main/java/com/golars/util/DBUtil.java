@@ -210,15 +210,12 @@ public class DBUtil {
 		Session session = null;
 		byte[] theString;
 		Transaction trx = null;
+		Document file = new Document();
 		try {
 			theString = IOUtils.toByteArray(is);
 			session = HibernateUtil.getSession();
-			Document file = new Document();
-			file.setFilename(fileName);
-			file.setContent(theString);
-			file.setFolderId(folder.getId());
-			file.setParentId(folder.getParentid() + folder.getId());
-			Folder docFolder = createDocFolder(folder, fileName, documentProperties);
+		
+			
 			trx = session.beginTransaction();
 			Query query = session.createNativeQuery("SELECT * FROM document d where d.name =:name and d.id =:folderId",
 					Document.class);
@@ -227,11 +224,20 @@ public class DBUtil {
 			List list = query.list();
 			// Object doc = session.get(Document.class, file.getFilename());
 			if (list.size() == 0) {
+				file.setFilename(fileName);
+				file.setContent(theString);
+				file.setFolderId(folder.getId());
+				file.setParentId(folder.getParentid() + folder.getId());
+				Folder docFolder = createDocFolder(folder, fileName, documentProperties);
 				session.save(docFolder);// saving doc in folder table
 				session.save(file);// save doc content in
 									// other table
 				trx.commit();
 				session.close();
+				theString=null;
+				file=null;
+				IOUtils.closeQuietly(is);
+				docFolder=null;
 			} else {
 				trx.rollback();
 				;
@@ -250,6 +256,8 @@ public class DBUtil {
 		} finally {
 			try {
 				is.close();
+				
+				System.out.println("import content finally block called.");
 			} catch (IOException e) {
 			}
 

@@ -166,23 +166,24 @@ public class BulkImportService {
 					}catch(Exception e){
 						url = gen()+"";
 					}
+					url = url.trim();
 					bean.addProperty("url",url);
 				   URL xyz = new URL( getCellValue(cell));
 				       URLConnection xyzcon = xyz.openConnection();
 				       bean.addProperty("username",userName);
 				       Folder folder =  new DBUtil().getFolder(path);
-				       new DBUtil().saveDocument(xyzcon.getInputStream(), url, new Gson().toJson(bean),folder);
+				       InputStream in = xyzcon.getInputStream();
+				       new DBUtil().saveDocument(in, url, new Gson().toJson(bean),folder);
 				       insertCount++;
 				       System.out.println(insertCount+" Files(s) imported of "+totalcount);
 				       System.out.println("File imported is "+url+" into "+path+" ");
-				       
-				       
-				       
 				       writeEntriesIntoFile(remoteURL,"http://golars360.com/golars/rest/import/"+folder.getId()+"/"+url);;
+				       in.close();
+				       bean= null;   
 					}catch(Exception e){
 						System.out.println("Skip file import "+e.getMessage());
 					}
-				      
+				
 				}
 
 				file.close();
@@ -199,20 +200,20 @@ public class BulkImportService {
 		private String getCellValue(Cell cell) {
 			if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
             {
-                return cell.getStringCellValue()+" ";
+                return cell.getStringCellValue()+"";
             }
             else if(cell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN)
             {
-                return cell.getBooleanCellValue()+" ";
+                return cell.getBooleanCellValue()+"";
             }else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
             {
-                return cell.getNumericCellValue()+" ";
+                return cell.getNumericCellValue()+"";
             }else if(cell.getCellType() == XSSFCell.CELL_TYPE_BLANK)
             {
-                return " ";
+                return "";
             }else if(cell.getCellType() == XSSFCell.CELL_TYPE_ERROR)
             {
-                return " ";
+                return "";
             }else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA)
             {
                 return " ";

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Date;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -17,11 +18,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.golars.bean.Folder;
 import com.golars.bean.User;
 import com.golars.mail.MailUtil;
 import com.golars.util.DBUtil;
@@ -112,36 +120,68 @@ public class BulkImportService {
 				rowIterator.next();
 				while (rowIterator.hasNext()) 
 				{
+					try{
 					Row row = rowIterator.next();
 					//For each row, iterate through all the columns
-					Iterator<Cell> cellIterator = row.cellIterator();
 					JsonObject bean = new JsonObject();
-					Cell cell = cellIterator.next();
-					bean.addProperty("docUpdateDate",new Date(cell.getDateCellValue().getTime())+"");
-					cell = cellIterator.next();
-					bean.addProperty("fecilityName",cell.getStringCellValue());
-					cell = cellIterator.next();
-					bean.addProperty("docDate",new Date(cell.getDateCellValue().getTime())+"");
-					cell = cellIterator.next();
-					bean.addProperty("fid",cell.getNumericCellValue()+"");
-					cell = cellIterator.next();
-					bean.addProperty("stateProgram",cell.getStringCellValue());
-					cell = cellIterator.next();
-					bean.addProperty("docTypes",cell.getStringCellValue());
-					cell = cellIterator.next();
-					bean.addProperty("scopeOfWork",cell.getStringCellValue());
-					cell = cellIterator.next();
-					String path = cell.getStringCellValue();
-					cell = cellIterator.next();
-					String url = cell.getStringCellValue().substring(cell.getStringCellValue().indexOf("fileName=")+"fileName=".length());
+					Cell cell = row.getCell(0);
+					java.util.Date dateValue = null;
+					if(cell != null)
+						dateValue = cell.getDateCellValue();
+					if(dateValue!=null)
+					bean.addProperty("docUpdateDate",new Date(dateValue.getTime())+"");
+					cell = row.getCell(1);
+					if(cell != null)
+					bean.addProperty("fecilityName",getCellValue(cell));
+					cell = row.getCell(2);
+					if(cell != null)
+					dateValue = cell.getDateCellValue();
+					if(dateValue!=null)
+					bean.addProperty("docDate",new Date(dateValue.getTime())+"");
+					cell = row.getCell(3);
+					if(cell != null)
+					bean.addProperty("fid",getCellValue(cell)+"");
+					cell = row.getCell(4);
+					if(cell != null) 
+					bean.addProperty("stateProgram",getCellValue(cell));
+					cell = row.getCell(5);
+					if(cell != null)
+					bean.addProperty("docTypes",getCellValue(cell));
+					cell = row.getCell(6);
+					if(cell != null)
+					bean.addProperty("scopeOfWork",getCellValue(cell));
+					cell = row.getCell(7);
+					String path = null;
+					if(cell != null)
+						path = getCellValue(cell);
+					cell = row.getCell(8);
+					String remoteURL =null;
+					if(cell != null)
+						remoteURL = getCellValue(cell);
+					if(remoteURL == null) break;
+					String url = null;
+					try
+					{	
+						url = remoteURL.substring(remoteURL.indexOf("fileName=")+"fileName=".length());
+					}catch(Exception e){
+						url = gen()+"";
+					}
 					bean.addProperty("url",url);
-				   URL xyz = new URL(cell.getStringCellValue());
+				   URL xyz = new URL( getCellValue(cell));
 				       URLConnection xyzcon = xyz.openConnection();
 				       bean.addProperty("username",userName);
-				       new DBUtil().saveDocument(xyzcon.getInputStream(), url, new Gson().toJson(bean), new DBUtil().getFolder(path));
+				       Folder folder =  new DBUtil().getFolder(path);
+				       new DBUtil().saveDocument(xyzcon.getInputStream(), url, new Gson().toJson(bean),folder);
 				       insertCount++;
 				       System.out.println(insertCount+" Files(s) imported of "+totalcount);
 				       System.out.println("File imported is "+url+" into "+path+" ");
+				       
+				       
+				       
+				       writeEntriesIntoFile(remoteURL,"http://golars360.com/golars/rest/import/"+folder.getId()+"/"+url);;
+					}catch(Exception e){
+						System.out.println("Skip file import "+e.getMessage());
+					}
 				      
 				}
 
@@ -151,12 +191,81 @@ public class BulkImportService {
 			{
 				e.printStackTrace();
 			}
-		if(totalcount == insertCount){
 			 System.out.println("Imported documents succesfully. "+totalcount+" documents Imported");
 			 User user = new DBUtil().getUser(userName);
 			 new MailUtil().bulkImportEmail(user,totalcount);
-		}
 	}
 
-	
+		private String getCellValue(Cell cell) {
+			if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+            {
+                return cell.getStringCellValue()+" ";
+            }
+            else if(cell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN)
+            {
+                return cell.getBooleanCellValue()+" ";
+            }else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+            {
+                return cell.getNumericCellValue()+" ";
+            }else if(cell.getCellType() == XSSFCell.CELL_TYPE_BLANK)
+            {
+                return " ";
+            }else if(cell.getCellType() == XSSFCell.CELL_TYPE_ERROR)
+            {
+                return " ";
+            }else if(cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA)
+            {
+                return " ";
+            }
+			return " ";
+		}
+
+		private void writeEntriesIntoFile(String remoteURL, String localURL) {
+			 String excelFilePath = "c:\\golars\\bulkimport\\urlmapping.xlsx";
+	         
+		        try {
+		            FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
+		            Workbook workbook = WorkbookFactory.create(inputStream);
+		 
+		            Sheet sheet = workbook.getSheetAt(0);
+		 
+		            Object[][] bookData = {
+		                    { remoteURL, localURL},
+		            };
+		 
+		            int rowCount = sheet.getLastRowNum();
+		 
+		            for (Object[] aBook : bookData) {
+		                Row row = sheet.createRow(++rowCount);
+		 
+		                int columnCount = -1;
+		                 
+		                 
+		                for (Object field : aBook) {
+		                	Cell cell= row.createCell(++columnCount);
+		                    if (field instanceof String) {
+		                        cell.setCellValue((String) field);
+		                    } else if (field instanceof Integer) {
+		                        cell.setCellValue((Integer) field);
+		                    }
+		                }
+		 
+		            }
+		 
+		            inputStream.close();
+		 
+		            FileOutputStream outputStream = new FileOutputStream("c:\\golars\\bulkimport\\urlmapping.xlsx");
+		            workbook.write(outputStream);
+		            outputStream.close();
+		             
+		        } catch (IOException | EncryptedDocumentException
+		                | InvalidFormatException ex) {
+		          System.out.println("unable to write to excel path c:\\golars\\bulkimport\\urlmapping.xlsx "+ex.getMessage());
+		        }
+		    }
+			
+		public int gen() {
+		    Random r = new Random( System.currentTimeMillis() );
+		    return 100000 + r.nextInt(200000);
+		}
 }

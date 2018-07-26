@@ -217,7 +217,7 @@ public class DBUtil {
 			file.setFilename(fileName);
 			file.setContent(theString);
 			file.setFolderId(folder.getId());
-			file.setParentId(folder.getParentid());
+			file.setParentId(folder.getParentid() + folder.getId());
 			Folder docFolder = createDocFolder(folder, fileName, documentProperties);
 			trx = session.beginTransaction();
 			Query query = session.createNativeQuery("SELECT * FROM document d where d.name =:name and d.id =:folderId",
@@ -526,12 +526,14 @@ public class DBUtil {
 				query.setInteger("id", Integer.parseInt(folderId));
 				query.setString("parentId", parentId + folderId + "%");
 				result = query.executeUpdate();
-				query = session.createNativeQuery("DELETE FROM document WHERE name=:name and parentId LIKE :parentId",
+				if(!folder.isFolder()){
+				query = session.createNativeQuery("DELETE FROM document WHERE name=:name and parentId  =:parentId",
 						Document.class);
 				query.setString("name", folder.getLabel());
-				parentId = folder.getParentid().substring(0,folder.getParentid().length()-4);
-				query.setString("parentId", parentId+"%");
+				parentId = folder.getParentid().substring(0,folder.getParentid().length());
+				query.setString("parentId", folder.getParentid());
 				result = query.executeUpdate();
+				}
 				
 			}
 			else {

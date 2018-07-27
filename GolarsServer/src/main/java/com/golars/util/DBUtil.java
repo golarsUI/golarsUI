@@ -288,8 +288,9 @@ public class DBUtil {
 			query.setString("name", filename);
 			query.setInteger("folderId", id);
 			List list = query.list();
-
-			Document doc = (Document) list.get(0);
+			Document doc = new Document();
+			if(list!=null && list.size()>0)
+				doc = (Document) list.get(0);
 			trx.commit();
 			session.close();
 			return doc;

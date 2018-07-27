@@ -178,7 +178,6 @@ public class BulkImportService {
 				       System.out.println(insertCount+" Files(s) imported of "+totalcount);
 				       System.out.println("File imported is "+url+" into "+path+" ");
 				       writeEntriesIntoFile(remoteURL,"http://golars360.com/golars/rest/import/"+folder.getId()+"/"+url);;
-				       in.close();
 				       bean= null;   
 					}catch(Exception e){
 						System.out.println("Skip file import "+e.getMessage());

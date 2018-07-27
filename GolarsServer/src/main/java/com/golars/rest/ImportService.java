@@ -65,7 +65,8 @@ public class ImportService {
 	}
 
 	private String generateContentType(String filename) {
-		if (filename.endsWith(".pdf"))
+		System.out.println("filename ----"+filename);
+		if (filename !=null  && filename.endsWith(".pdf"))
 			return "application/pdf";
 		return MediaType.APPLICATION_OCTET_STREAM;
 	}

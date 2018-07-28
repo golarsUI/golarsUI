@@ -21,9 +21,9 @@ public class MailUtil {
 
 		// sendEmail("avsrinivasa@gmail.com");
 	}
-
+	Properties emailProperties = new Properties();
 	Message fetchEmailProperties() {
-		Properties emailProperties = new Properties();
+	
 		try {
 			Class<MailUtil> cl = MailUtil.class;
 
@@ -65,9 +65,9 @@ public class MailUtil {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userobj.getEmailAddress()));
 			String messageText = "";
 			if (isEdit)
-				messageText = "<p>Your account has been updated in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>";
+				messageText = "<p>Your account has been updated in G360 content management system.</p> <p>Please use <a href='"+emailProperties.get("baseURL")+"'>link</a> to login. </p>";
 			else
-				messageText = "<p>Your account has been created in G360 content management system.</p> <p>Please use <a href='http://golars360.com/'>link</a> to login. </p>";
+				messageText = "<p>Your account has been created in G360 content management system.</p> <p>Please use <a href='"+emailProperties.get("baseURL")+"'>link</a> to login. </p>";
 
 			messageText += "<p>Below are the login details: </p>" + "<p>username: " + userobj.getUsername() + "</p>"
 					+ "<p>password: " + new String(Base64.getDecoder().decode(userobj.getPassword().getBytes()))

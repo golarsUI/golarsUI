@@ -314,10 +314,10 @@ public class DBUtil {
 		List<Folder> lst = null;
 		try {
 			if (isadmin)
-				query = session.createNativeQuery("SELECT * FROM folder f where f.isFolder=:isFolder", Folder.class);
+				query = session.createNativeQuery("SELECT * FROM folder f where f.isFolder=:isFolder order by name", Folder.class);
 			else {
 				query = session.createNativeQuery(
-						"SELECT * FROM folder f where f.isFolder=:isFolder and UPPER(userName) LIKE :userName or f.id=1000",
+						"SELECT * FROM folder f where f.isFolder=:isFolder and UPPER(userName) LIKE :userName or f.id=1000 order by name",
 						Folder.class);
 				query.setString("userName", "%" + username.toLowerCase() + "&&&***&&&%");
 			}
@@ -542,7 +542,13 @@ public class DBUtil {
 				parentId = folder.getParentid().substring(0,folder.getParentid().length());
 				query.setString("parentId", folder.getParentid());
 				result = query.executeUpdate();
-				}
+				}else if(folder.isFolder()){
+					query = session.createNativeQuery("DELETE FROM document WHERE id  =:id",
+							Document.class);
+					query.setInteger("id", Integer.parseInt(folderId));
+					result = query.executeUpdate();
+					}
+					
 				
 			}
 			else {

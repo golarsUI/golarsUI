@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Date;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Random;
 
 import javax.ws.rs.Consumes;
@@ -58,8 +59,7 @@ public class BulkImportService {
 						out.write(theString);
 						out.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("unable to execute Bulk import  exception is :"+e);
 					}
 				}
 					
@@ -78,7 +78,7 @@ public class BulkImportService {
 			
 			for (int i = 0; i < sheet.getLastRowNum()-sheet.getFirstRowNum(); i++) {
 				Cell cell = 	sheet.getRow(i).getCell(sheet.getRow(0).getLastCellNum()-1);
-				if(!cell.getStringCellValue().equalsIgnoreCase(""))
+				if(!getCellValue(cell).equalsIgnoreCase(""))
 					totalURLCount++;
 			}
 			
@@ -102,8 +102,21 @@ public class BulkImportService {
 	    public void startImportingDocuments(String userName, String fileName) {
 	    	int totalcount = 0;
 	    	int insertCount = 0;
+	    	String hostAddress="http://golars360.com/";
+	    	String urlMappintFile="c:/golarsProd/bulkimport/urlmapping.xlsx";
 	    	try
 			{
+	    		
+	    		Properties configProperties = new Properties();
+	    		try {
+	    			Class<MailUtil> cl = MailUtil.class;
+
+	    			configProperties.load(cl.getResourceAsStream("/emailconfig.properties"));
+	    			hostAddress = configProperties.get("baseURL")+"";
+	    			urlMappintFile = configProperties.get("urlMappintFile")+"";
+	    		} catch (Exception e1) {
+	    			System.out.println("configuration properties not founrd" + e1.getMessage());
+	    		}
 				FileInputStream file = new FileInputStream(new File(fileName));
 
 				//Create Workbook instance holding reference to .xlsx file
@@ -162,7 +175,14 @@ public class BulkImportService {
 					String url = null;
 					try
 					{	
+						if(remoteURL.indexOf("fileName=")>=0)
 						url = remoteURL.substring(remoteURL.indexOf("fileName=")+"fileName=".length());
+						else{
+							url = gen()+"";
+							if(remoteURL.endsWith(".pdf"))
+								url+=".pdf";	
+
+						}
 					}catch(Exception e){
 						url = gen()+"";
 					}
@@ -177,7 +197,7 @@ public class BulkImportService {
 				       insertCount++;
 				       System.out.println(insertCount+" Files(s) imported of "+totalcount);
 				       System.out.println("File imported is "+url+" into "+path+" ");
-				       writeEntriesIntoFile(remoteURL,"http://golars360.com/golars/rest/import/"+folder.getId()+"/"+url);;
+				       writeEntriesIntoFile(remoteURL,hostAddress+"golars/rest/import/"+folder.getId()+"/"+url,urlMappintFile);;
 				       bean= null;   
 					}catch(Exception e){
 						System.out.println("Skip file import "+e.getMessage());
@@ -220,8 +240,8 @@ public class BulkImportService {
 			return " ";
 		}
 
-		private void writeEntriesIntoFile(String remoteURL, String localURL) {
-			 String excelFilePath = "c:\\golars\\bulkimport\\urlmapping.xlsx";
+		private void writeEntriesIntoFile(String remoteURL, String localURL, String urlMappintFile) {
+			 String excelFilePath = urlMappintFile;
 	         
 		        try {
 		            FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
@@ -254,13 +274,13 @@ public class BulkImportService {
 		 
 		            inputStream.close();
 		 
-		            FileOutputStream outputStream = new FileOutputStream("c:\\golars\\bulkimport\\urlmapping.xlsx");
+		            FileOutputStream outputStream = new FileOutputStream(urlMappintFile);
 		            workbook.write(outputStream);
 		            outputStream.close();
 		             
 		        } catch (IOException | EncryptedDocumentException
 		                | InvalidFormatException ex) {
-		          System.out.println("unable to write to excel path c:\\golars\\bulkimport\\urlmapping.xlsx "+ex.getMessage());
+		          System.out.println("unable to write to excel path "+urlMappintFile+" ----    "+ex.getMessage());
 		        }
 		    }
 			

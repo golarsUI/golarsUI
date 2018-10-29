@@ -241,7 +241,7 @@ public class DBUtil {
 			List list = query.list();
 			// Object doc = session.get(Document.class, file.getFilename());
 			fileName = URLEncoder.encode(fileName);
-			if(list.size() >=0){
+			if(list.size() > 0){
 				fileName = generateFileName(fileName);
 			}
 //			if (list.size() == 0) {

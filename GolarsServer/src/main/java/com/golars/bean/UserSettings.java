@@ -2,7 +2,6 @@ package com.golars.bean;
 
 public class UserSettings{
 	
-
 	private String key;
 	private String value;
 	public String getKey() {

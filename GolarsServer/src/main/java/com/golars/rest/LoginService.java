@@ -27,7 +27,7 @@ public class LoginService {
 			response.setLoginsuccess(isLoginSuccess);
 			return Response.status(403).entity(response).build();
 		}
-		User userRes =  new DBUtil().login(username, password);
+		User userRes =  DBUtil.getInstance().login(username, password);
 		
 		if(userRes !=null  && userRes.isActive()){// login successful
 		response.setLoginsuccess(true);

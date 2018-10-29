@@ -24,7 +24,7 @@ public class UsersService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response retrieveAllUsers() {
 
-		List<User> userList = new DBUtil().getAllUsers();
+		List<User> userList = DBUtil.getInstance().getAllUsers();
 		return Response.status(201).entity(new Gson().toJson(userList) ).build();
 	}
 
@@ -34,9 +34,9 @@ public class UsersService {
 		boolean result =false;
 		User userobj = null;
 		if(user.isEdit()){
-			userobj	=new DBUtil().editUser(user);
+			userobj	=DBUtil.getInstance().editUser(user);
 		}else{
-			userobj = new DBUtil().register(user);
+			userobj = DBUtil.getInstance().register(user);
 		}
 		if(userobj!=null){
 			result=true;
@@ -48,7 +48,7 @@ public class UsersService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteUser(@QueryParam("username") String username) {
 
-		List<User> userList = new DBUtil().deleteUser(username);
+		List<User> userList = DBUtil.getInstance().deleteUser(username);
 		return Response.status(201).entity(new Gson().toJson(userList) ).build();
 	}
 	@POST
@@ -58,9 +58,9 @@ public class UsersService {
 	public Response changePassword(ChangePassword changePasswordObj) {
 		boolean result;
 		if(changePasswordObj.isReset())
-			result = new DBUtil().resetPassword(changePasswordObj);
+			result = DBUtil.getInstance().resetPassword(changePasswordObj);
 		else
-		result = new DBUtil().changePassword(changePasswordObj);
+		result = DBUtil.getInstance().changePassword(changePasswordObj);
 		
 		return Response.status(201).entity(result).build();
 	}

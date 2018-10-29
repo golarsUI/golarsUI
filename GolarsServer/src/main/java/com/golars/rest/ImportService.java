@@ -1,6 +1,7 @@
 package com.golars.rest;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Random;
 
 import javax.ws.rs.Consumes;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import com.golars.bean.Document;
 import com.golars.bean.Folder;
+import com.golars.bean.UserSettings;
 import com.golars.util.DBUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -30,10 +32,11 @@ public class ImportService {
 
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
+
 	public Response uploadFile(@FormDataParam("fileUpload") FormDataBodyPart body,
 			@FormDataParam("docProperties") String documentProperties,
 			@FormDataParam("folderProperties") String folderProperties) {
-		boolean result = false;
+		String result = null;
 
 		for (BodyPart part : body.getParent().getBodyParts()) {
 
@@ -43,16 +46,25 @@ public class ImportService {
 				String fileName = getFileExtension(meta.getFileName()).equalsIgnoreCase("")
 						?gen()+".pdf" : meta.getFileName();
 				Folder folder = new Gson().fromJson(folderProperties, Folder.class);
-				result = new DBUtil().saveDocument(is, fileName, documentProperties, folder);
+				if(folder == null){
+					folder = DBUtil.getInstance().getFolder("root\\indiana\\NotificationFiles");
+				}
+				result = DBUtil.getInstance().saveDocument(is, fileName, documentProperties, folder);
 			}
 		}
-		return Response.status(200).entity(result).build();
+		if(result!=null){
+			UserSettings keyvalue = new UserSettings();
+			keyvalue.setKey("fileName");
+			keyvalue.setValue(result);
+			return Response.ok(keyvalue).build();
+		}
+		return Response.ok(result).build();
 	}
 
 	@Path("{id}/{filename}")
 	@GET
 	public Response getPDF(@PathParam("id") int id, @PathParam("filename") String filename) throws Exception {	
-		Document doc = new DBUtil().retrieveDocument(id, filename);
+		Document doc = DBUtil.getInstance().retrieveDocument(id, filename);
 
 		return Response.ok(doc.getContent(), generateContentType(doc.getFilename())) // TODO:
 																						// set
@@ -61,7 +73,7 @@ public class ImportService {
 																						// your
 																						// file
 				.header("Content-type:", generateContentType(doc.getFilename()))
-				.header("content-disposition", "inline; filename = " + doc.getFilename()).build();
+				.header("content-disposition", "inline; filename = " + URLEncoder.encode(doc.getFilename())).build();
 	}
 
 	private String generateContentType(String filename) {
@@ -88,7 +100,7 @@ public class ImportService {
 		String properties = dataObj.get("properties").getAsString();
 		// JsonObject dataObj1 = new Gson().fromJson(dataObj.get("data"),
 		// JsonObject.class);
-		int resultInt = new DBUtil().updateDocumentProperties(docId, docName, properties);
+		int resultInt = DBUtil.getInstance().updateDocumentProperties(docId, docName, properties);
 		if (resultInt > 0)
 			result = true;
 		return Response.status(200).entity(result).build();

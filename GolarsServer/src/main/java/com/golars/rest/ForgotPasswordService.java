@@ -21,7 +21,7 @@ public class ForgotPasswordService {
 //		String email = new Gson().fromJson(emailAddress, JsonObject.class).get("email").toString();
 		String inputArray[] = inputString.split("&&@@#@");
 		boolean result = false;
-		User userobj = new DBUtil().checkUserPresent(inputArray[0]);
+		User userobj = DBUtil.getInstance().checkUserPresent(inputArray[0]);
 	
 		if(userobj!=null){
 			new MailUtil().sendforgotPasswordEmail(userobj.getEmailAddress(),userobj.getUsername(),inputArray[1]);
